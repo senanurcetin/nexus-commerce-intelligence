@@ -4,7 +4,7 @@ The maintained source is **this integrated subproject**, not a second GitHub
 product repository. Build and tests remain isolated in integrations/greenweez/.
 See the [one-repo migration record](../../docs/REPOSITORY_CONSOLIDATION.md).
 
-**Reviewer quick brief:** [Technical evidence and business limitations](docs/hiring-summary.md).
+**Engineering evidence:** [metric definitions](#architecture), [synthetic demo](#quick-start-duckdb-demo-no-cloud-account-needed) and [dbt quality tests](tests/).
 
 ![Finance and campaign analytics architecture](docs/finance-campaign-pipeline.svg)
 
