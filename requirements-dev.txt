@@ -1,0 +1,6 @@
+# Local portfolio build and analysis. No API key or hosted service needed.
+dbt-core~=1.11.0
+dbt-duckdb~=1.10.0
+matplotlib>=3.9,<4
+jsonschema>=4.23,<5
+-r dashboard/requirements.txt

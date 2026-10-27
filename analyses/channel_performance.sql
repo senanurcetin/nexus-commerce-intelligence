@@ -42,10 +42,10 @@ final as (
         case
             when coalesce(s.total_sessions, 0) > 0
             then round(coalesce(s.converted_sessions, 0) * 100.0 / s.total_sessions, 2)
-            else 0
+            else null
         end                                                    as conversion_rate_pct,
-        round(coalesce(s.avg_session_duration_min, 0), 2)     as avg_session_duration_min,
-        round(coalesce(s.avg_page_views, 0), 1)               as avg_page_views,
+        round(s.avg_session_duration_min, 2)                 as avg_session_duration_min,
+        round(s.avg_page_views, 1)                           as avg_page_views,
         coalesce(o.returned_orders, 0)                        as returned_orders
     from orders o
     full outer join sessions s

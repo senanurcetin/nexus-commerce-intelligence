@@ -135,7 +135,7 @@ For shared/public deployment, an authentication and data-exposure review is requ
 | PSI · Lighthouse | PageSpeed Insights API | URL/device latest lab scores (performance, accessibility, best practices, SEO), LCP/CLS/TBT lab diagnostics | No field CrUX/INP claim |
 | Measurement Contracts | Source manifest, safeguards | source isolation, privacy, limitations | No partial or simulated source figures |
 
-Palette: **NEXUS navy/cyan/purple**, responsive Streamlit Plotly figures, time filters, property selectors and download buttons for the already verified aggregate rows. Everything works with open-source tools and does not require a Power BI Pro license. The original Desktop PBIX/PBIP is not present in the repository, so this viewer is not a surrogate validation of existing Power BI screenshots.
+Palette: **NEXUS navy/cyan/purple**, responsive Streamlit Plotly figures, time filters, property selectors and download buttons for the already verified aggregate rows. Everything works with open-source tools and does not require a Power BI Pro license. The portable PBIP has separate source/schema checks; this viewer does not establish Desktop rendering or refresh.
 
 ### Metric correctness
 

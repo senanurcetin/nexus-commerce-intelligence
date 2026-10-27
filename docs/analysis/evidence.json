@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-10-27T14:48:55.723764+00:00",
+  "provenance": "synthetic_ci",
+  "source_sha256": "940f198b03d580b01e54be3b968880d94268e24c1f4ed3a8a62c4e1a1f42d578",
+  "profile": {
+    "order_lines": 15,
+    "events": 30,
+    "sessions": 9,
+    "converted_sessions": 5,
+    "completed_orders_period_distinct": 9,
+    "completed_revenue": 1409.91,
+    "order_period": [
+      "2022-11-01",
+      "2022-11-15"
+    ]
+  },
+  "reconciliation": {
+    "raw_to_mart_revenue": true,
+    "raw_to_mart_orders": true,
+    "channel_revenue": true,
+    "funnel_sessions_and_ordering": true
+  },
+  "chi_square_approximation_supported": false,
+  "greenweez": {
+    "provenance": "synthetic_demo",
+    "source_sha256": "9a3c23aeaad1ea6b40c120f062d3bab347bd4c5162f164de3f9ebd09084b10f2",
+    "daily_rows": 90,
+    "revenue": 253408.53,
+    "ads_cost": 22616.93,
+    "margin_after_ads": 51820.53,
+    "orders_missing_shipping": 33,
+    "sales_lines_missing_product": 23,
+    "raw_to_daily_revenue_reconciled": true,
+    "margin_identity_reconciled": true
+  },
+  "queries": {
+    "channel_performance": {
+      "sql": "analyses/channel_performance.sql",
+      "rows": 6,
+      "sha256": "beeb56bb41aea9fcb80ef0da8ef496ad4a95eca083cacfc3fa70a6f98a6b2f60"
+    },
+    "conversion_funnel": {
+      "sql": "analyses/conversion_funnel.sql",
+      "rows": 3,
+      "sha256": "d1c72bb93bc6682d3139dae8a61cdd82f0c445f2fa5cea5a2d5e8bf887a7c46a"
+    },
+    "top_products": {
+      "sql": "analyses/top_products.sql",
+      "rows": 6,
+      "sha256": "fe16130f574e90a8d5d5550d82ed9f2bbdfa804c7112f3880e89ab285cb26626"
+    },
+    "channel_conversion_significance": {
+      "sql": "analyses/channel_conversion_significance.sql",
+      "rows": 6,
+      "sha256": "45fe7acd048b8fe32533f089da8f4506eb37f4df8c6a71d6bd41d67d3c5fbe04"
+    }
+  }
+}

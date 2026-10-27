@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-27",
+  "scope": "local synthetic portfolio; no browser, Playwright or PC screen",
+  "python_unittest": {
+    "command": "python -m unittest discover -s tests -p test_*.py",
+    "passed": 202,
+    "failed": 0
+  },
+  "streamlit_headless": {
+    "command": "python -m unittest discover -s tests -p smoke_google_marketing_app.py",
+    "passed": 11,
+    "failed": 0,
+    "browser_used": false
+  },
+  "node": {
+    "command": "node --test showcase/tests/*.test.mjs storefront/tests/*.test.mjs",
+    "passed": 16,
+    "failed": 0
+  },
+  "dbt_root": {
+    "models_passed": 10,
+    "data_tests_passed": 59,
+    "seed_tables": 4,
+    "errors": 0
+  },
+  "dbt_greenweez": {
+    "build_nodes_passed": 113,
+    "warnings": 4,
+    "errors": 0,
+    "no_op": 1,
+    "seed_tables": 11,
+    "warning_details": {
+      "refund_above_unverified_units": 842,
+      "sheet_orders_missing_shipping": 4,
+      "raw_sales_lines_missing_product": 23,
+      "raw_orders_missing_shipping": 33
+    }
+  },
+  "powerbi": {
+    "microsoft_schema_artifacts_validated": 38,
+    "private_pages_structurally_validated": 7,
+    "public_pages": 4,
+    "desktop_render_verified": false,
+    "dax_engine_verified": false,
+    "microsoft_tom_tmdl_parsed": true,
+    "public_semantic_tables": 4,
+    "private_semantic_tables": 8
+  },
+  "analysis": {
+    "queries_executed": 4,
+    "raw_to_mart_revenue_orders_reconciled": true,
+    "funnel_conservation_reconciled": true,
+    "greenweez_revenue_margin_reconciled": true
+  },
+  "brand": {
+    "drive_asset_matches_repository": true,
+    "sha256": "ebbdb363c523dcd88bcfa405be025e5b745419caaf57adb992b8ec1e85ed251e"
+  },
+  "cloud_refresh_performed": false,
+  "live_publication_performed": false
+}

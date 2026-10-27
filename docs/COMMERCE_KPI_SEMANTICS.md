@@ -1,6 +1,8 @@
 # Commerce KPI Semantics — Current-Status Ledger
 
-**Status:** Analytical SQL and DAX source have been corrected. **Power BI Desktop execution / recapture remains outstanding** because this repository contains historical PNGs but no editable PBIX/PBIP report.
+**Status:** analytical SQL and source-scoped report definitions are executable locally. A portable PBIP is available; Desktop rendering and refresh remain unverified. [Delivery evidence](DELIVERY.md).
+
+**Daily aggregates:** summing `completed_orders` or `returned_orders` from the daily bridge yields order-days. Do not label those sums period-distinct orders or use them for a true period AOV. `scripts.run_analysis` recomputes period-distinct counts from the item fact.
 
 ## Why a revision is required
 
@@ -39,7 +41,7 @@ The DAX documentation at `docs/dax-measures.md` now reflects these definitions. 
 1. Compile all dbt analysis SQL in the CI pipeline and keep existing dbt tests passing.
 2. Independently calculate completed revenue, returned item value, distinct orders and AOV from authorized BigQuery data and compare each reported metric.
 3. Update the actual Power BI DAX measures in the **original editable report**. Check date slicers, fact relationships, conditional formatting, source labels and filter context.
-4. Re-capture 3 Power BI images and update the portfolio only after a desktop refresh and numerical reconciliation.
+4. Capture genuine current BI images only after a separately permitted Desktop refresh and numerical reconciliation.
 5. Preserve segmentation: E-Commerce session/order metrics must not be joined to Olist, Greenweez or GA4 Search Console records based solely on date/channel labels.
 
 These historical E-Commerce semantic corrections do not modify the isolated Greenweez dbt project under `integrations/greenweez/` or the Google measurement marts.

@@ -1,38 +1,44 @@
-# NEXUS Commerce Intelligence — Power BI Theme and Acceptance
+# NEXUS Commerce — Power BI delivery
 
-The importable JSON theme at [themes/nexus-commerce.json](themes/nexus-commerce.json) now matches the Streamlit NEXUS **midnight navy / cyan / purple** design system. It does **not** prove the original PBIX file has been opened, recolored or refreshed.
+## Portable portfolio report
 
-| Token | Hex | Usage |
-| --- | --- | --- |
-| Primary canvas | `#080F20` | Power BI page background |
-| Visual surface | `#111E38` | Cards and charts |
-| Primary text | `#EDF5FF` | Title and card values |
-| Secondary text | `#B8C8DF` | Labels and grid annotations |
-| NEXUS cyan | `#47DFF2` | Key data series / table accent |
-| NEXUS purple | `#A892F4` | Secondary data series |
-| Approved positive | `#7ADDB8` | Positive semantic value |
-| Approved warning | `#EFC98D` | Risk / warning value |
+Download [NEXUS_Commerce_Demo.zip](NEXUS_Commerce_Demo.zip), extract the complete folder and open `NEXUS_Commerce.pbip` in a current Power BI Desktop installation with PBIP/PBIR support. The report has four pages:
 
-Import the theme into an **actual editable** Power BI Desktop report with **View → Themes → Browse for themes**. Individual custom visual overrides, white backgrounds, date filters, drill behaviors and slicer formatting must still be examined manually.
+1. Source Assurance
+2. Historical E-Commerce
+3. E-Commerce Sessions
+4. Greenweez Finance
 
-### QA automation
+The TMDL semantic model embeds source-scoped synthetic aggregates as Power Query `#table` expressions. No cloud sign-in, absolute CSV path, service credential or paid workspace is needed to supply its data. Every page identifies the data as synthetic demonstration data. Daily distinct order counts are labelled order-days.
 
-From the NEXUS Commerce Intelligence repository root:
+Official NEXUS imagery is bundled under `StaticResources/RegisteredResources`. The theme uses midnight surfaces and cyan/lavender accents. Charts and KPI cards occupy separate non-overlapping rectangles.
 
-~~~cmd
-python -m scripts.powerbi_acceptance --output target\powerbi_acceptance.json
-~~~
+## Rebuild
 
-This generates a source/documentation audit of JSON theme tokens, the DAX measure registry, attribution semantics and editability. It intentionally leaves **Desktop render, current warehouse refresh, mobile layout, visual-level acceptance and financial reconciliation as NOT DONE** until independent evidence exists. A PBIX merely being present does not auto-promote the release decision.
+```powershell
+python -m scripts.build_demo --deps
+python -m scripts.build_public_powerbi
+python -m scripts.validate_powerbi_schema
+```
 
-When the real source is available, run `python -m scripts.powerbi_acceptance --report C:\path\report.pbix` and then perform the checklists in [Power BI visual QA](../docs/POWER_BI_VISUAL_QA.md). Actual Desktop access remains mandatory for final acceptance.
+Output: `target/powerbi-public/project/`. Copy that entire directory when moving the project. The public builder rejects external/unverified snapshots before export and excludes GA4, source import audits and unrelated private data.
 
-### Known metric distinctions
+For an additional native parser check (.NET 9 SDK required):
 
-- Signup source and session traffic source are different dimensions.
-- Financial revenue must be read from its own historical E-Commerce mart, never from Greenweez or NEXUS Commerce Lab sandbox events.
-- The PE4 CAC input is a sessions-per-user **proxy**, not money spent on customer acquisition.
-- The old three PNG illustrations are **historical screenshots**, not renewed evidence after this theme change.
-- Turkish **B** means bin (1,000), not billion.
+```powershell
+dotnet run --project scripts/powerbi-model-check/PowerBiModelCheck.csproj -- target/powerbi-public/project/NEXUS_Commerce.SemanticModel/definition
+```
 
-**Release decision: HOLD.** Original editable report and fresh authorized data/render evidence are not established in this repo.
+This uses Microsoft's pinned Analysis Services NuGet package and does not open Desktop or execute DAX.
+
+## Private-source report
+
+`python -m scripts.build_powerbi` generates the separate seven-page workspace report under `target/powerbi/`. It uses source-qualified local CSV inputs and preserves missing/invalid source states. See [PBIP pipeline](PBIP_PIPELINE.md) for its operational contract.
+
+## Acceptance boundary
+
+Microsoft's published JSON schemas validate the public report files. Microsoft TOM also deserializes both TMDL semantic models successfully. Local tests check field bindings, source separation, portability, visible provenance, page bounds and absence of overlapping visual rectangles.
+
+**Not verified:** Power BI Desktop rendering, DAX engine execution, refresh, mobile layout or service publication. Neither screenshots nor a published Power BI URL are fabricated. No Playwright, browser session or PC screen is used in this pass. [Visual QA](../docs/POWER_BI_VISUAL_QA.md) remains a separate future acceptance step.
+
+The [analytical figures](../docs/analysis/REPORT.md) in the README are generated directly from the SQL results and are not Power BI screenshots.

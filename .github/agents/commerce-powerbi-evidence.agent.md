@@ -18,7 +18,7 @@ Review the **E-commerce Power BI evidence and analytics semantics**, not the sep
 - `analyses/` for any historical statistical or channel-comparison claims.
 
 ## Evidence rules
-1. The tracked three PNGs are **historical screenshots**; the repository does not contain an editable `.pbix` or `.pbip`. Theme JSON is importable source, **not** a render or proof of adoption. Never label screenshots as refreshed.
+1. Historical PNGs have been removed. A portable synthetic PBIP package and report generators are available; their Desktop rendering remains unverified. Theme JSON is importable source, **not** a render or proof of adoption. Never label screenshots as refreshed.
 2. Turkish dashboard abbreviation `B` means **thousand (bin)**, not billion. Preserve currencies, dates, denominators and distinction between estimated and measured values.
 3. Session conversion and order-item revenue have different grains. Treat signup and session traffic attribution as different variables; check for fan-out when joining two fact tables.
 4. CAC/PE4 is a **proxy** without observed advertising spend. Historical chi-square statistics are not evidence of a new significance test on current data.

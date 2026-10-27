@@ -75,4 +75,4 @@ The launch version includes `<meta name="robots" content="noindex, nofollow">` b
 - Keep the TheLook Power BI finance KPIs separate from live test-site events.
 - Only when source ownership, API reconciliation and visuals are checked should the portfolio describe it as a **connected lab**.
 
-The [full staged plan](../docs/NEXUS_COMMERCE_LAB_PLAN.md) tracks the remaining work.
+The [delivery record](../docs/DELIVERY.md) tracks the remaining work.
