@@ -1,0 +1,103 @@
+{
+  "source": "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce",
+  "license": "CC-BY-NC-SA-4.0",
+  "source_kind": "historical_public_olist",
+  "synthetic": false,
+  "source_version_note": "Content-addressed official CSVs; Kaggle version number not returned by CLI metadata.",
+  "quality": {
+    "files": {
+      "olist_orders_dataset.csv": {
+        "sha256": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
+        "bytes": 17654914,
+        "rows": 99441
+      },
+      "olist_customers_dataset.csv": {
+        "sha256": "983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2",
+        "bytes": 9033957,
+        "rows": 99441
+      },
+      "olist_order_items_dataset.csv": {
+        "sha256": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+        "bytes": 15438671,
+        "rows": 112650
+      },
+      "olist_order_reviews_dataset.csv": {
+        "sha256": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7",
+        "bytes": 14451670,
+        "rows": 99224
+      }
+    },
+    "order_fact_rows": 99441,
+    "raw_item_value": 13591643.70001419,
+    "fact_item_value": 13591643.700012088,
+    "extra_review_rows_collapsed": 551,
+    "orders_without_items": 775,
+    "orders_without_customer_identity": 0
+  },
+  "summary": {
+    "purchase_window": "[2017-01-01, 2018-08-01)",
+    "cutoff": "2018-08-01",
+    "orders": 89860,
+    "customers": 86960,
+    "gmv_source_units": 12342450.49001042,
+    "m1_cohorts": 18,
+    "m1_customers": 81001,
+    "m1_active": 389,
+    "weighted_m1_retention": 0.004802409846792015,
+    "asof_delivery_excluded_orders": 2030,
+    "delivery_coverage_overlapping_exclusions": {
+      "delivered_positive_gmv_orders": 89860,
+      "no_review": 622,
+      "missing_delivery_dates": 8,
+      "invalid_chronology": 0,
+      "missing_or_pre_delivery_answer": 4467
+    },
+    "independent_raw_window_item_value": 12342450.490012353,
+    "delivery_association": {
+      "risk_difference": 0.10731008772155064,
+      "ci_low": 0.08901241601576029,
+      "ci_high": 0.1254099049278386,
+      "customers": 82228,
+      "iterations": 1000,
+      "valid_replicates": 1000,
+      "seed": 20261027,
+      "late_poor": 342,
+      "late_orders": 1702,
+      "on_time_poor": 7777,
+      "on_time_orders": 83061
+    },
+    "month_standardized_risk_difference": 0.11042938052218233,
+    "all_review_timing_sensitivity": {
+      "late_poor": 3817,
+      "late_orders": 5993,
+      "on_time_poor": 7807,
+      "on_time_orders": 83237,
+      "risk_difference": 0.5431173039738258
+    },
+    "common_support_months": 13,
+    "state_fdr_family_size": 13
+  },
+  "sql_sha256": {
+    "cohorts.sql": "1a4d4a5e266454b23009424408de02a2989b934fbd5dbb4e6ba37283fe7eafa9",
+    "order_fact.sql": "e589e02701489e4cd0b0f8d65067cf7c24f60e0a786997d0723050b61f215de6",
+    "rfm.sql": "0abe3a9de4457f6206db8c1b3398e92a0f4f5979351a086b7a5743b66771ace8"
+  },
+  "implementation_sha256": "94cb39c3c60c9bdc6824b7628801d0c8c57a8cc7e4d451c1709583f6931f2018",
+  "runtime_versions": {
+    "duckdb": "1.5.2",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scipy": "1.17.0"
+  },
+  "export_sha256": {
+    "cohorts.csv": "a9e08608321b7da9128272834d7d8b99cd68eefda9b77686bb2e520d6283a24e",
+    "decomposition.csv": "a504849a796d65d67895d575ded6012c39f2a81fc57ebf56114431cb086b0ea2",
+    "delivery_common_support.csv": "a6e93cc2ecd383d12e63bb050073254f6ffbcde2c9fcb6af8a0c74c2bd5e1dd0",
+    "delivery_months.csv": "8694a6768b5455bd3084a708da6ad630f45b57ccd14eebf039a8f5ceb98e1836",
+    "delivery_states.csv": "58f2c09dbe2237453a311c701601399c2a065e973ab7cc127e9c331adf278e63",
+    "monthly.csv": "a2e36cf8b04352c65382da9616066751f663ace93ca8d361ac7b36a736bd8c54",
+    "segments.csv": "08dd98db0f68bb4a4f52a1d9af06217bdebcf2bd4e94585fe942780c27248272"
+  },
+  "desktop_render_verified": false,
+  "dax_engine_executed": false
+}

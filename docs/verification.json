@@ -1,9 +1,9 @@
 {
   "date": "2026-10-27",
-  "scope": "local synthetic portfolio; no browser, Playwright or PC screen",
+  "scope": "local synthetic commerce and independent historical public Olist; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 202,
+    "passed": 212,
     "failed": 0
   },
   "streamlit_headless": {
@@ -44,7 +44,11 @@
     "dax_engine_verified": false,
     "microsoft_tom_tmdl_parsed": true,
     "public_semantic_tables": 4,
-    "private_semantic_tables": 8
+    "private_semantic_tables": 8,
+    "olist_pages": 5,
+    "olist_semantic_tables": 6,
+    "olist_microsoft_schema_artifacts_validated": 39,
+    "olist_microsoft_tom_tmdl_parsed": true
   },
   "analysis": {
     "queries_executed": 4,
@@ -57,5 +61,17 @@
     "sha256": "ebbdb363c523dcd88bcfa405be025e5b745419caaf57adb992b8ec1e85ed251e"
   },
   "cloud_refresh_performed": false,
-  "live_publication_performed": false
+  "live_publication_performed": false,
+  "olist_analysis": {
+    "source_orders": 99441,
+    "main_window_delivered_orders": 89860,
+    "source_files": 4,
+    "raw_to_order_value_reconciled": true,
+    "raw_window_value_reconciled": true,
+    "bootstrap_replicates": 1000,
+    "raw_identifiers_exported": false,
+    "generated_figures_inspected": 4,
+    "historical_sql_notebook_structure_validated": true,
+    "historical_sql_notebook_executed": false
+  }
 }

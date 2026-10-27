@@ -1,6 +1,6 @@
 # Documentation map
 
-Start with [project assessment](PROJECT_ASSESSMENT.md), [analytical findings](analysis/REPORT.md), [architecture](ARCHITECTURE.md) and [delivery evidence](DELIVERY.md).
+Start with [Olist advanced research](advanced-analysis/REPORT.md), [project assessment](PROJECT_ASSESSMENT.md), [synthetic mart findings](analysis/REPORT.md), [architecture](ARCHITECTURE.md) and [delivery evidence](DELIVERY.md).
 
 ## Analytical and BI contracts
 

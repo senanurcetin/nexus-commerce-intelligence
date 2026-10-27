@@ -1,0 +1,4 @@
+# Source fingerprints and public aggregate hashes must survive platform checkouts.
+analytics/olist/*.sql text eol=lf
+scripts/advanced_olist.py text eol=lf
+docs/advanced-analysis/*.csv text eol=lf

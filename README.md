@@ -6,11 +6,29 @@
 
 E-Commerce and Greenweez share engineering standards while retaining independent facts, populations and financial definitions. This is a non-commercial portfolio project.
 
-[Analytical findings](docs/analysis/REPORT.md) · [Architecture](docs/ARCHITECTURE.md) · [Power BI](powerbi/README.md) · [Project assessment](docs/PROJECT_ASSESSMENT.md) · [Delivery evidence](docs/DELIVERY.md)
+[Olist advanced analysis](docs/advanced-analysis/REPORT.md) · [Synthetic mart findings](docs/analysis/REPORT.md) · [Architecture](docs/ARCHITECTURE.md) · [Power BI](powerbi/README.md) · [Delivery evidence](docs/DELIVERY.md)
 
-![Ordered session funnel — generated from synthetic dbt results](docs/analysis/funnel.png)
+![Observed customer retention — independent historical Olist research](docs/advanced-analysis/cohort_retention.png)
 
-*An actual generated analytical figure, not a dashboard screenshot. All figures in the public demonstration use explicitly synthetic dbt seeds.*
+*Generated analytical figure from the official public Olist extract; not a dashboard screenshot. Olist research is independent of the synthetic E-Commerce/Greenweez web demonstration.*
+
+## Advanced public-data study
+
+The [Olist report](docs/advanced-analysis/REPORT.md) reconstructs a **99,441-order** source into a tested order-grain model. Its main January 2017–July 2018 purchase window includes **89,860 delivered orders**. No order identifiers or review text are published.
+
+| Method | Question and control |
+| --- | --- |
+| Observation-aware cohorts | How many original customers return at the same cohort age? Future cells are null; observed inactivity is zero |
+| As-of RFM policies | Which customers have repeated and how recently? Delivery-time eligibility prevents future outcomes; equal histories stay together |
+| Exact Shapley decomposition | How do order volume, basket size and item value account for monthly GMV change? All six replacement orders reconcile exactly |
+| Cluster bootstrap | How strongly are late delivery and poor reviews associated? Resample customers with all their orders; report uncertainty and selection limits |
+| Sensitivity and multiplicity | How does review timing change the contrast? Compare response populations, standardize common months and publish the full exploratory state FDR family |
+
+The weighted month-1 repeat rate is **0.48%**, replacing an unsupported historical 3–5% notebook claim. Delivery contrasts change substantially with review timing; the report presents this sensitivity prominently. These are historical marketplace observations, not causal effects, forecasts, audited financial results or current business performance.
+
+Reproduce with `python -m scripts.advanced_olist --raw target/olist/raw`; exact source-file hashes, aggregate CSVs, eligibility and methods are recorded in [evidence](docs/advanced-analysis/evidence.json). Obtain the four named official CSVs with the free Kaggle CLI as described in the report. Raw files remain in ignored `target/` and are never downloaded in CI.
+
+The separate [five-page Olist Power BI package](powerbi/NEXUS_Olist_Research.zip) embeds only these public aggregates. Rebuild it with `python -m scripts.build_olist_powerbi`; native Desktop/DAX acceptance remains unverified.
 
 ## Questions this project answers
 
@@ -39,6 +57,9 @@ flowchart LR
     B --> P[Portable Power BI project]
     B --> W[Static portfolio demo]
     M[GA4 / GSC / Lighthouse] --> C[Independent measurement collectors]
+    O[Official Olist public CSVs] --> OF[Independent order-grain model]
+    OF --> OA[Cohorts / RFM / Shapley / uncertainty]
+    OA --> OP[Olist findings and separate Power BI]
 ```
 
 BigQuery is the existing warehouse target; DuckDB reproduces both dbt projects locally. The public demo never queries BigQuery, invokes an LLM or needs a payment provider. The [migration record](docs/REPOSITORY_CONSOLIDATION.md) documents the single-repository consolidation.
@@ -84,7 +105,7 @@ The seven-page private-source generator remains available as `python -m scripts.
 - [Greenweez source contract](integrations/greenweez/README.md): independent finance/campaign pipeline and known data-quality warnings.
 - [Google measurement](docs/GOOGLE_MEASUREMENT_INTEGRATION.md): GA4, Search Console and performance measurements.
 - [BigQuery OIDC](docs/GITHUB_ACTIONS_BIGQUERY_OIDC.md): keyless metadata verification.
-- [Olist notebooks](notebooks/): a separate historical public-data analysis; its results are not combined with these marts.
+- [Olist controlled analysis](docs/advanced-analysis/REPORT.md): independent public data, tested SQL and statistical methods; historical notebooks are exploratory references.
 
 Daily distinct order counts are labelled **order-days** when added across dates. They are not guaranteed to equal period-distinct orders. The analytical report recomputes period-distinct orders directly from the fact table. Currency is not inferred from unverified source units.
 

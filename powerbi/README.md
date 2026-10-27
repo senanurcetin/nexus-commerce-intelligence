@@ -1,6 +1,20 @@
 # NEXUS Commerce — Power BI delivery
 
-## Portable portfolio report
+## Independent Olist research report
+
+[NEXUS_Olist_Research.zip](NEXUS_Olist_Research.zip) contains `NEXUS_Olist_Research.pbip` and five native pages: Value and Order Volume, Observed Cohorts (matrix), As-of Customer Policies, GMV Decomposition and Delivery/Reviews. The official NEXUS logo and source qualifications appear on every page.
+
+Six disconnected aggregate tables embed the [public Olist research](../docs/advanced-analysis/REPORT.md). They intentionally do not relate to the synthetic commerce model. Retention uses original cohort denominators and is blank when multiple period ages share a context. The delivery confidence cards describe the fixed overall post-delivery-answer sample; selecting a month does not recompute its bootstrap interval. Page context states this explicitly. GMV is in original price units, excluding freight; it is not net revenue or profit.
+
+```powershell
+python -m scripts.build_olist_powerbi
+python -m scripts.validate_powerbi_schema --project target/powerbi-olist/project
+dotnet run --project scripts/powerbi-model-check/PowerBiModelCheck.csproj -- target/powerbi-olist/project/NEXUS_Olist_Research.SemanticModel/definition
+```
+
+The source-export hashes are checked before native generation. Raw identifiers, review text, cloud credentials and local CSV paths are excluded. Package provenance is in [olist-package-manifest.json](olist-package-manifest.json). Desktop rendering, refresh and DAX engine execution remain unverified.
+
+## Synthetic portable portfolio report
 
 Download [NEXUS_Commerce_Demo.zip](NEXUS_Commerce_Demo.zip), extract the complete folder and open `NEXUS_Commerce.pbip` in a current Power BI Desktop installation with PBIP/PBIR support. The report has four pages:
 

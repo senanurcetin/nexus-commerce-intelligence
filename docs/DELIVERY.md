@@ -14,6 +14,10 @@ Updated 27 October 2026. Non-commercial, English-language NEXUS analytics case s
 - Fixed native report overlaps and machine-specific data-path dependence in public output.
 - Corrected order-day labels across the public demo, native report and historical Streamlit tab.
 - Consolidated obsolete plans, removed historical UI images and replaced documentation visuals with current generated analytical figures.
+- Reconstructed the official 99,441-order Olist extract independently, with one order per fact row and source-file fingerprints. The principal purchase window contains 89,860 delivered orders.
+- Added observation-aware repeat-purchase cohorts, tie-preserving as-of customer policies, exact Shapley GMV decomposition, 1,000-replicate customer-cluster bootstrap, month-standardization and a full exploratory state FDR family.
+- Published review-timing sensitivity instead of presenting a selected-sample association as an intervention effect. Corrected the historical SQL notebook's unverified retention narrative; its code was not rerun.
+- Delivered four current NEXUS analytical figures and a separate five-page portable Olist Power BI package, with original source attribution and CC BY-NC-SA 4.0 data/report terms.
 
 ## Source and brand evidence
 
@@ -21,16 +25,18 @@ The official transparent PNG was compared byte-for-byte with the owner's mounted
 
 [Historical BigQuery OIDC run](https://github.com/senanurcetin/nexus-commerce-intelligence/actions/runs/39071051381): successful authentication, eight pinned schemas and 62 required fields; E-Commerce US, Greenweez EU. This is metadata evidence, not a new data refresh. The previous source preflight preserved its byte cap: Greenweez passed the dry-run; E-Commerce raw events exceeded the 100 MB cap and no rows were downloaded. The cap was not raised.
 
-The public report uses only synthetic fixtures. Its results, lineage and controls are in [analytical evidence](analysis/evidence.json) and [findings](analysis/REPORT.md). No private warehouse rows or credentials are published.
+The four-page commerce report and web demo use only synthetic fixtures. Their results, lineage and controls are in [analytical evidence](analysis/evidence.json) and [findings](analysis/REPORT.md). The independent [Olist research](advanced-analysis/REPORT.md) uses official historical public data with four content-addressed source CSVs; only aggregate results are published. No private warehouse rows or credentials are published.
 
 ## Verification scope
 
-- 202 Python unit/contract tests, 11 headless Streamlit AppTests and 16 Node tests passed. [Machine-readable verification](verification.json).
+- Python unit/contract tests, 11 headless Streamlit AppTests and 16 Node tests passed. Exact current counts and commands: [machine-readable verification](verification.json).
 - Full local rebuild: 10 E-Commerce models plus 59 model-level tests passed; Greenweez completed with 113 passed build nodes, four documented warnings and no errors.
 - All four analytical SQL templates execute against the local dbt marts; raw-to-mart revenue/order and funnel controls reconcile.
 - Greenweez raw-sales revenue reconciles to daily finance; daily contribution identities reconcile.
 - Four-page public Power BI JSON validates against Microsoft's published schemas. Microsoft TOM successfully deserializes the public four-table and private eight-table TMDL models. Seven-page source/binding integrity is independently checked.
 - Generated analytical figures are file artifacts, not screenshots of a live UI or Power BI.
+- Olist: all-extract raw item value reconciles to the order fact, and the analytical purchase window reconciles independently to raw lines/orders. Cohort observation/denominator, policy ties, future delivery exclusion, many-side fanout, Shapley symmetry/additivity, fixed-seed bootstrap, BH adjustment, aggregate reconciliation and public export tamper tests pass without Kaggle access in CI.
+- The five-page Olist report validates 39 Microsoft schema-bearing artifacts; Microsoft TOM parses its six-table semantic model. All four generated figures were inspected as local image files. This does not establish BI rendering.
 
 ## Limits
 

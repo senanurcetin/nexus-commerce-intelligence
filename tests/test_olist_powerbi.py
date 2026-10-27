@@ -1,0 +1,55 @@
+"""Public aggregate integrity, source separation and native report bindings."""
+import json
+from pathlib import Path
+import shutil
+import tempfile
+import unittest
+
+from scripts.build_olist_powerbi import NAME, PAGES, ROOT, TABLES, create
+
+
+class OlistPowerBI(unittest.TestCase):
+    def test_portable_model_matches_aggregate_contract_and_visual_bindings(self):
+        with tempfile.TemporaryDirectory() as directory:
+            project=create(ROOT/'docs/advanced-analysis',Path(directory))
+            model=project.parent/(NAME+'.SemanticModel/definition')
+            text='\n'.join(p.read_text() for p in model.rglob('*.tmdl'))
+            for forbidden in ('File.Contents','pDataFolder','customer_unique_id','order_id','ECommerceOrders','GreenweezFinance'):
+                self.assertNotIn(forbidden,text)
+            self.assertEqual({p.stem for p in (model/'tables').glob('*.tmdl')},set(TABLES))
+            pages=project.parent/(NAME+'.Report/definition/pages')
+            self.assertEqual(json.loads((pages/'pages.json').read_text())['pageOrder'],[p['id'] for p in PAGES])
+            for page in PAGES:
+                visuals=[json.loads(p.read_text()) for p in (pages/page['id']/'visuals').rglob('visual.json')]
+                self.assertTrue(any(v['name']=='nexus_brand_logo' for v in visuals))
+                self.assertTrue(any('PUBLIC OLIST' in json.dumps(v) for v in visuals))
+                for v in visuals:
+                    pos=v['position']
+                    self.assertGreaterEqual(pos['x'],0); self.assertGreaterEqual(pos['y'],0)
+                    self.assertLessEqual(pos['x']+pos['width'],1280)
+                    self.assertLessEqual(pos['y']+pos['height'],720)
+                    for role in v['visual'].get('query',{}).get('queryState',{}).values():
+                        for projection in role['projections']:
+                            field=next(iter(projection['field'].values()))
+                            entity=field['Expression']['SourceRef']['Entity']
+                            self.assertIn(entity,TABLES)
+                            self.assertIn(field['Property'],text)
+                rectangles=[v['position'] for v in visuals]
+                for i,a in enumerate(rectangles):
+                    for b in rectangles[i+1:]:
+                        overlap=min(a['x']+a['width'],b['x']+b['width'])>max(a['x'],b['x']) and min(a['y']+a['height'],b['y']+b['height'])>max(a['y'],b['y'])
+                        self.assertFalse(overlap,page['id'])
+
+    def test_edited_aggregate_and_wrong_population_are_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source=Path(directory)/'source'
+            shutil.copytree(ROOT/'docs/advanced-analysis',source)
+            with (source/'monthly.csv').open('a') as stream: stream.write('\n')
+            with self.assertRaisesRegex(ValueError,'hash mismatch'): create(source,Path(directory)/'out')
+            evidence=json.loads((source/'evidence.json').read_text())
+            evidence['source_kind']='synthetic_dbt_seeds_only'
+            (source/'evidence.json').write_text(json.dumps(evidence))
+            with self.assertRaisesRegex(ValueError,'public Olist'): create(source,Path(directory)/'out')
+
+
+if __name__=='__main__': unittest.main()

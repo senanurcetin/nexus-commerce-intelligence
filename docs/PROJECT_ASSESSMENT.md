@@ -4,14 +4,14 @@ Assessment date: 27 October 2026. Scope: repository, local dbt artifacts, execut
 
 ## Level
 
-**Intermediate-to-advanced analytics engineering; developing professional analytical case study.** This is a qualitative assessment, not a certification or an invented numeric score.
+**Advanced analytical methods implemented within a reproducible portfolio project; intermediate-to-advanced analytics engineering.** This is a qualitative assessment based on executable evidence, not a certification or an invented numeric score. Production operation, current business validity and native BI rendering remain separate acceptance boundaries.
 
 | Dimension | Evidence | Remaining gap |
 | --- | --- | --- |
 | Data engineering | Two independently executable dbt projects, staging/intermediate/marts, adapter branches | Live source refresh and business reconciliation are separate acceptance steps |
 | Data quality | Uniqueness, relationships, status/revenue tests and source-isolated adapters | Greenweez warning cases remain visible; they cannot be silently promoted to verified finance |
-| Analytical correctness | Executable channel, ordered funnel and product analysis, uncertainty diagnostics | Synthetic fixtures cannot establish real commercial findings |
-| Reproducibility | One local build command, database/query fingerprints, aggregate CSV results | Original Olist notebooks depend on their own external source data |
+| Analytical correctness | Actual Olist order-grain reconstruction, censored cohort grid, as-of RFM, exact Shapley identity, customer-cluster bootstrap, timing sensitivity and exploratory FDR | Historical observational data cannot identify causal effects, current performance or population-wide churn |
+| Reproducibility | Local dbt build; public Olist CSV checksums, executable SQL/statistics, independent raw reconciliation and aggregate results | Download official Olist inputs separately; CI tests methods on bounded adversarial fixtures and builds BI from committed aggregates |
 | Communication | Questions → methods → findings → implications → limitations | No new live BI publication or UI screenshot evidence is claimed |
 | Design | Official NEXUS logo; midnight, cyan, blue and lavender palette | Browser and Desktop render verification intentionally not performed |
 
@@ -23,6 +23,9 @@ Assessment date: 27 October 2026. Scope: repository, local dbt artifacts, execut
 - Summed daily distinct orders were labelled as period-unique orders/AOV. Public aggregates now use order-day terminology; the report computes true period-distinct orders from the fact.
 - Power BI charts overlapped KPI cards, and local CSV paths were unsuitable for portable distribution. Layout coordinates were corrected and the public project embeds aggregate data.
 - A Unix-specific GA4 authentication test failed on Windows. Both OS branches are now tested explicitly without changing permissions or requesting credentials.
+- The historical SQL notebook's unsupported 3–5% month-1 retention narrative is superseded by a controlled 0.48% calculation across fully observable cohorts. Future periods remain null; repeated orders within a cohort month count once.
+- Olist one-to-many items/reviews aggregate before joining. Native reporting embeds independent public aggregates without mixing them into E-Commerce or Greenweez totals.
+- Review-timing selection changes the late-delivery contrast substantially. Both populations are reported, preventing a selected-sample contrast from becoming an unsupported intervention claim.
 
 ## Completion standard
 

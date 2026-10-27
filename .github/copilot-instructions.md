@@ -3,7 +3,7 @@
 This is an **analytics engineering** project: BigQuery/dbt Cloud models with a local DuckDB adapter path and historical Power BI evidence. It includes a separate test-only storefront and a synthetic portfolio presentation. Read `README.md`, `dbt_project.yml`, `models/marts/marts.yml` and relevant `tests/` before proposing changes.
 
 ## Project-specific boundaries
-- The **main clickstream and orders dataset** drives dbt marts and Power BI references; the public **Olist** notebook dataset is a separate exercise. Never mix results, denominators, screenshots or case-study claims.
+- The **main clickstream and orders dataset** drives dbt marts and Power BI references; the public **Olist** analysis is a separate historical domain. Its controlled pipeline is `scripts.advanced_olist` with SQL under `analytics/olist/`, aggregate evidence under `docs/advanced-analysis/`, and independent native BI via `scripts.build_olist_powerbi`. Historical notebooks are exploratory references. Never mix source results, denominators or case-study claims.
 - Preserve grain: `fct_order_marketing` is order-item level and rebuilt each run to capture mutable returns; `fct_marketing_web_performance` is session plus user grain. Avoid multiply joining these facts without careful aggregation.
 - Keep `dim_user.signup_traffic_source` (acquisition) distinct from `fct_marketing_web_performance.traffic_source` (session first-touch) and from order attribution.
 - Use existing dbt tests, deterministic local seed fixtures, and offline Python scripts. For target-specific expressions review BigQuery and DuckDB branches. Do not change either adapter silently.

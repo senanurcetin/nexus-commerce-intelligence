@@ -278,8 +278,11 @@ jobs:
         run: |
           python -m unittest discover -s tests -p 'test_ordered_funnel.py' -v
           python -m unittest discover -s tests -p 'test_portfolio_build.py' -v
+          python -m unittest discover -s tests -p 'test_advanced_olist.py' -v
+          python -m unittest discover -s tests -p 'test_olist_powerbi.py' -v
           python -m scripts.run_analysis
           python -m scripts.build_public_powerbi
+          python -m scripts.build_olist_powerbi
           node --test showcase/tests/*.test.mjs
 
       - name: Set up .NET for Microsoft's TMDL parser
@@ -287,9 +290,10 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Parse both native semantic models with Microsoft TOM
+      - name: Parse all three native semantic models with Microsoft TOM
         env:
           DOTNET_CLI_TELEMETRY_OPTOUT: '1'
         run: |
           dotnet run --project scripts/powerbi-model-check/PowerBiModelCheck.csproj -- target/powerbi-public/project/NEXUS_Commerce.SemanticModel/definition
           dotnet run --project scripts/powerbi-model-check/PowerBiModelCheck.csproj -- target/powerbi/project/NEXUS_Commerce.SemanticModel/definition
+          dotnet run --project scripts/powerbi-model-check/PowerBiModelCheck.csproj -- target/powerbi-olist/project/NEXUS_Olist_Research.SemanticModel/definition
