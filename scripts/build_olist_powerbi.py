@@ -24,6 +24,9 @@ TABLES = {
     "CategoryPortfolio": [("category","string"),("item_lines","int64"),("category_order_incidences","int64"),("observed_products","int64"),("gmv","double"),("gmv_share","double"),("cumulative_share","double")],
     "ProductConcentration": [("observed_products","int64"),("gmv","double"),("top_1_share","double"),("top_10_share","double"),("top_100_share","double"),("hhi","double"),("effective_product_count","double")],
     "QuarterConcentration": [("quarter","dateTime"),("observed_products","int64"),("gmv","double"),("top_1_share","double"),("top_10_share","double"),("top_100_share","double"),("hhi","double"),("effective_product_count","double")],
+    "OperationsMonthly": [("year","int64"),("month","int64"),("orders","int64"),("late_orders","int64"),("late_rate","double"),("median_transit_days","double"),("p90_transit_days","double")],
+    "OperationsStates": [("state","string"),("orders","int64"),("late_orders","int64"),("late_rate","double"),("delivered_late_gmv","double"),("p90_transit_days","double"),("late_order_share","double")],
+    "OperationsSummary": [(field,"double") for field in ("full_rate_2017","full_rate_2018","full_rate_change","full_change_ci_low","full_change_ci_high","common_rate_change","within_contribution","mix_contribution","common_coverage_2017","common_coverage_2018","pooled_standardized_rate_2017","pooled_standardized_rate_2018")],
 }
 MEASURES = {
     "Monthly": {"Item GMV (source units)":("SUM(Monthly[gmv])","#,0.00"),
@@ -44,6 +47,12 @@ MEASURES = {
                              "Top 10 Product Share":("MAX(ProductConcentration[top_10_share])","0.00%"),
                              "Effective Product Count":("MAX(ProductConcentration[effective_product_count])","#,0.0")},
     "QuarterConcentration": {"Quarter Top 10 Share":("IF(HASONEVALUE(QuarterConcentration[quarter]), MAX(QuarterConcentration[top_10_share]))","0.00%")},
+    "OperationsMonthly": {"2017 Late Rate":("CALCULATE(DIVIDE(SUM(OperationsMonthly[late_orders]), SUM(OperationsMonthly[orders])), OperationsMonthly[year] = 2017)","0.00%"),
+                          "2018 Late Rate":("CALCULATE(DIVIDE(SUM(OperationsMonthly[late_orders]), SUM(OperationsMonthly[orders])), OperationsMonthly[year] = 2018)","0.00%")},
+    "OperationsStates": {"2018 Late Orders":("SUM(OperationsStates[late_orders])","#,0")},
+    "OperationsSummary": {"2017 Jan-Jul Rate":("MAX(OperationsSummary[full_rate_2017])","0.00%"),
+                          "2018 Jan-Jul Rate":("MAX(OperationsSummary[full_rate_2018])","0.00%"),
+                          "Rate Change (pp)":("100 * MAX(OperationsSummary[full_rate_change])","0.00")},
 }
 PAGES = [
     {"id":"olist_value","title":"Olist | Value and order volume", "cards":[("Monthly",m) for m in MEASURES["Monthly"]],
@@ -63,6 +72,9 @@ PAGES = [
     {"id":"olist_portfolio","title":"Olist | Product value concentration","cards":[("ProductConcentration",m) for m in MEASURES["ProductConcentration"]],
      "charts":[("clusteredBarChart","CategoryPortfolio",["category"],"Category GMV","Category item GMV; category-order incidences are not additive orders"),
                ("lineChart","QuarterConcentration",["quarter"],"Quarter Top 10 Share","Complete quarters only; within-portfolio measure, not market power")]},
+    {"id":"olist_operations","title":"Olist | Comparable delivery experience","cards":[("OperationsSummary",m) for m in MEASURES["OperationsSummary"]],
+     "charts":[("lineChart","OperationsMonthly",["month"],"2017 Late Rate","January-July in both years; full eligible delivered-order populations"),
+               ("clusteredBarChart","OperationsStates",["state"],"2018 Late Orders","2018 observed late-order burden by state; counts, not quality ranking")]},
 ]
 CONTEXT = {
     "olist_value":"PUBLIC OLIST / 2017–July 2018 purchase window / Item GMV excludes freight; not net revenue",
@@ -72,11 +84,13 @@ CONTEXT = {
     "olist_delivery":"PUBLIC OLIST / Customer-cluster bootstrap 95% interval / Fixed overall contrast; does not follow month filters",
     "olist_repeat_timing":"PUBLIC OLIST / Distinct purchase days / Last observation 2018-07-31 / Independent censoring unverified",
     "olist_portfolio":"PUBLIC OLIST / Fixed full-window cards; quarter selections do not recompute them / Unknown categories retained",
+    "olist_operations":"PUBLIC OLIST / Fixed Jan-Jul cards / Details and uncertainty in DELIVERY_OPERATIONS.md / Delivered-only, not causal",
 }
 
 
-def create(source: Path, out: Path, extension: Path | None=None) -> Path:
+def create(source: Path, out: Path, extension: Path | None=None, operations: Path | None=None) -> Path:
     extension=extension or source
+    operations=operations or source
     evidence=json.loads((source/"evidence.json").read_text(encoding="utf-8"))
     extra=json.loads((extension/'extension_evidence.json').read_text(encoding='utf-8'))
     if extra.get('source_kind')!='historical_public_olist_extension' or extra['summary']['repeat']['last_observed_day']!='2018-07-31':
@@ -87,6 +101,12 @@ def create(source: Path, out: Path, extension: Path | None=None) -> Path:
         raise ValueError('Base and extension order fact definitions differ')
     if not math.isclose(extra['summary']['portfolio']['gmv'],evidence['summary']['gmv_source_units'],rel_tol=0,abs_tol=.005):
         raise ValueError('Base and extension purchase-window GMV differs')
+    ops=json.loads((operations/'operations_evidence.json').read_text(encoding='utf-8'))
+    if ops.get('source_kind')!='historical_public_olist_operations':raise ValueError('Only public Olist operations accepted')
+    if {k:v['sha256'] for k,v in ops['quality']['files'].items()}!={k:v['sha256'] for k,v in evidence['quality']['files'].items()}:
+        raise ValueError('Operations source snapshots differ')
+    if ops.get('order_fact_sql_sha256')!=evidence['sql_sha256']['order_fact.sql']:
+        raise ValueError('Operations order fact definitions differ')
     if evidence.get("source_kind")!="historical_public_olist" or evidence.get("synthetic") is not False:
         raise ValueError("Only content-addressed public Olist aggregates accepted")
     if evidence["summary"]["cutoff"]!="2018-08-01":
@@ -110,6 +130,13 @@ def create(source: Path, out: Path, extension: Path | None=None) -> Path:
         with path.open(encoding='utf-8',newline='') as stream: records=list(csv.DictReader(stream))
         rows[name]=[{field:(None if r[field]=='' else int(float(r[field])) if kind=='int64' else float(r[field]) if kind=='double' else r[field])
                      for field,kind in TABLES[name]} for r in records]
+    for name,filename in (("OperationsMonthly","operations_monthly"),("OperationsStates","operations_states"),("OperationsSummary","operations_summary")):
+        path=operations/(filename+'.csv')
+        if hashlib.sha256(path.read_bytes()).hexdigest()!=ops['aggregate_sha256'][path.name]:
+            raise ValueError('Operations aggregate file hash mismatch: '+path.name)
+        with path.open(encoding='utf-8',newline='') as stream: records=list(csv.DictReader(stream))
+        rows[name]=[{field:(None if r[field]=='' else int(float(r[field])) if kind=='int64' else float(r[field]) if kind=='double' else r[field])
+                     for field,kind in TABLES[name]} for r in records]
     project=build_project(out,out/"unused",portable_rows=rows,tables=TABLES,measures=MEASURES,pages=PAGES,model_name=NAME)
     model=project.parent/(NAME+".SemanticModel/definition/model.tmdl")
     model.write_text("model Model\n\tculture: en-US\n\tsourceQueryCulture: en-US\n\tdefaultPowerBIDataSourceVersion: powerBI_V3\n",encoding="utf-8")
@@ -128,9 +155,14 @@ def create(source: Path, out: Path, extension: Path | None=None) -> Path:
     from scripts.build_powerbi import _field
     spec['visual']['query']['queryState']['Y']['projections']=[_field('RepeatCurve',m,True) for m in MEASURES['RepeatCurve']]
     visual.write_text(json.dumps(spec,indent=2)+'\n',encoding='utf-8')
+    visual=project.parent/(NAME+'.Report/definition/pages/olist_operations/visuals/00000000000000000004/visual.json')
+    spec=json.loads(visual.read_text())
+    spec['visual']['query']['queryState']['Y']['projections']=[_field('OperationsMonthly',m,True) for m in MEASURES['OperationsMonthly']]
+    visual.write_text(json.dumps(spec,indent=2)+'\n',encoding='utf-8')
     receipt={"source_evidence_sha256":hashlib.sha256((source/"evidence.json").read_bytes()).hexdigest(),
              "pages":len(PAGES),"aggregate_rows":{k:len(v) for k,v in rows.items()},
              "extension_evidence_sha256":hashlib.sha256((extension/'extension_evidence.json').read_bytes()).hexdigest(),
+             "operations_evidence_sha256":hashlib.sha256((operations/'operations_evidence.json').read_bytes()).hexdigest(),
              "synthetic":False,"desktop_render_verified":False,"dax_engine_executed":False,
              "note":"Association cards are full-sample estimates, independent of monthly table selections."}
     (out/"build_evidence.json").write_text(json.dumps(receipt,indent=2)+"\n",encoding="utf-8")
@@ -147,12 +179,31 @@ def create(source: Path, out: Path, extension: Path | None=None) -> Path:
         "Late-delivery contrasts use post-delivery review answers and are selected-sample associations, not causal effects. "
         "Repeat timing uses distinct purchase days with administrative censoring; pointwise intervals do not validate independent censoring. "
         "Product concentration is within this portfolio, not a market-wide competition measure. "
+        "Operations compares January-July in both years, without a review-response filter. "
+        "Rate/mix contributions are descriptive, and late-delivered GMV is not revenue lost. "
         "Confidence cards refer to the full sample and do not follow monthly selections.\n\n"
         "Desktop rendering, refresh and DAX execution are unverified. "
         "Open the entire PBIP folder in a compatible Power BI Desktop installation.\n",
         encoding="utf-8")
-    (project.parent/"analysis_evidence.json").write_text(json.dumps(evidence,indent=2)+"\n",encoding="utf-8")
+    (project.parent/'analysis_evidence.json').unlink(missing_ok=True)  # Superseded generated filename.
+    (project.parent/"evidence.json").write_text(json.dumps(evidence,indent=2)+"\n",encoding="utf-8")
     (project.parent/'extension_evidence.json').write_text(json.dumps(extra,indent=2)+'\n',encoding='utf-8')
+    (project.parent/'operations_evidence.json').write_text(json.dumps(ops,indent=2)+'\n',encoding='utf-8')
+    # Include the inspectable reports and their referenced images/CSV evidence.
+    for folder,receipt,names,media in (
+        (source,evidence['export_sha256'],('cohorts','segments','monthly','decomposition','delivery_months','delivery_states','delivery_common_support'),
+         ('REPORT.md','cohort_retention.png','gmv_decomposition.png','customer_policies.png','delivery_sensitivity.png')),
+        (extension,extra['aggregate_sha256'],('repeat_ledger','repeat_curve','repeat_horizons','category_portfolio','product_concentration','quarter_concentration'),
+         ('CUSTOMER_PORTFOLIO.md','repeat_purchase_survival.png','category_portfolio.png')),
+        (operations,ops['aggregate_sha256'],('operations_monthly','operations_states','operations_strata','operations_summary','operations_month_contributions'),
+         ('DELIVERY_OPERATIONS.md','delivery_matched_months.png','delivery_rate_mix.png')),
+    ):
+        for name in names:
+            filename=name+'.csv';data=(folder/filename).read_bytes()
+            if hashlib.sha256(data).hexdigest()!=receipt[filename]:
+                raise ValueError('Packaged aggregate file hash mismatch: '+filename)
+            (project.parent/filename).write_bytes(data)
+        for filename in media:(project.parent/filename).write_bytes((folder/filename).read_bytes())
     return project
 
 
@@ -170,8 +221,9 @@ if __name__=="__main__":
     parser.add_argument("--source",type=Path,default=ROOT/"docs/advanced-analysis")
     parser.add_argument("--out",type=Path,default=ROOT/"target/powerbi-olist")
     parser.add_argument('--extension',type=Path,help='Extension aggregates; defaults to the same folder as --source')
+    parser.add_argument('--operations',type=Path,help='Operations aggregates; defaults to the same folder as --source')
     parser.add_argument("--package",type=Path)
     args=parser.parse_args()
-    path=create(args.source,args.out,args.extension)
+    path=create(args.source,args.out,args.extension,args.operations)
     if args.package: package(path,args.package)
     print(path)

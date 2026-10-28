@@ -3,7 +3,7 @@
   "scope": "local synthetic commerce and independent historical public Olist; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 222,
+    "passed": 232,
     "failed": 0
   },
   "streamlit_headless": {
@@ -49,9 +49,9 @@
     "microsoft_tom_tmdl_parsed": true,
     "public_semantic_tables": 4,
     "private_semantic_tables": 8,
-    "olist_pages": 7,
-    "olist_semantic_tables": 11,
-    "olist_microsoft_schema_artifacts_validated": 54,
+    "olist_pages": 8,
+    "olist_semantic_tables": 14,
+    "olist_microsoft_schema_artifacts_validated": 63,
     "olist_microsoft_tom_tmdl_parsed": true
   },
   "analysis": {
@@ -74,7 +74,7 @@
     "raw_window_value_reconciled": true,
     "bootstrap_replicates": 1000,
     "raw_identifiers_exported": false,
-    "generated_figures_inspected": 6,
+    "generated_figures_inspected": 8,
     "historical_sql_notebook_structure_validated": true,
     "historical_sql_notebook_executed": false
   },
@@ -94,5 +94,26 @@
     "missing_category_lines_retained": 1504,
     "untranslated_category_lines_retained": 17,
     "browser_used": false
+  },
+  "olist_delivery_operations": {
+    "eligible_orders": 64230,
+    "matched_purchase_months": "January-July 2017 and 2018",
+    "common_month_state_strata": 102,
+    "rate_mix_reconciled": true,
+    "raw_denominator_reconciled": true,
+    "customer_cluster_bootstrap_replicates": 1000,
+    "bootstrap_customers": 62529,
+    "simpson_reversal_fixture_passed": true,
+    "causal_effect_estimated": false
+  },
+  "research_pipeline": {
+    "command": "python -m scripts.build_research --schemas",
+    "executed_end_to_end": true,
+    "schema_artifacts_validated": 63,
+    "failure_prevents_export": true,
+    "stale_success_receipt_removed": true,
+    "raw_data_downloaded": false,
+    "browser_used": false,
+    "native_engine_executed": false
   }
 }

@@ -82,7 +82,7 @@
     "order_fact.sql": "e589e02701489e4cd0b0f8d65067cf7c24f60e0a786997d0723050b61f215de6",
     "rfm.sql": "0abe3a9de4457f6206db8c1b3398e92a0f4f5979351a086b7a5743b66771ace8"
   },
-  "implementation_sha256": "d9f4d6c915e1d2f64f66d166bea90864179f24171d31928ff7795930be6ae5b5",
+  "implementation_sha256": "058547e3e8bb70ce4a71eaab8cfff71757aa03444dec0953defad4a520134ef2",
   "runtime_versions": {
     "duckdb": "1.5.2",
     "numpy": "2.3.5",

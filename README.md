@@ -25,6 +25,7 @@ The [Olist report](docs/advanced-analysis/REPORT.md) reconstructs a **99,441-ord
 | Sensitivity and multiplicity | How does review timing change the contrast? Compare response populations, standardize common months and publish the full exploratory state FDR family |
 | Repeat-purchase survival | When does another distinct purchase day occur? Kaplan–Meier risk sets, pointwise Greenwood intervals and fully observed horizon checks |
 | Portfolio concentration | How concentrated is item GMV across products/categories? Top-k shares, HHI, effective product count and complete-quarter comparisons |
+| Comparable delivery diagnostics | Did experience change across the same calendar months? Common-support checks, Kitagawa rate/mix decomposition and customer-cluster uncertainty |
 
 The weighted month-1 repeat rate is **0.48%**, replacing an unsupported historical 3–5% notebook claim. Delivery contrasts change substantially with review timing; the report presents this sensitivity prominently. These are historical marketplace observations, not causal effects, forecasts, audited financial results or current business performance.
 
@@ -32,7 +33,20 @@ Reproduce with `python -m scripts.advanced_olist --raw target/olist/raw`; exact 
 
 The [customer timing and portfolio report](docs/advanced-analysis/CUSTOMER_PORTFOLIO.md) adds 86,950 observed customer origins and 30,015 product identities. At 90 days, pooled repeat-day probability is **1.29%**; the direct rate among fully observed customers is **1.31%**. These differ from active-in-month retention and do not estimate churn. The top 10 products contribute **3.46%** of item GMV; concentration here describes this portfolio, not market power.
 
-The separate [seven-page Olist Power BI package](powerbi/NEXUS_Olist_Research.zip) embeds only these public aggregates, including repeat timing with pointwise limits and product concentration. Rebuild it with `python -m scripts.build_olist_powerbi`; native Desktop/DAX acceptance remains unverified. For a fresh extension build, obtain the two extra product/category CSVs with `python -m scripts.fetch_olist --products`, then run `python -m scripts.olist_customer_portfolio`.
+The [delivery decision readout](docs/advanced-analysis/DELIVERY_OPERATIONS.md) compares January–July in both years without filtering on review response. Late delivered-order rates increase from **3.63% to 7.94%**. Common-support rate/mix decomposition and standardized estimates separate composition from within-group movement; they do not identify a cause. The report connects findings to record-level investigation priorities and measurement guardrails, including the risk of improving a delivered-only KPI by excluding non-deliveries.
+
+The separate [eight-page Olist Power BI package](powerbi/NEXUS_Olist_Research.zip) embeds these public aggregates and includes all three analytical reports, their CSV evidence and eight NEXUS figures. Native Desktop/DAX acceptance remains unverified.
+
+Reproduce the entire public-data study from the repository root, after installing `requirements-dev.txt`. The Kaggle CLI is only needed for the optional first download:
+
+```powershell
+# One-time optional download with an authenticated free Kaggle CLI:
+python -m scripts.fetch_olist --products
+# All three studies, report bundle and portable native BI; no data download:
+python -m scripts.build_research --raw target/olist/raw --schemas
+```
+
+Output: `target/research/`, including `research_build.json` and `NEXUS_Olist_Research.zip`. Schema checks use official Microsoft JSON schemas and their local cache; omit `--schemas` for a strictly local build after dependencies/inputs are installed. A failed stage removes any stale success receipt and prevents BI export. CI exercises bounded fixtures and committed aggregates rather than downloading the historical dataset.
 
 ## Questions this project answers
 

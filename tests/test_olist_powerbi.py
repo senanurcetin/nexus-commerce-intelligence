@@ -1,5 +1,6 @@
 """Public aggregate integrity, source separation and native report bindings."""
 import json
+import re
 from pathlib import Path
 import shutil
 import tempfile
@@ -17,6 +18,11 @@ class OlistPowerBI(unittest.TestCase):
             for forbidden in ('File.Contents','pDataFolder','customer_unique_id','order_id','ECommerceOrders','GreenweezFinance'):
                 self.assertNotIn(forbidden,text)
             self.assertEqual({p.stem for p in (model/'tables').glob('*.tmdl')},set(TABLES))
+            for filename in ('REPORT.md','CUSTOMER_PORTFOLIO.md','DELIVERY_OPERATIONS.md'):
+                report=project.parent/filename
+                self.assertTrue(report.exists())
+                for picture in re.findall(r'!\[[^\]]*\]\(([^)]+)\)',report.read_text(encoding='utf-8')):
+                    self.assertTrue((project.parent/picture).is_file(),picture)
             pages=project.parent/(NAME+'.Report/definition/pages')
             self.assertEqual(json.loads((pages/'pages.json').read_text())['pageOrder'],[p['id'] for p in PAGES])
             for page in PAGES:
@@ -70,6 +76,20 @@ class OlistPowerBI(unittest.TestCase):
             (source/'extension_evidence.json').write_text(json.dumps(evidence))
             with (source/'repeat_curve.csv').open('a') as stream: stream.write('\n')
             with self.assertRaisesRegex(ValueError,'Extension aggregate file hash'): create(source,Path(directory)/'out')
+
+    def test_operations_must_share_snapshot_and_preserve_all_aggregate_hashes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source=Path(directory)/'source'
+            shutil.copytree(ROOT/'docs/advanced-analysis',source)
+            evidence=json.loads((source/'operations_evidence.json').read_text())
+            first=next(iter(evidence['quality']['files']));original=evidence['quality']['files'][first]['sha256']
+            evidence['quality']['files'][first]['sha256']='0'*64
+            (source/'operations_evidence.json').write_text(json.dumps(evidence))
+            with self.assertRaisesRegex(ValueError,'Operations source snapshots'):create(source,Path(directory)/'out')
+            evidence['quality']['files'][first]['sha256']=original
+            (source/'operations_evidence.json').write_text(json.dumps(evidence))
+            with (source/'operations_strata.csv').open('a') as stream:stream.write('\n')
+            with self.assertRaisesRegex(ValueError,'Packaged aggregate file hash'):create(source,Path(directory)/'out')
 
 
 if __name__=='__main__': unittest.main()

@@ -2,17 +2,21 @@
 
 ## Independent Olist research report
 
-[NEXUS_Olist_Research.zip](NEXUS_Olist_Research.zip) contains `NEXUS_Olist_Research.pbip` and seven native pages: Value and Order Volume, Observed Cohorts (matrix), As-of Customer Policies, GMV Decomposition, Delivery/Reviews, Time to Another Purchase Day and Product Value Concentration. The official NEXUS logo and source qualifications appear on every page.
+[NEXUS_Olist_Research.zip](NEXUS_Olist_Research.zip) contains `NEXUS_Olist_Research.pbip` and eight native pages: Value and Order Volume, Observed Cohorts (matrix), As-of Customer Policies, GMV Decomposition, Delivery/Reviews, Time to Another Purchase Day, Product Value Concentration and Comparable Delivery Experience. The official NEXUS logo and source qualifications appear on every page. All three inspectable reports, their aggregate CSVs and figures accompany the project.
 
-Eleven disconnected aggregate tables embed the [public Olist research](../docs/advanced-analysis/REPORT.md) and [customer/portfolio extension](../docs/advanced-analysis/CUSTOMER_PORTFOLIO.md). They intentionally do not relate to the synthetic commerce model. Retention uses original cohort denominators and is blank when multiple period ages share a context. The delivery confidence cards describe the fixed overall post-delivery-answer sample; selecting a month does not recompute its bootstrap interval. Page context states this explicitly. GMV is in original price units, excluding freight; it is not net revenue or profit.
+Fourteen disconnected aggregate tables embed the [public Olist research](../docs/advanced-analysis/REPORT.md) and [customer/portfolio extension](../docs/advanced-analysis/CUSTOMER_PORTFOLIO.md). They intentionally do not relate to the synthetic commerce model. Retention uses original cohort denominators and is blank when multiple period ages share a context. The delivery confidence cards describe the fixed overall post-delivery-answer sample; selecting a month does not recompute its bootstrap interval. Page context states this explicitly. GMV is in original price units, excluding freight; it is not net revenue or profit.
 
 Repeat timing plots the estimate and both pointwise Greenwood limits. Multiple day contexts return blank instead of adding probabilities. Mature-horizon comparisons use different eligible populations. Product cards show fixed full-window portfolio totals; selecting a quarter does not recompute those totals. Quarter comparisons omit July's partial quarter. Category order counts are incidences and must not be added as distinct orders. Base and extension raw-file fingerprints must match before report generation.
+
+The operations page compares January–July 2017 and 2018 independently of review response. Its fixed cards are full-window rates and an absolute change in percentage points, while the month chart shows both years on the same seven-month axis. State bars show observed late-order burden, not a service-quality league table. The bundled `DELIVERY_OPERATIONS.md` provides the full-sample bootstrap interval, common-support coverage, standardized rates, exact rate/mix reconciliation, investigation priorities and guardrails. Month/state selections do not recalculate the fixed overall cards. The operations raw snapshot and order-fact SQL fingerprint must match the base study.
 
 ```powershell
 python -m scripts.build_olist_powerbi
 python -m scripts.validate_powerbi_schema --project target/powerbi-olist/project
 dotnet run --project scripts/powerbi-model-check/PowerBiModelCheck.csproj -- target/powerbi-olist/project/NEXUS_Olist_Research.SemanticModel/definition
 ```
+
+For a complete rebuild from six local source CSVs: `python -m scripts.build_research --schemas`. This writes all analytical reports, CSVs, figures, a success receipt and native BI under `target/research/`.
 
 The source-export hashes are checked before native generation. Raw identifiers, review text, cloud credentials and local CSV paths are excluded. Package provenance is in [olist-package-manifest.json](olist-package-manifest.json). Desktop rendering, refresh and DAX engine execution remain unverified.
 

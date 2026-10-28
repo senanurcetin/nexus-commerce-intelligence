@@ -17,9 +17,11 @@ Updated 28 October 2026. Non-commercial, English-language NEXUS analytics case s
 - Reconstructed the official 99,441-order Olist extract independently, with one order per fact row and source-file fingerprints. The principal purchase window contains 89,860 delivered orders.
 - Added observation-aware repeat-purchase cohorts, tie-preserving as-of customer policies, exact Shapley GMV decomposition, 1,000-replicate customer-cluster bootstrap, month-standardization and a full exploratory state FDR family.
 - Published review-timing sensitivity instead of presenting a selected-sample association as an intervention effect. Corrected the historical SQL notebook's unverified retention narrative; its code was not rerun.
-- Delivered six current NEXUS analytical figures and a separate seven-page portable Olist Power BI package, with original source attribution and CC BY-NC-SA 4.0 data/report terms.
+- Delivered eight current NEXUS analytical figures and a separate eight-page portable Olist Power BI package, with original source attribution and CC BY-NC-SA 4.0 data/report terms.
 - Added a 86,950-origin customer duration ledger, distinct-purchase-day Kaplan–Meier estimates, pointwise Greenwood intervals and mature-horizon checks. Curves and intervals independently agree with SciPy's right-censored ECDF implementation.
 - Added product/category mix and within-portfolio concentration over 30,015 observed product IDs, with 1,504 missing-category lines retained and 17 untranslated-category lines flagged. Product keys and IDs remain local; published results contain only aggregates.
+- Added a delivery decision readout over 64,230 eligible orders in matched January–July windows, with independent raw denominator reconciliation, cluster uncertainty, common-support coverage and exact rate/mix decomposition. State burden priorities are paired with guardrails and a record-level investigation plan; no causal effect or revenue-loss claim is made.
+- Added a single local `scripts.build_research` command for all three real-data studies, report assets and native BI. It was executed end to end with 63 official schema checks; failure fixtures reject raw/output overlap and stale success receipts. The archive contains the three reports and their aggregate evidence.
 
 ## Source and brand evidence
 
@@ -38,7 +40,7 @@ The four-page commerce report and web demo use only synthetic fixtures. Their re
 - Four-page public Power BI JSON validates against Microsoft's published schemas. Microsoft TOM successfully deserializes the public four-table and private eight-table TMDL models. Seven-page source/binding integrity is independently checked.
 - Generated analytical figures are file artifacts, not screenshots of a live UI or Power BI.
 - Olist: all-extract raw item value reconciles to the order fact, and the analytical purchase window reconciles independently to raw lines/orders. Cohort observation/denominator, policy ties, future delivery exclusion, many-side fanout, Shapley symmetry/additivity, fixed-seed bootstrap, BH adjustment, aggregate reconciliation and public export tamper tests pass without Kaggle access in CI.
-- The seven-page Olist report validates 54 Microsoft schema-bearing artifacts; Microsoft TOM parses its eleven-table semantic model. All six generated figures were inspected as local image files across the two development passes. This does not establish BI rendering.
+- The eight-page Olist report validates 63 Microsoft schema-bearing artifacts; Microsoft TOM parses its fourteen-table semantic model. All eight generated figures were inspected as local image files across the development passes. This does not establish BI rendering.
 
 ## Limits
 

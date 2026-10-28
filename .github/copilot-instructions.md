@@ -10,6 +10,7 @@ This is an **analytics engineering** project: BigQuery/dbt Cloud models with a l
 - Never expose production rows, credentials, user emails/IP addresses, BigQuery datasets or sensitive notebook output in PRs.
 - A portable synthetic PBIP and a seven-page private-source generator are available. Historical screenshots have been removed; generated analytical figures are not BI screenshots. Do not imply that a changed theme or screenshot was validated or published. The Turkish `B` abbreviation means *bin* (thousand), not billion.
 - Preserve revenue/return reconciliation, price validation, event-order tiebreakers, stable business labels, and existing source-to-mart tests.
+- `scripts.build_research` reproduces all three Olist studies from six local CSVs. Preserve shared raw/fact fingerprints, LF-normalized aggregate hashes, matched Jan–Jul windows, common-support coverage and separate full/standardized/decomposition estimands. Kitagawa components and state burden priorities are descriptive; never turn them into causal effects, service-quality rankings or lost revenue.
 - CI quotas are unavailable: **do not manually run or dispatch GitHub Actions, CircleCI, Vercel, or dbt Cloud jobs**. Local, credential-free tests are permitted when installed. Never bypass required checks.
 - Do not claim tests were run if only source checks were performed. Report exact commands, errors and unverified scopes.
 - Use narrow changes with regression tests and PR review; do not autonomously merge or rewrite unrelated workflow, README, screenshots or notebooks.

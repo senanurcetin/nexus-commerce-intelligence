@@ -17,6 +17,8 @@ Assessment date: 28 October 2026. Scope: repository, local dbt artifacts, execut
 
 The customer/portfolio extension adds an independently cross-checked survival estimator, explicit administrative observation boundaries, mature-window comparisons and within-portfolio concentration. This extends the analytical evidence; it does not turn historical purchase records into a validated churn or CLV prediction model. Product availability, unit costs and market-wide coverage remain unavailable.
 
+The delivery readout demonstrates an analyst's decision workflow: choose comparable calendar windows, test denominator/grain controls, distinguish mix from within-group movement, publish common-support loss and uncertainty, prioritize record-level investigation and define guardrails. A Simpson-reversal fixture verifies that a worse aggregate rate can coexist with improvement inside every stratum. The single-command research build makes the analysis and report handoff reproducible.
+
 ## Defects addressed
 
 - Funnel referenced a channel column absent from its source model and collapsed sessions across different users. The corrected SQL takes session attribution from the session mart and requires chronological steps within `(session_id, user_id)`.
