@@ -2,9 +2,11 @@
 
 ## Independent Olist research report
 
-[NEXUS_Olist_Research.zip](NEXUS_Olist_Research.zip) contains `NEXUS_Olist_Research.pbip` and five native pages: Value and Order Volume, Observed Cohorts (matrix), As-of Customer Policies, GMV Decomposition and Delivery/Reviews. The official NEXUS logo and source qualifications appear on every page.
+[NEXUS_Olist_Research.zip](NEXUS_Olist_Research.zip) contains `NEXUS_Olist_Research.pbip` and seven native pages: Value and Order Volume, Observed Cohorts (matrix), As-of Customer Policies, GMV Decomposition, Delivery/Reviews, Time to Another Purchase Day and Product Value Concentration. The official NEXUS logo and source qualifications appear on every page.
 
-Six disconnected aggregate tables embed the [public Olist research](../docs/advanced-analysis/REPORT.md). They intentionally do not relate to the synthetic commerce model. Retention uses original cohort denominators and is blank when multiple period ages share a context. The delivery confidence cards describe the fixed overall post-delivery-answer sample; selecting a month does not recompute its bootstrap interval. Page context states this explicitly. GMV is in original price units, excluding freight; it is not net revenue or profit.
+Eleven disconnected aggregate tables embed the [public Olist research](../docs/advanced-analysis/REPORT.md) and [customer/portfolio extension](../docs/advanced-analysis/CUSTOMER_PORTFOLIO.md). They intentionally do not relate to the synthetic commerce model. Retention uses original cohort denominators and is blank when multiple period ages share a context. The delivery confidence cards describe the fixed overall post-delivery-answer sample; selecting a month does not recompute its bootstrap interval. Page context states this explicitly. GMV is in original price units, excluding freight; it is not net revenue or profit.
+
+Repeat timing plots the estimate and both pointwise Greenwood limits. Multiple day contexts return blank instead of adding probabilities. Mature-horizon comparisons use different eligible populations. Product cards show fixed full-window portfolio totals; selecting a quarter does not recompute those totals. Quarter comparisons omit July's partial quarter. Category order counts are incidences and must not be added as distinct orders. Base and extension raw-file fingerprints must match before report generation.
 
 ```powershell
 python -m scripts.build_olist_powerbi

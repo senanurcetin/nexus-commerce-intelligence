@@ -4,6 +4,8 @@ Start with [Olist advanced research](advanced-analysis/REPORT.md), [project asse
 
 ## Analytical and BI contracts
 
+- [Repeat-purchase timing and product portfolio](advanced-analysis/CUSTOMER_PORTFOLIO.md)
+
 - [KPI semantics](COMMERCE_KPI_SEMANTICS.md)
 - [Power BI delivery](../powerbi/README.md)
 - [Power BI verification boundary](POWER_BI_VISUAL_QA.md)

@@ -51,5 +51,25 @@ class OlistPowerBI(unittest.TestCase):
             (source/'evidence.json').write_text(json.dumps(evidence))
             with self.assertRaisesRegex(ValueError,'public Olist'): create(source,Path(directory)/'out')
 
+    def test_different_raw_snapshot_and_edited_extension_are_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source=Path(directory)/'source'
+            shutil.copytree(ROOT/'docs/advanced-analysis',source)
+            evidence=json.loads((source/'extension_evidence.json').read_text())
+            first=next(iter(evidence['quality']['files']))
+            original=evidence['quality']['files'][first]['sha256']
+            evidence['quality']['files'][first]['sha256']='0'*64
+            (source/'extension_evidence.json').write_text(json.dumps(evidence))
+            with self.assertRaisesRegex(ValueError,'snapshots differ'): create(source,Path(directory)/'out')
+            evidence['quality']['files'][first]['sha256']=original
+            original_fact=evidence['order_fact_sql_sha256']
+            evidence['order_fact_sql_sha256']='0'*64
+            (source/'extension_evidence.json').write_text(json.dumps(evidence))
+            with self.assertRaisesRegex(ValueError,'fact definitions differ'): create(source,Path(directory)/'out')
+            evidence['order_fact_sql_sha256']=original_fact
+            (source/'extension_evidence.json').write_text(json.dumps(evidence))
+            with (source/'repeat_curve.csv').open('a') as stream: stream.write('\n')
+            with self.assertRaisesRegex(ValueError,'Extension aggregate file hash'): create(source,Path(directory)/'out')
+
 
 if __name__=='__main__': unittest.main()

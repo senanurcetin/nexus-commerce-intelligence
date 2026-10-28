@@ -1,27 +1,30 @@
 {
-  "date": "2026-10-27",
+  "date": "2026-10-28",
   "scope": "local synthetic commerce and independent historical public Olist; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 212,
+    "passed": 222,
     "failed": 0
   },
   "streamlit_headless": {
     "command": "python -m unittest discover -s tests -p smoke_google_marketing_app.py",
     "passed": 11,
     "failed": 0,
-    "browser_used": false
+    "browser_used": false,
+    "last_local_run_date": "2026-10-27"
   },
   "node": {
     "command": "node --test showcase/tests/*.test.mjs storefront/tests/*.test.mjs",
     "passed": 16,
-    "failed": 0
+    "failed": 0,
+    "last_local_run_date": "2026-10-27"
   },
   "dbt_root": {
     "models_passed": 10,
     "data_tests_passed": 59,
     "seed_tables": 4,
-    "errors": 0
+    "errors": 0,
+    "last_local_run_date": "2026-10-27"
   },
   "dbt_greenweez": {
     "build_nodes_passed": 113,
@@ -34,7 +37,8 @@
       "sheet_orders_missing_shipping": 4,
       "raw_sales_lines_missing_product": 23,
       "raw_orders_missing_shipping": 33
-    }
+    },
+    "last_local_run_date": "2026-10-27"
   },
   "powerbi": {
     "microsoft_schema_artifacts_validated": 38,
@@ -45,9 +49,9 @@
     "microsoft_tom_tmdl_parsed": true,
     "public_semantic_tables": 4,
     "private_semantic_tables": 8,
-    "olist_pages": 5,
-    "olist_semantic_tables": 6,
-    "olist_microsoft_schema_artifacts_validated": 39,
+    "olist_pages": 7,
+    "olist_semantic_tables": 11,
+    "olist_microsoft_schema_artifacts_validated": 54,
     "olist_microsoft_tom_tmdl_parsed": true
   },
   "analysis": {
@@ -70,8 +74,25 @@
     "raw_window_value_reconciled": true,
     "bootstrap_replicates": 1000,
     "raw_identifiers_exported": false,
-    "generated_figures_inspected": 4,
+    "generated_figures_inspected": 6,
     "historical_sql_notebook_structure_validated": true,
     "historical_sql_notebook_executed": false
+  },
+  "olist_customer_portfolio": {
+    "observed_customer_origins": 86950,
+    "observed_product_ids": 30015,
+    "extra_source_files": 2,
+    "last_observed_day": "2018-07-31",
+    "km_greenwood_matches_scipy": true,
+    "mature_horizon_checks": [
+      30,
+      60,
+      90,
+      180
+    ],
+    "portfolio_value_reconciled": true,
+    "missing_category_lines_retained": 1504,
+    "untranslated_category_lines_retained": 17,
+    "browser_used": false
   }
 }

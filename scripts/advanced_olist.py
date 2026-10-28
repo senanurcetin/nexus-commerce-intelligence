@@ -334,7 +334,10 @@ CSV tables beside this report are aggregates only. `evidence.json` records full 
 python -m scripts.fetch_olist
 python -m scripts.advanced_olist --raw target/olist/raw --out target/olist/analysis
 python -m unittest discover -s tests -p 'test_advanced_olist.py' -v
-python -m scripts.build_olist_powerbi --source target/olist/analysis
+# For the seven-page native report, also build the independent extension:
+python -m scripts.fetch_olist --products
+python -m scripts.olist_customer_portfolio --out target/olist/extension
+python -m scripts.build_olist_powerbi --source target/olist/analysis --extension target/olist/extension
 ```
 
 Native Power BI consumes these aggregate outputs in an independent portable project. JSON schema and TMDL parsing do not establish Desktop rendering, refresh or DAX execution. Generated figures are analytical plots, not BI screenshots. No browser, Playwright, screen automation, paid service or cloud query is needed.
@@ -363,10 +366,10 @@ def run(raw: Path, out: Path, *, cutoff="2018-08-01", iterations=1000) -> dict:
     evidence={"source":SOURCE,"license":"CC-BY-NC-SA-4.0","source_kind":"historical_public_olist",
               "synthetic":False,"source_version_note":"Content-addressed official CSVs; Kaggle version number not returned by CLI metadata.",
               "quality":quality,"summary":summary,
-              "sql_sha256":{p.name:sha256(p) for p in sorted(SQL.glob("*.sql"))},
+              "sql_sha256":{name:sha256(SQL/name) for name in ('cohorts.sql','order_fact.sql','rfm.sql')},
               "implementation_sha256":sha256(Path(__file__)),
               "runtime_versions":{"duckdb":duckdb.__version__,"numpy":np.__version__,"pandas":pd.__version__,"scipy":scipy.__version__},
-              "export_sha256":{p.name:sha256(p) for p in sorted(out.glob("*.csv"))},
+              "export_sha256":{name+'.csv':sha256(out/(name+'.csv')) for name in tables},
               "desktop_render_verified":False,"dax_engine_executed":False}
     figures(tables,summary,out)
     write_report(tables,evidence,out)

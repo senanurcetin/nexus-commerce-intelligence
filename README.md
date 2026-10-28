@@ -23,12 +23,16 @@ The [Olist report](docs/advanced-analysis/REPORT.md) reconstructs a **99,441-ord
 | Exact Shapley decomposition | How do order volume, basket size and item value account for monthly GMV change? All six replacement orders reconcile exactly |
 | Cluster bootstrap | How strongly are late delivery and poor reviews associated? Resample customers with all their orders; report uncertainty and selection limits |
 | Sensitivity and multiplicity | How does review timing change the contrast? Compare response populations, standardize common months and publish the full exploratory state FDR family |
+| Repeat-purchase survival | When does another distinct purchase day occur? Kaplan–Meier risk sets, pointwise Greenwood intervals and fully observed horizon checks |
+| Portfolio concentration | How concentrated is item GMV across products/categories? Top-k shares, HHI, effective product count and complete-quarter comparisons |
 
 The weighted month-1 repeat rate is **0.48%**, replacing an unsupported historical 3–5% notebook claim. Delivery contrasts change substantially with review timing; the report presents this sensitivity prominently. These are historical marketplace observations, not causal effects, forecasts, audited financial results or current business performance.
 
 Reproduce with `python -m scripts.advanced_olist --raw target/olist/raw`; exact source-file hashes, aggregate CSVs, eligibility and methods are recorded in [evidence](docs/advanced-analysis/evidence.json). Obtain the four named official CSVs with the free Kaggle CLI as described in the report. Raw files remain in ignored `target/` and are never downloaded in CI.
 
-The separate [five-page Olist Power BI package](powerbi/NEXUS_Olist_Research.zip) embeds only these public aggregates. Rebuild it with `python -m scripts.build_olist_powerbi`; native Desktop/DAX acceptance remains unverified.
+The [customer timing and portfolio report](docs/advanced-analysis/CUSTOMER_PORTFOLIO.md) adds 86,950 observed customer origins and 30,015 product identities. At 90 days, pooled repeat-day probability is **1.29%**; the direct rate among fully observed customers is **1.31%**. These differ from active-in-month retention and do not estimate churn. The top 10 products contribute **3.46%** of item GMV; concentration here describes this portfolio, not market power.
+
+The separate [seven-page Olist Power BI package](powerbi/NEXUS_Olist_Research.zip) embeds only these public aggregates, including repeat timing with pointwise limits and product concentration. Rebuild it with `python -m scripts.build_olist_powerbi`; native Desktop/DAX acceptance remains unverified. For a fresh extension build, obtain the two extra product/category CSVs with `python -m scripts.fetch_olist --products`, then run `python -m scripts.olist_customer_portfolio`.
 
 ## Questions this project answers
 

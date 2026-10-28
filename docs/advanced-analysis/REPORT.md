@@ -46,7 +46,10 @@ CSV tables beside this report are aggregates only. `evidence.json` records full 
 python -m scripts.fetch_olist
 python -m scripts.advanced_olist --raw target/olist/raw --out target/olist/analysis
 python -m unittest discover -s tests -p 'test_advanced_olist.py' -v
-python -m scripts.build_olist_powerbi --source target/olist/analysis
+# For the seven-page native report, also build the independent extension:
+python -m scripts.fetch_olist --products
+python -m scripts.olist_customer_portfolio --out target/olist/extension
+python -m scripts.build_olist_powerbi --source target/olist/analysis --extension target/olist/extension
 ```
 
 Native Power BI consumes these aggregate outputs in an independent portable project. JSON schema and TMDL parsing do not establish Desktop rendering, refresh or DAX execution. Generated figures are analytical plots, not BI screenshots. No browser, Playwright, screen automation, paid service or cloud query is needed.

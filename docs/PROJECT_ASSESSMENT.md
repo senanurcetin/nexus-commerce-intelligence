@@ -1,6 +1,6 @@
 # Project level and development assessment
 
-Assessment date: 27 October 2026. Scope: repository, local dbt artifacts, executable analysis, reporting and source contracts. No browser, Playwright or PC-screen access.
+Assessment date: 28 October 2026. Scope: repository, local dbt artifacts, executable analysis, reporting and source contracts. No browser, Playwright or PC-screen access.
 
 ## Level
 
@@ -14,6 +14,8 @@ Assessment date: 27 October 2026. Scope: repository, local dbt artifacts, execut
 | Reproducibility | Local dbt build; public Olist CSV checksums, executable SQL/statistics, independent raw reconciliation and aggregate results | Download official Olist inputs separately; CI tests methods on bounded adversarial fixtures and builds BI from committed aggregates |
 | Communication | Questions → methods → findings → implications → limitations | No new live BI publication or UI screenshot evidence is claimed |
 | Design | Official NEXUS logo; midnight, cyan, blue and lavender palette | Browser and Desktop render verification intentionally not performed |
+
+The customer/portfolio extension adds an independently cross-checked survival estimator, explicit administrative observation boundaries, mature-window comparisons and within-portfolio concentration. This extends the analytical evidence; it does not turn historical purchase records into a validated churn or CLV prediction model. Product availability, unit costs and market-wide coverage remain unavailable.
 
 ## Defects addressed
 
