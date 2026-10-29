@@ -3,7 +3,7 @@
   "scope": "local synthetic commerce and independent historical public Olist; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 232,
+    "passed": 241,
     "failed": 0
   },
   "streamlit_headless": {
@@ -55,10 +55,12 @@
     "olist_microsoft_tom_tmdl_parsed": true
   },
   "analysis": {
-    "queries_executed": 4,
+    "queries_executed": 5,
     "raw_to_mart_revenue_orders_reconciled": true,
     "funnel_conservation_reconciled": true,
-    "greenweez_revenue_margin_reconciled": true
+    "greenweez_revenue_margin_reconciled": true,
+    "greenweez_coverage_queries_executed": 1,
+    "known_cost_source_reconciled": true
   },
   "brand": {
     "drive_asset_matches_repository": true,
@@ -115,5 +117,25 @@
     "raw_data_downloaded": false,
     "browser_used": false,
     "native_engine_executed": false
+  },
+  "metric_contracts": {
+    "metrics": 20,
+    "domains": 3,
+    "explicit_denominator_null_unit_grain": true,
+    "source_paths_validated": true,
+    "cross_domain_references_rejected": true,
+    "documentation_links_checked": true,
+    "live_queries_performed": false
+  },
+  "cost_coverage": {
+    "ecommerce_completed_lines": 9,
+    "ecommerce_cost_value_coverage_pct": 100,
+    "greenweez_unpriced_sales_lines": 23,
+    "greenweez_unpriced_sales_value_source_units": 1546.84,
+    "greenweez_incomplete_component_orders": 55,
+    "finance_model_policy_changed": false,
+    "raw_order_line_value_controls_passed": true,
+    "raw_branch_dbt_compile_passed": true,
+    "gsheet_analysis_disabled_verified": true
   }
 }

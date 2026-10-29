@@ -4,6 +4,9 @@ Start with [Olist advanced research](advanced-analysis/REPORT.md), [project asse
 
 ## Analytical and BI contracts
 
+- [Source-scoped KPI catalog](KPI_CATALOG.md)
+- [Source coverage and readiness](SOURCE_COVERAGE.md)
+
 - [Repeat-purchase timing and product portfolio](advanced-analysis/CUSTOMER_PORTFOLIO.md)
 - [Delivery decision readout and rate/mix diagnostics](advanced-analysis/DELIVERY_OPERATIONS.md)
 

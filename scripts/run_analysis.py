@@ -1,4 +1,4 @@
-"""Execute and reconcile the four analytical SQL queries on synthetic dbt marts.
+"""Execute and reconcile source-scoped analytical SQL on synthetic dbt marts.
 
 Produces aggregate CSVs, methodology, findings and NEXUS charts. No network,
 browser, screen automation or cloud credentials. All results are synthetic.
@@ -21,7 +21,7 @@ from scripts.ecommerce_marts_bridge import load_snapshot
 from scripts.greenweez_bridge import load_snapshot as load_greenweez
 
 ROOT = Path(__file__).resolve().parents[1]
-QUERIES = ("channel_performance", "conversion_funnel", "top_products", "channel_conversion_significance")
+QUERIES = ("channel_performance", "conversion_funnel", "top_products", "channel_conversion_significance", "completed_product_contribution")
 
 
 def fingerprint(path: Path) -> str:
@@ -44,16 +44,18 @@ def wilson(successes: int, trials: int) -> tuple[float, float] | None:
     return max(0., center-radius), min(1., center+radius)
 
 
-def execute_analysis(con, path: Path) -> list[dict]:
+def execute_analysis(con, path: Path, *, references: dict | None=None) -> list[dict]:
     # These SELECT-only analysis templates use ref() and dbt.type_float().
     # Models themselves are built by dbt, not this lightweight query runner.
-    known = {"fct_order_marketing", "fct_marketing_web_performance", "int_events_enriched"}
+    known = references or {name:'"analytics"."'+name+'"' for name in (
+        "fct_order_marketing", "fct_marketing_web_performance", "int_events_enriched", "int_orders_enriched")}
     def ref(name):
         if name not in known:
             raise ValueError("Unexpected analytical source reference")
-        return '"analytics"."' + name + '"'
+        return known[name]
     template = Environment(undefined=StrictUndefined).from_string(path.read_text(encoding="utf-8-sig"))
-    sql = template.render(ref=ref, dbt={"type_float": lambda: "double"})
+    sql = template.render(ref=ref, dbt={"type_float": lambda: "double"},
+                          config=lambda **kwargs:'',var=lambda name,default=None:default)
     cursor = con.execute(sql)
     fields = [field[0] for field in cursor.description]
     values = cursor.fetchmany(10001)
@@ -95,6 +97,48 @@ def greenweez_analysis(root: Path) -> tuple[list[dict], dict]:
                  "raw_to_daily_revenue_reconciled":True,"margin_identity_reconciled":True}
 
 
+def cost_diagnostics(root: Path, ecommerce: list[dict]) -> tuple[list[dict],dict]:
+    """Coverage controls reconcile raw sources before exposing contribution totals."""
+    with duckdb.connect(str(root/'target/ci.duckdb'),read_only=True) as con:
+        control=con.execute("""select count(*),sum(o.sale_price),
+            sum(case when p.cost>=0 then o.sale_price else 0 end),
+            sum(case when p.cost>=0 then o.sale_price-p.cost end)
+            from analytics.order_items o left join analytics.products p on o.product_id=p.id
+            where lower(o.status)='complete' and o.user_id is not null""").fetchone()
+    def total(rows,key):return sum(float(r[key]) for r in rows if r[key] is not None)
+    if (sum(r['completed_lines'] for r in ecommerce)!=control[0]
+        or any(not math.isfinite(float(v)) for row in ecommerce for v in row.values() if isinstance(v,(float,Decimal)))
+        or not math.isclose(total(ecommerce,'completed_revenue'),float(control[1] or 0),abs_tol=.01,rel_tol=0)
+        or not math.isclose(total(ecommerce,'known_cost_completed_revenue'),float(control[2] or 0),abs_tol=.01,rel_tol=0)
+        or not math.isclose(total(ecommerce,'known_cost_product_contribution'),float(control[3] or 0),abs_tol=.01,rel_tol=0)):
+        raise ValueError('Completed contribution does not reconcile to raw item/product keys and values')
+    with duckdb.connect(str(root/'integrations/greenweez/target/ci.duckdb'),read_only=True) as con:
+        names=('stg_raw__sales','stg_raw__product','int_orders_operational','stg_raw__ship')
+        rows=execute_analysis(con,root/'integrations/greenweez/analyses/cost_coverage.sql',references={n:'analytics.'+n for n in names})
+        raw_orders,raw_revenue=con.execute('select count(distinct orders_id),sum(revenue) from analytics.raw_gz_sales').fetchone()
+        raw_lines=con.execute('select count(*) from analytics.raw_gz_sales').fetchone()[0]
+        known_value,unknown_value=con.execute('''select
+            sum(case when p.purchse_PRICE>=0 and s.quantity>=0 and s.revenue is not null then s.revenue else 0 end),
+            sum(case when p.purchse_PRICE is null or p.purchse_PRICE<0 or s.quantity is null or s.quantity<0 or s.revenue is null then s.revenue else 0 end)
+            from analytics.raw_gz_sales s left join analytics.raw_gz_product p on s.pdt_id=p.products_id''').fetchone()
+    if (sum(r['orders'] for r in rows)!=raw_orders or sum(r['sales_lines'] for r in rows)!=raw_lines
+        or not math.isclose(total(rows,'revenue'),float(raw_revenue),abs_tol=.01,rel_tol=0)
+        or not math.isclose(total(rows,'known_cost_line_revenue'),float(known_value),abs_tol=.01,rel_tol=0)
+        or not math.isclose(total(rows,'unknown_cost_line_revenue'),float(unknown_value),abs_tol=.01,rel_tol=0)):
+        raise ValueError('Greenweez coverage rows expanded or lost source orders, lines or value')
+    summary={'ecommerce':{'completed_lines':int(control[0]),'completed_revenue':float(control[1] or 0),
+        'known_cost_completed_revenue':float(control[2] or 0),
+        'known_cost_product_contribution':float(control[3]) if control[3] is not None else None,
+        'cost_revenue_coverage_pct':100*float(control[2] or 0)/float(control[1]) if control[1] else None,
+        'raw_reconciled':True},
+        'greenweez':{'orders':raw_orders,'sales_lines':raw_lines,'revenue':float(raw_revenue),
+        'known_cost_line_revenue':float(known_value),'unknown_cost_line_revenue':float(unknown_value),
+        'orders_with_incomplete_components':sum(r['orders'] for r in rows if r['product_cost_coverage']!='fully_priced' or r['shipping_coverage']!='complete'),
+        'complete_components_operational_margin':total(rows,'complete_components_operational_margin') if any(r['complete_components_operational_margin'] is not None for r in rows) else None,
+        'reported_operational_margin':total(rows,'reported_operational_margin'),'raw_reconciled':True}}
+    return rows,summary
+
+
 def run(root: Path = ROOT, out: Path | None = None, *, charts: bool = True) -> dict:
     root = root.resolve()
     out = (out or root / "target/analysis").resolve()
@@ -115,6 +159,7 @@ def run(root: Path = ROOT, out: Path | None = None, *, charts: bool = True) -> d
                    "completed_orders_period_distinct": fact[1],
                    "completed_revenue": float(fact[0]),
                    "order_period": [str(v) for v in con.execute("select min(order_date),max(order_date) from analytics.fct_order_marketing").fetchone()]}
+        profile['completed_item_value_per_completed_order']=float(fact[0])/fact[1] if fact[1] else None
     if not math.isclose(float(raw[0]),float(fact[0]),abs_tol=.001) or raw[1] != fact[1]:
         raise ValueError("Raw seed to mart revenue/order reconciliation failed")
     channel_revenue = sum(float(row["net_revenue"]) for row in results["channel_performance"])
@@ -130,11 +175,12 @@ def run(root: Path = ROOT, out: Path | None = None, *, charts: bool = True) -> d
         row["wilson_95_lower_pct"] = round(interval[0]*100,2) if interval else None
         row["wilson_95_upper_pct"] = round(interval[1]*100,2) if interval else None
     results["greenweez_finance"], greenweez = greenweez_analysis(root)
+    results['greenweez_cost_coverage'],costs=cost_diagnostics(root,results['completed_product_contribution'])
     supported = bool(stats) and all(row["chi_square_approximation_supported"] for row in stats)
     out.mkdir(parents=True,exist_ok=True)
     for name,rows in results.items():
         with (out/(name+".csv")).open("w",newline="",encoding="utf-8") as handle:
-            writer=csv.DictWriter(handle,fieldnames=list(rows[0]) if rows else [])
+            writer=csv.DictWriter(handle,fieldnames=list(rows[0]) if rows else [],lineterminator='\n')
             writer.writeheader();writer.writerows(rows)
     evidence={"schema_version":1,"generated_at_utc":datetime.now(timezone.utc).isoformat(),
               "provenance":"synthetic_ci","source_sha256":snapshot["source_sha256"],
@@ -142,6 +188,9 @@ def run(root: Path = ROOT, out: Path | None = None, *, charts: bool = True) -> d
               "channel_revenue":True,"funnel_sessions_and_ordering":True},
               "chi_square_approximation_supported":supported,
               "greenweez":greenweez,
+              "cost_diagnostics":costs,
+              "greenweez_coverage_query":{"sql":"integrations/greenweez/analyses/cost_coverage.sql",
+                  "sha256":hashlib.sha256((root/'integrations/greenweez/analyses/cost_coverage.sql').read_text(encoding='utf-8').encode('utf-8')).hexdigest()},
               "queries":{name:{"sql":"analyses/"+name+".sql","rows":len(rows),
                        "sha256":hashlib.sha256((root/"analyses"/(name+".sql")).read_text(encoding="utf-8-sig").encode("utf-8")).hexdigest()} for name,rows in results.items() if name in QUERIES}}
     (out/"evidence.json").write_text(json.dumps(evidence,indent=2,default=_json)+"\n",encoding="utf-8")
@@ -149,6 +198,8 @@ def run(root: Path = ROOT, out: Path | None = None, *, charts: bool = True) -> d
     carts=sum(row["cart_sessions"] for row in funnel)
     purchases=sum(row["purchase_sessions"] for row in funnel)
     cv=100*session_total[1]/session_total[0] if session_total[0] else 0
+    coverage_text=f"{costs['ecommerce']['cost_revenue_coverage_pct']:.2f}%" if costs['ecommerce']['cost_revenue_coverage_pct'] is not None else 'not estimable'
+    def amount(value):return f'{value:,.2f}' if value is not None else 'not estimable'
     report=f"""# NEXUS Commerce — analytical findings
 
 **Scope:** reproducible synthetic dbt fixtures; demonstration of method, not actual business performance.
@@ -167,6 +218,12 @@ Across {greenweez['daily_rows']} synthetic daily observations, {greenweez['reven
 
 **Quality limits:** {greenweez['orders_missing_shipping']} orders lack a shipping record and {greenweez['sales_lines_missing_product']} sales lines lack a matching product. Missing components follow the existing model's zero/exclusion policies. The resulting contribution is a model output, not audited net profit; recover missing costs before a real profitability decision. `greenweez_finance.csv` exposes all daily aggregates. Refund worksheet units remain unverified and are not subtracted from this raw-sales branch.
 
+## Cost coverage before contribution interpretation
+
+E-Commerce has {costs['ecommerce']['completed_lines']} completed item rows and {coverage_text} completed-value coverage by nonnegative product unit costs. Known-cost product contribution is {amount(costs['ecommerce']['known_cost_product_contribution'])} source units, computed on the same known-cost completed rows as its revenue denominator. It excludes shipping, logistics and advertising, and is not a margin estimate for unpriced rows. `completed_product_contribution.csv` publishes category-level coverage and the matched-denominator margin rate.
+
+Greenweez has {costs['greenweez']['unknown_cost_line_revenue']:,.2f} source units of sales value on unpriced/invalid-component lines. Its established product-margin aggregation excludes those missing line margins while retaining sales revenue. Of {costs['greenweez']['orders']} order records, {costs['greenweez']['orders_with_incomplete_components']} have incomplete product/shipping components under the explicit nonnegative-component policy. Reported operational margin is {costs['greenweez']['reported_operational_margin']:,.2f}; the complete-component order subtotal is {amount(costs['greenweez']['complete_components_operational_margin'])}. These are different populations, not uncertainty bounds, audited profit or an estimate of money lost. Advertising is not allocated to the complete-component subset. `greenweez_cost_coverage.csv` retains every coverage group. The diagnostic leaves the finance model unchanged and independently reconciles source orders, lines and value.
+
 ## Visual exhibits
 
 ![Ordered same-session funnel](funnel.png)
@@ -182,7 +239,7 @@ Use this fixture to validate the pipeline and investigate counting assumptions. 
 
 ## Reproduction and controls
 
-`python -m scripts.run_analysis` executes the committed SELECT templates against the read-only DuckDB dbt marts. `evidence.json` records query hashes, the database fingerprint and independent reconciliation controls. The four CSVs expose the full aggregate results. No credentials, customer identifiers or raw event exports enter this report.
+`python -m scripts.run_analysis` executes five E-Commerce SELECT templates plus the independent Greenweez coverage query against read-only dbt marts. `evidence.json` records query/database fingerprints and raw reconciliation controls. CSVs expose all aggregate results. [KPI catalog](../KPI_CATALOG.md) and [source coverage](../SOURCE_COVERAGE.md) define their interpretation. No credentials, customer identifiers or raw event exports enter this report.
 
 **Limits:** synthetic samples; current-status order facts; UTC-like DuckDB fixture dates versus Europe/Istanbul production mart dates; same-session closed funnel excludes cross-session journeys; first-touch attribution is descriptive; no causal marketing uplift, audited profit, cash refunds or real-time freshness is claimed.
 """

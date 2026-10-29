@@ -277,6 +277,8 @@ jobs:
       - name: Execute portfolio analysis and validate public export boundaries
         run: |
           python -m unittest discover -s tests -p 'test_ordered_funnel.py' -v
+          python -m unittest discover -s tests -p 'test_cost_coverage.py' -v
+          python -m unittest discover -s tests -p 'test_metric_contracts.py' -v
           python -m unittest discover -s tests -p 'test_portfolio_build.py' -v
           python -m unittest discover -s tests -p 'test_advanced_olist.py' -v
           python -m unittest discover -s tests -p 'test_olist_customer_portfolio.py' -v
@@ -284,6 +286,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_build_research.py' -v
           python -m unittest discover -s tests -p 'test_olist_powerbi.py' -v
           python -m scripts.run_analysis
+          python -m scripts.metric_contracts --evidence-dir target/analysis --out target
           python -m scripts.build_public_powerbi
           python -m scripts.build_olist_powerbi
           node --test showcase/tests/*.test.mjs

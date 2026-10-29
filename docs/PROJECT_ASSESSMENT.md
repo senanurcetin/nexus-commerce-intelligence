@@ -4,6 +4,8 @@ Assessment date: 28 October 2026. Scope: repository, local dbt artifacts, execut
 
 ## Level
 
+The core commerce KPI registry now connects definitions to executable source-scoped implementations. Cost coverage is part of margin interpretation, with raw reconciliation and adversarial missing-cost/fanout fixtures. Live BigQuery row coverage remains an explicit open gate; synthetic examples are not promoted into real-business results.
+
 **Advanced analytical methods implemented within a reproducible portfolio project; intermediate-to-advanced analytics engineering.** This is a qualitative assessment based on executable evidence, not a certification or an invented numeric score. Production operation, current business validity and native BI rendering remain separate acceptance boundaries.
 
 | Dimension | Evidence | Remaining gap |

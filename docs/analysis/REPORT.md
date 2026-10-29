@@ -16,6 +16,12 @@ Across 90 synthetic daily observations, 253,408.53 source units of revenue recon
 
 **Quality limits:** 33 orders lack a shipping record and 23 sales lines lack a matching product. Missing components follow the existing model's zero/exclusion policies. The resulting contribution is a model output, not audited net profit; recover missing costs before a real profitability decision. `greenweez_finance.csv` exposes all daily aggregates. Refund worksheet units remain unverified and are not subtracted from this raw-sales branch.
 
+## Cost coverage before contribution interpretation
+
+E-Commerce has 9 completed item rows and 100.00% completed-value coverage by nonnegative product unit costs. Known-cost product contribution is 662.62 source units, computed on the same known-cost completed rows as its revenue denominator. It excludes shipping, logistics and advertising, and is not a margin estimate for unpriced rows. `completed_product_contribution.csv` publishes category-level coverage and the matched-denominator margin rate.
+
+Greenweez has 1,546.84 source units of sales value on unpriced/invalid-component lines. Its established product-margin aggregation excludes those missing line margins while retaining sales revenue. Of 1226 order records, 55 have incomplete product/shipping components under the explicit nonnegative-component policy. Reported operational margin is 74,437.46; the complete-component order subtotal is 71,381.51. These are different populations, not uncertainty bounds, audited profit or an estimate of money lost. Advertising is not allocated to the complete-component subset. `greenweez_cost_coverage.csv` retains every coverage group. The diagnostic leaves the finance model unchanged and independently reconciles source orders, lines and value.
+
 ## Visual exhibits
 
 ![Ordered same-session funnel](funnel.png)
@@ -31,6 +37,6 @@ Use this fixture to validate the pipeline and investigate counting assumptions. 
 
 ## Reproduction and controls
 
-`python -m scripts.run_analysis` executes the committed SELECT templates against the read-only DuckDB dbt marts. `evidence.json` records query hashes, the database fingerprint and independent reconciliation controls. The four CSVs expose the full aggregate results. No credentials, customer identifiers or raw event exports enter this report.
+`python -m scripts.run_analysis` executes five E-Commerce SELECT templates plus the independent Greenweez coverage query against read-only dbt marts. `evidence.json` records query/database fingerprints and raw reconciliation controls. CSVs expose all aggregate results. [KPI catalog](../KPI_CATALOG.md) and [source coverage](../SOURCE_COVERAGE.md) define their interpretation. No credentials, customer identifiers or raw event exports enter this report.
 
 **Limits:** synthetic samples; current-status order facts; UTC-like DuckDB fixture dates versus Europe/Istanbul production mart dates; same-session closed funnel excludes cross-session journeys; first-touch attribution is descriptive; no causal marketing uplift, audited profit, cash refunds or real-time freshness is claimed.

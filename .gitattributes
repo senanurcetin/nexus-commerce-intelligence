@@ -4,3 +4,4 @@ scripts/advanced_olist.py text eol=lf
 scripts/olist_customer_portfolio.py text eol=lf
 scripts/olist_delivery_operations.py text eol=lf
 docs/advanced-analysis/*.csv text eol=lf
+docs/analysis/*.csv text eol=lf

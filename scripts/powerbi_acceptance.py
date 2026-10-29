@@ -13,8 +13,11 @@ import re
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_DAX = (
-    "Total Orders", "Ortalama Sepet Bedeli", "Toplam Oturum",
-    "Dönüşüm Oranı", "Return Rate", "Müşteri Başına Oturum (CAC Proxy)",
+    "Completed Item Value", "Period-Distinct Completed Orders",
+    "Completed Value per Completed Order", "Revenue per Completed Purchasing User",
+    "Returned Item Share", "Known-Cost Completed Item Value",
+    "Known-Cost Product Contribution", "Known-Cost Product Margin Rate",
+    "Completed-Value Cost Coverage", "Historical Sessions", "Historical Event Session Conversion",
 )
 POWERBI_SUFFIXES = {".pbix", ".pbip", ".pbit", ".pbir"}
 EXPECTED_THEME = {
@@ -48,7 +51,8 @@ def audit(root: Path, report_file: Path | None = None) -> dict:
         checks["dax_semantics"] = (
             "signup_traffic_source" in qa
             and "fct_marketing_web_performance.traffic_source" in qa
-            and "CAC Proxy" in dax_text
+            and 'DIVIDE([Known-CostProductContribution],[Known-CostCompletedItemValue])' in re.sub(r'\s+','',dax_text)
+            and 'RELATED(dim_products[cost])>=0' in re.sub(r'\s+','',dax_text)
         )
     except FileNotFoundError:
         checks["dax_documentation"] = checks["dax_semantics"] = False

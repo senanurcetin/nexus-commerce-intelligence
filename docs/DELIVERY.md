@@ -4,6 +4,10 @@ Updated 28 October 2026. Non-commercial, English-language NEXUS analytics case s
 
 ## Implemented
 
+- Added a validated 20-metric registry, generated KPI catalog and source coverage table for the core commerce and independent Olist domains. Source definitions include eligibility, grain, denominator, units, null policies and implementation links.
+- Added known-cost completed product contribution with a matched revenue denominator and Greenweez product/shipping coverage. The synthetic fixture has 23 unpriced sales lines and 55 incomplete-component order records; source order/line/value controls reconcile without changing the finance models.
+- Replaced obsolete row-level DAX examples with explicitly scoped reference measures. The static acceptance gate now checks a matched cost denominator rather than requiring a misleading acquisition-cost proxy name; Desktop/DAX acceptance remains separate.
+
 - Corrected the closed chronological session/user funnel and missing channel reference.
 - Preserved null conversion rates when the session denominator is absent.
 - Removed historical significance claims; added expected-cell checks and descriptive Wilson intervals.
@@ -35,7 +39,7 @@ The four-page commerce report and web demo use only synthetic fixtures. Their re
 
 - Python unit/contract tests, 11 headless Streamlit AppTests and 16 Node tests passed. Exact current counts and commands: [machine-readable verification](verification.json).
 - Full local rebuild: 10 E-Commerce models plus 59 model-level tests passed; Greenweez completed with 113 passed build nodes, four documented warnings and no errors.
-- All four analytical SQL templates execute against the local dbt marts; raw-to-mart revenue/order and funnel controls reconcile.
+- Five E-Commerce analytical SQL templates and the independent Greenweez raw-branch coverage query execute locally. Raw-to-mart value/order, funnel and known-cost population controls reconcile. Both dbt projects compile the new analysis within their own source scope.
 - Greenweez raw-sales revenue reconciles to daily finance; daily contribution identities reconcile.
 - Four-page public Power BI JSON validates against Microsoft's published schemas. Microsoft TOM successfully deserializes the public four-table and private eight-table TMDL models. Seven-page source/binding integrity is independently checked.
 - Generated analytical figures are file artifacts, not screenshots of a live UI or Power BI.

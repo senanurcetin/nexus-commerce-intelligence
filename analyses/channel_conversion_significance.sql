@@ -67,8 +67,8 @@ select
     sessions,
     conversions,
     round(conversion_rate * 100, 2) as conversion_rate_pct,
-    round(expected_conversions, 0) as expected_conversions,
-    round(expected_nonconversions, 0) as expected_nonconversions,
+    round(expected_conversions, 2) as expected_conversions,
+    round(expected_nonconversions, 2) as expected_nonconversions,
     round(chi_square_contribution, 2) as chi_square_contribution,
 
     round(sum(chi_square_contribution) over (), 2) as chi_square_total,
@@ -79,4 +79,4 @@ select
          then true else false end as chi_square_approximation_supported
 
 from contributions
-order by conversion_rate desc
+order by conversion_rate desc, channel_group, traffic_source

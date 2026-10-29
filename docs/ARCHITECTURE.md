@@ -20,12 +20,16 @@ The order mart and session mart are aggregated independently before comparison. 
 
 ## Analytical layer
 
+`contracts/metrics.json` is the machine-validated metric registry. Each entry names its source domain, grain, unit, denominator, null policy, implementation and limitations. `scripts.metric_contracts` rejects duplicate/incomplete entries and cross-domain/escaped implementation paths, then renders the KPI catalog and source coverage from explicit aggregate receipts. Cloud integrations remain unverified rather than being represented as zero rows or a fresh live extract.
+
 - Channel performance: source-scoped aggregations; missing session denominator is null.
 - Ordered funnel: chronological page view, then cart, then purchase in one session/user pair; tie-break by timestamp, sequence and event ID.
 - Conversion diagnostics: expected converted/non-converted counts, chi-square applicability flag, descriptive 95% Wilson intervals. Non-significance does not establish equivalence.
 - Products: completed-line revenue and eligible returned-item share. Tiny denominators do not justify a product-quality conclusion.
 
 The local analysis runner executes the SELECT templates against read-only dbt marts. Independent controls recompute revenue and period-distinct completed orders from the synthetic raw seeds and reconcile channel totals and funnel populations.
+
+The completed-product contribution query joins the item fact to the tested intermediate item key for cost coverage. Raw item/product controls detect join expansion and reconcile the known-cost revenue and contribution subset. Its margin denominator uses the same eligible rows as its numerator. The Greenweez raw-branch coverage query first aggregates sales lines into order/date records, then joins operational/shipping coverage. Order, line and revenue controls independently reconcile to raw seeds. Missing line margins and zero-policy operational components remain explicit; complete-component subtotals are selected populations, not financial bounds. The query is disabled for the Google Sheets source branch.
 
 ## Presentation and portability
 

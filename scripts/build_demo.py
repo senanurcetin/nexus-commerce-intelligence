@@ -37,8 +37,9 @@ def main() -> None:
     call([sys.executable,"-m","scripts.ecommerce_marts_bridge","--db","target/ci.duckdb","--provenance","synthetic_ci"])
     call([sys.executable,"-m","scripts.greenweez_bridge","--db","integrations/greenweez/target/ci.duckdb","--provenance","synthetic_demo"])
     call([sys.executable,"-m","scripts.run_analysis"])
+    call([sys.executable,"-m","scripts.metric_contracts","--evidence-dir","target/analysis","--out","target"])
     call([sys.executable,"-m","scripts.build_public_powerbi"])
-    print("Built: target/analysis/REPORT.md, target/showcase/, target/powerbi-public/project/")
+    print("Built: target/analysis/REPORT.md, target/KPI_CATALOG.md, target/SOURCE_COVERAGE.md, target/showcase/, target/powerbi-public/project/")
 
 
 if __name__ == "__main__":

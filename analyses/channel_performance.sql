@@ -55,4 +55,4 @@ final as (
 
 select *
 from final
-order by net_revenue desc
+order by net_revenue desc, channel_group, traffic_source

@@ -6,6 +6,10 @@
 
 E-Commerce and Greenweez share engineering standards while retaining independent facts, populations and financial definitions. This is a non-commercial portfolio project.
 
+The [20-metric KPI catalog](docs/KPI_CATALOG.md) defines each metric's unit, grain, eligible denominator, null behavior, implementation and limits. The [source coverage table](docs/SOURCE_COVERAGE.md) distinguishes synthetic pipeline evidence, separate Olist history and live integrations not verified by the local build.
+
+Core commerce analysis now reports **known-cost contribution with matched revenue denominators** and **Greenweez product/shipping coverage**. In the synthetic Greenweez fixture, 23 unpriced sales lines carry 1,546.84 source units of sales value and 55 order records have incomplete components. The coverage report preserves the existing finance model while making its exclusions and zero policies visible; it does not infer audited profit or missing costs. See [commerce findings](docs/analysis/REPORT.md).
+
 [Olist advanced analysis](docs/advanced-analysis/REPORT.md) · [Synthetic mart findings](docs/analysis/REPORT.md) · [Architecture](docs/ARCHITECTURE.md) · [Power BI](powerbi/README.md) · [Delivery evidence](docs/DELIVERY.md)
 
 ![Observed customer retention — independent historical Olist research](docs/advanced-analysis/cohort_retention.png)
@@ -96,6 +100,7 @@ This runs both source-scoped dbt pipelines, imports only synthetic aggregates an
 | Output | Location |
 | --- | --- |
 | Analytical findings and charts | `target/analysis/REPORT.md` |
+| Validated KPI catalog and source coverage | `target/KPI_CATALOG.md`, `target/SOURCE_COVERAGE.md` |
 | Static NEXUS demo | `target/showcase/` |
 | Portable, four-page Power BI project | `target/powerbi-public/project/NEXUS_Commerce.pbip` |
 
