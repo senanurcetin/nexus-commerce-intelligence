@@ -67,6 +67,16 @@ def audit(root: Path, report_file: Path | None = None) -> dict:
             if base.is_dir():
                 found.extend(str(p) for p in base.rglob("*")
                              if p.suffix.lower() in POWERBI_SUFFIXES)
+    # Shipped editable projects are inside pinned portable archives, rather than
+    # committed as expanded working directories. Count only validated packages.
+    if report_file is None or Path(report_file).suffix.lower()=='.zip':
+        from scripts.release_audit import audit as audit_delivery
+        delivery=audit_delivery(root)
+        for check in delivery['checks']:
+            if check['passed'] and check['name'] in {'synthetic_powerbi_archive','public_research_archive'}:
+                archive=root/check['details']['file']
+                if report_file is None or archive.resolve()==Path(report_file).resolve():
+                    found.append(str(archive)+' (validated editable PBIP inside archive)')
     checks["editable_report_present"] = bool(found)
     # The presence of a report does not establish Desktop refresh or fidelity.
     checks["actual_desktop_render"] = False

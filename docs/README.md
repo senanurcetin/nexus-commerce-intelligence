@@ -14,6 +14,7 @@ Start with [Olist advanced research](advanced-analysis/REPORT.md), [project asse
 - [KPI semantics](COMMERCE_KPI_SEMANTICS.md)
 - [Power BI delivery](../powerbi/README.md)
 - [Power BI verification boundary](POWER_BI_VISUAL_QA.md)
+- [Final portable-artifact readiness](RELEASE_READINESS.md)
 - [Historical mart adapter](NEXUS_HISTORICAL_MART_BRIDGE.md)
 - [Unified source contract](NEXUS_UNIFIED_COMMERCE_PLAN.md)
 

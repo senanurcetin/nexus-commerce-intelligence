@@ -136,6 +136,8 @@ Daily distinct order counts are labelled **order-days** when added across dates.
 
 ## Verification
 
+The [final artifact audit](docs/RELEASE_READINESS.md) checks the actual three distributed ZIPs. Portable artifact readiness is separate from native Desktop acceptance; a new live-source refresh is not needed to present the explicitly historical portfolio.
+
 ```powershell
 python -m unittest discover -s tests -p "test_*.py"
 node --test showcase/tests/*.test.mjs storefront/tests/*.test.mjs
@@ -143,6 +145,7 @@ python -m scripts.run_analysis
 python -m scripts.powerbi_structure_audit --out target/powerbi
 python -m scripts.validate_powerbi_schema
 python -m scripts.repo_hygiene_guard
+python -m scripts.release_audit
 ```
 
 The Microsoft schema check downloads and caches published schemas; the remaining commands operate locally without cloud credentials. [Delivery evidence](docs/DELIVERY.md) records results and remaining limits. Visual UI acceptance is deliberately unclaimed because this development pass uses neither Playwright nor a PC screen.

@@ -29,6 +29,9 @@ Updated 29 October 2026. Non-commercial, English-language NEXUS analytics case s
 
 - Added the review-selection study over 68,448 mature delivered orders with a fixed retrospective protocol, first eligible raw-review policy, independent raw/pandas reconciliation, availability-reason ledger, 441 missing-rating scenarios and pointwise customer-cluster intervals. Thirty-day available-case difference is +11.26 pp; the sharp hypothetical full-rating range is −5.44 to +69.44 pp. The range includes zero and is not a causal effect or confidence interval. The fourth report and its protocol/query accompany the unchanged eight-page native BI project.
 
+- Added a final audit of the actual three distributed ZIPs: pinned bytes/SHA-256, archive paths, native project/model bindings, page/table counts, logo bytes, report links, research source/aggregate/protocol consistency and current synthetic website sources. All three archives pass; the result is [portable artifact readiness](RELEASE_READINESS.md), not Desktop acceptance. Corruption, stale reports, unsupported native claims and source leakage are rejected by regression fixtures. Native-required mode returns a failure exit code while the independent engine/visual gates remain open.
+- Corrected the Power BI acceptance preflight to recognize validated editable PBIP projects inside the delivered archives; it previously searched only expanded report files. No actual render, refresh or financial audit gate was promoted.
+
 ## Source and brand evidence
 
 The official transparent PNG was compared byte-for-byte with the owner's mounted Google Drive `Logo/NEXUS_Identity_2_0/` asset on 27 October. SHA-256: `ebbdb363c523dcd88bcfa405be025e5b745419caaf57adb992b8ec1e85ed251e`.

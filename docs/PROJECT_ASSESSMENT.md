@@ -38,3 +38,5 @@ The review-selection extension adds a recorded retrospective protocol, common fo
 ## Completion standard
 
 A professional portfolio release needs inspectable results, tested grain and denominator definitions, transparent source limitations, concise navigation, approved branding and a reproducible native BI artifact. Code/schema acceptance does not establish Desktop rendering, financial audit or source freshness.
+
+Final artifact acceptance is executable with `python -m scripts.release_audit`: the three distributed archives pass pinned integrity and content checks. This marks the offline portfolio artifacts as ready for delivery, while native Power BI refresh/render/DAX acceptance remains HOLD. A private live refresh is not a release prerequisite for the explicitly synthetic and historical portfolio; it is necessary only before making new live-business claims. Repository review/merge remains independent.

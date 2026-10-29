@@ -284,12 +284,14 @@ jobs:
           python -m unittest discover -s tests -p 'test_olist_customer_portfolio.py' -v
           python -m unittest discover -s tests -p 'test_olist_delivery_operations.py' -v
           python -m unittest discover -s tests -p 'test_olist_review_selection.py' -v
+          python -m unittest discover -s tests -p 'test_release_audit.py' -v
           python -m unittest discover -s tests -p 'test_build_research.py' -v
           python -m unittest discover -s tests -p 'test_olist_powerbi.py' -v
           python -m scripts.run_analysis
           python -m scripts.metric_contracts --evidence-dir target/analysis --out target
           python -m scripts.build_public_powerbi
           python -m scripts.build_olist_powerbi
+          python -m scripts.release_audit
           node --test showcase/tests/*.test.mjs
 
       - name: Set up .NET for Microsoft's TMDL parser

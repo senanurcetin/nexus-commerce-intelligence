@@ -3,7 +3,7 @@
   "scope": "local synthetic commerce and independent historical public Olist; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 252,
+    "passed": 261,
     "failed": 0
   },
   "streamlit_headless": {
@@ -161,5 +161,16 @@
     "protocol_prospectively_preregistered": false,
     "causal_effect_identified": false,
     "new_native_bi_page": false
+  },
+  "portable_release_audit": {
+    "command": "python -m scripts.release_audit --out docs",
+    "archives_passed": 3,
+    "artifact_delivery_ready": true,
+    "native_bi_release_decision": "HOLD",
+    "editable_projects_found_inside_pinned_archives": true,
+    "desktop_refresh_executed": false,
+    "dax_engine_executed": false,
+    "browser_render_verified": false,
+    "live_refresh_required_for_historical_portfolio": false
   }
 }

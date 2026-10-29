@@ -1,5 +1,7 @@
 # NEXUS Commerce — Power BI delivery
 
+Run `python -m scripts.release_audit` to validate the actual distributed Power BI and website ZIPs. [Artifact readiness](../docs/RELEASE_READINESS.md) is separate from Desktop refresh/render and DAX execution. `--require-native` deliberately returns a failing exit code while those native gates remain unverified. `scripts.powerbi_acceptance` recognizes validated editable projects inside the shipped archives without upgrading native acceptance.
+
 ## Independent Olist research report
 
 [NEXUS_Olist_Research.zip](NEXUS_Olist_Research.zip) contains `NEXUS_Olist_Research.pbip` and eight native pages: Value and Order Volume, Observed Cohorts (matrix), As-of Customer Policies, GMV Decomposition, Delivery/Reviews, Time to Another Purchase Day, Product Value Concentration and Comparable Delivery Experience. The official NEXUS logo and source qualifications appear on every page. All four inspectable reports, their aggregate CSVs and figures accompany the project.
