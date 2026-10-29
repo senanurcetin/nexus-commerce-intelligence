@@ -11,7 +11,7 @@ This is an **analytics engineering** project: BigQuery/dbt Cloud models with a l
 - A portable synthetic PBIP and a seven-page private-source generator are available. Historical screenshots have been removed; generated analytical figures are not BI screenshots. Do not imply that a changed theme or screenshot was validated or published. The Turkish `B` abbreviation means *bin* (thousand), not billion.
 - Preserve revenue/return reconciliation, price validation, event-order tiebreakers, stable business labels, and existing source-to-mart tests.
 - Metric definitions live in `contracts/metrics.json`; validate/render via `scripts.metric_contracts`. Product contribution rates require a matched known-cost revenue denominator. Greenweez coverage diagnostics preserve existing missing-component policies and are raw-branch only. Do not relabel completed value as recognized accounting revenue, returned item value as refunded cash, or sessions per user as acquisition cost.
-- `scripts.build_research` reproduces all three Olist studies from six local CSVs. Preserve shared raw/fact fingerprints, LF-normalized aggregate hashes, matched Jan–Jul windows, common-support coverage and separate full/standardized/decomposition estimands. Kitagawa components and state burden priorities are descriptive; never turn them into causal effects, service-quality rankings or lost revenue.
+- `scripts.build_research` reproduces all four Olist studies from six local CSVs. Preserve shared raw/fact fingerprints, LF-normalized aggregate hashes, matched Jan–Jul windows, common-support coverage and separate full/standardized/decomposition estimands. Kitagawa components and state burden priorities are descriptive; never turn them into causal effects, service-quality rankings or lost revenue.
 - CI quotas are unavailable: **do not manually run or dispatch GitHub Actions, CircleCI, Vercel, or dbt Cloud jobs**. Local, credential-free tests are permitted when installed. Never bypass required checks.
 - Do not claim tests were run if only source checks were performed. Report exact commands, errors and unverified scopes.
 - Use narrow changes with regression tests and PR review; do not autonomously merge or rewrite unrelated workflow, README, screenshots or notebooks.
@@ -21,3 +21,5 @@ This is an **analytics engineering** project: BigQuery/dbt Cloud models with a l
 - `commerce-powerbi-evidence`: DAX/SQL lineage, screenshot provenance, presentation evidence and release gates.
 
 See `docs/COPILOT_AGENTS.md` for offline acceptance prompts and scope.
+
+- The review-selection study uses its own mature cohort and first post-delivery answer policy. Unavailable ratings include pre-delivery-only answers; do not call them all nonrespondents. Sharp ranges are identification uncertainty, not confidence intervals. Preserve the retrospective (not preregistered) protocol, raw control, intact customer-cluster histories, and companion-report boundary.

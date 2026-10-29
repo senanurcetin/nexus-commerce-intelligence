@@ -88,9 +88,10 @@ CONTEXT = {
 }
 
 
-def create(source: Path, out: Path, extension: Path | None=None, operations: Path | None=None) -> Path:
+def create(source: Path, out: Path, extension: Path | None=None, operations: Path | None=None, reviews: Path | None=None) -> Path:
     extension=extension or source
     operations=operations or source
+    reviews=reviews or source
     evidence=json.loads((source/"evidence.json").read_text(encoding="utf-8"))
     extra=json.loads((extension/'extension_evidence.json').read_text(encoding='utf-8'))
     if extra.get('source_kind')!='historical_public_olist_extension' or extra['summary']['repeat']['last_observed_day']!='2018-07-31':
@@ -107,6 +108,16 @@ def create(source: Path, out: Path, extension: Path | None=None, operations: Pat
         raise ValueError('Operations source snapshots differ')
     if ops.get('order_fact_sql_sha256')!=evidence['sql_sha256']['order_fact.sql']:
         raise ValueError('Operations order fact definitions differ')
+    review=json.loads((reviews/'review_selection_evidence.json').read_text(encoding='utf-8'))
+    if review.get('source_kind')!='historical_public_olist_review_selection' or review.get('synthetic') is not False:
+        raise ValueError('Only public Olist review selection accepted')
+    if {k:v['sha256'] for k,v in review['quality']['files'].items()}!={k:v['sha256'] for k,v in evidence['quality']['files'].items()}:
+        raise ValueError('Review selection source snapshots differ')
+    if review.get('order_fact_sql_sha256')!=evidence['sql_sha256']['order_fact.sql']:
+        raise ValueError('Review selection order fact definitions differ')
+    for filename,key in (('olist_review_protocol.json','protocol_sha256'),('review_selection.sql','query_sha256')):
+        if hashlib.sha256((reviews/filename).read_bytes()).hexdigest()!=review[key]:
+            raise ValueError('Review selection protocol/query hash mismatch: '+filename)
     if evidence.get("source_kind")!="historical_public_olist" or evidence.get("synthetic") is not False:
         raise ValueError("Only content-addressed public Olist aggregates accepted")
     if evidence["summary"]["cutoff"]!="2018-08-01":
@@ -163,6 +174,7 @@ def create(source: Path, out: Path, extension: Path | None=None, operations: Pat
              "pages":len(PAGES),"aggregate_rows":{k:len(v) for k,v in rows.items()},
              "extension_evidence_sha256":hashlib.sha256((extension/'extension_evidence.json').read_bytes()).hexdigest(),
              "operations_evidence_sha256":hashlib.sha256((operations/'operations_evidence.json').read_bytes()).hexdigest(),
+             "review_selection_evidence_sha256":hashlib.sha256((reviews/'review_selection_evidence.json').read_bytes()).hexdigest(),
              "synthetic":False,"desktop_render_verified":False,"dax_engine_executed":False,
              "note":"Association cards are full-sample estimates, independent of monthly table selections."}
     (out/"build_evidence.json").write_text(json.dumps(receipt,indent=2)+"\n",encoding="utf-8")
@@ -181,6 +193,8 @@ def create(source: Path, out: Path, extension: Path | None=None, operations: Pat
         "Product concentration is within this portfolio, not a market-wide competition measure. "
         "Operations compares January-July in both years, without a review-response filter. "
         "Rate/mix contributions are descriptive, and late-delivered GMV is not revenue lost. "
+        "The fourth bundled study, REVIEW_SELECTION.md, analyzes unavailable ratings with a different mature cohort; "
+        "its sharp ranges are not confidence intervals or causal effects. It is a companion report, not a native BI page. "
         "Confidence cards refer to the full sample and do not follow monthly selections.\n\n"
         "Desktop rendering, refresh and DAX execution are unverified. "
         "Open the entire PBIP folder in a compatible Power BI Desktop installation.\n",
@@ -189,6 +203,7 @@ def create(source: Path, out: Path, extension: Path | None=None, operations: Pat
     (project.parent/"evidence.json").write_text(json.dumps(evidence,indent=2)+"\n",encoding="utf-8")
     (project.parent/'extension_evidence.json').write_text(json.dumps(extra,indent=2)+'\n',encoding='utf-8')
     (project.parent/'operations_evidence.json').write_text(json.dumps(ops,indent=2)+'\n',encoding='utf-8')
+    (project.parent/'review_selection_evidence.json').write_text(json.dumps(review,indent=2)+'\n',encoding='utf-8')
     # Include the inspectable reports and their referenced images/CSV evidence.
     for folder,receipt,names,media in (
         (source,evidence['export_sha256'],('cohorts','segments','monthly','decomposition','delivery_months','delivery_states','delivery_common_support'),
@@ -197,6 +212,8 @@ def create(source: Path, out: Path, extension: Path | None=None, operations: Pat
          ('CUSTOMER_PORTFOLIO.md','repeat_purchase_survival.png','category_portfolio.png')),
         (operations,ops['aggregate_sha256'],('operations_monthly','operations_states','operations_strata','operations_summary','operations_month_contributions'),
          ('DELIVERY_OPERATIONS.md','delivery_matched_months.png','delivery_rate_mix.png')),
+        (reviews,review['aggregate_sha256'],('review_groups','review_summary','review_sensitivity','review_tipping','review_availability'),
+         ('REVIEW_SELECTION.md','review_bounds.png','review_sensitivity_grid.png','olist_review_protocol.json','review_selection.sql')),
     ):
         for name in names:
             filename=name+'.csv';data=(folder/filename).read_bytes()
@@ -222,8 +239,9 @@ if __name__=="__main__":
     parser.add_argument("--out",type=Path,default=ROOT/"target/powerbi-olist")
     parser.add_argument('--extension',type=Path,help='Extension aggregates; defaults to the same folder as --source')
     parser.add_argument('--operations',type=Path,help='Operations aggregates; defaults to the same folder as --source')
+    parser.add_argument('--reviews',type=Path,help='Review-selection aggregates; defaults to the same folder as --source')
     parser.add_argument("--package",type=Path)
     args=parser.parse_args()
-    path=create(args.source,args.out,args.extension,args.operations)
+    path=create(args.source,args.out,args.extension,args.operations,args.reviews)
     if args.package: package(path,args.package)
     print(path)

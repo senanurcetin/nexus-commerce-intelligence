@@ -39,14 +39,16 @@ The [customer timing and portfolio report](docs/advanced-analysis/CUSTOMER_PORTF
 
 The [delivery decision readout](docs/advanced-analysis/DELIVERY_OPERATIONS.md) compares January–July in both years without filtering on review response. Late delivered-order rates increase from **3.63% to 7.94%**. Common-support rate/mix decomposition and standardized estimates separate composition from within-group movement; they do not identify a cause. The report connects findings to record-level investigation priorities and measurement guardrails, including the risk of improving a delivered-only KPI by excluding non-deliveries.
 
-The separate [eight-page Olist Power BI package](powerbi/NEXUS_Olist_Research.zip) embeds these public aggregates and includes all three analytical reports, their CSV evidence and eight NEXUS figures. Native Desktop/DAX acceptance remains unverified.
+The [review-selection study](docs/advanced-analysis/REVIEW_SELECTION.md) adds a retrospective protocol, a fixed mature cohort of **68,448 delivered orders**, 7/30/90-day rating windows, sharp missing-outcome bounds and a 441-scenario assumption grid. At 30 days, available-case poor ratings differ by **+11.26 percentage points**, but the hypothetical full-rating range is **−5.44 to +69.44 pp**. Rating availability is **26.77% for late** and **98.35% for on-time** orders; existing pre-delivery-only reviews are distinguished from absent answers. The range includes zero, so the observed direction is not robust to unrestricted unavailable-rating assumptions. These are not causal effects or confidence bounds.
+
+The separate [eight-page Olist Power BI package](powerbi/NEXUS_Olist_Research.zip) embeds these public aggregates and includes all four analytical reports, their CSV evidence and ten NEXUS figures. The review-selection study is a bundled companion report, without a new native BI page. Native Desktop/DAX acceptance remains unverified.
 
 Reproduce the entire public-data study from the repository root, after installing `requirements-dev.txt`. The Kaggle CLI is only needed for the optional first download:
 
 ```powershell
 # One-time optional download with an authenticated free Kaggle CLI:
 python -m scripts.fetch_olist --products
-# All three studies, report bundle and portable native BI; no data download:
+# All four studies, report bundle and portable native BI; no data download:
 python -m scripts.build_research --raw target/olist/raw --schemas
 ```
 

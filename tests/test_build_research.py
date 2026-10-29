@@ -25,5 +25,14 @@ class ResearchSafety(unittest.TestCase):
                 export.assert_not_called()
             self.assertFalse(receipt.exists())
 
+    def test_failed_fourth_study_also_prevents_export(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);raw=root/'raw';raw.mkdir();out=root/'out';out.mkdir()
+            receipt=out/'research_build.json';receipt.write_text('{"status":"complete"}')
+            with patch('scripts.build_research.core.run'),patch('scripts.build_research.customer.run'),patch('scripts.build_research.operations.run'),patch('scripts.build_research.reviews.run',side_effect=ValueError('Review controls failed')),patch('scripts.build_research.create') as export:
+                with self.assertRaisesRegex(ValueError,'Review controls'):build(raw,out)
+                export.assert_not_called()
+            self.assertFalse(receipt.exists())
+
 
 if __name__=='__main__':unittest.main()

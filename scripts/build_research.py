@@ -1,4 +1,4 @@
-"""Rebuild all three public Olist studies and native BI from six local CSVs.
+"""Rebuild all four public Olist studies and native BI from six local CSVs.
 
 No download, cloud query, browser, screen automation or paid service. Optional
 schema checks retrieve only Microsoft JSON schemas if absent from the cache.
@@ -12,6 +12,7 @@ from pathlib import Path
 from scripts import advanced_olist as core
 from scripts import olist_customer_portfolio as customer
 from scripts import olist_delivery_operations as operations
+from scripts import olist_review_selection as reviews
 from scripts.build_olist_powerbi import create, package
 
 
@@ -25,6 +26,7 @@ def build(raw: Path,out: Path,*,schemas=False) -> dict:
     core.run(raw,out)
     customer.run(raw,out)
     operations.run(raw,out)
+    reviews.run(raw,out)
     project=create(out,out/'powerbi')
     count=None
     if schemas:
@@ -33,7 +35,7 @@ def build(raw: Path,out: Path,*,schemas=False) -> dict:
     archive=out/'NEXUS_Olist_Research.zip'
     package(project,archive)
     result={'status':'complete','source_kind':'historical_public_olist','analytical_reports':[
-        'REPORT.md','CUSTOMER_PORTFOLIO.md','DELIVERY_OPERATIONS.md'],
+        'REPORT.md','CUSTOMER_PORTFOLIO.md','DELIVERY_OPERATIONS.md','REVIEW_SELECTION.md'],
         'project':project.relative_to(out).as_posix(),'archive':archive.name,
         'archive_sha256':core.sha256(archive),'schema_artifacts_validated':count,
         'desktop_render_verified':False,'dax_engine_executed':False,

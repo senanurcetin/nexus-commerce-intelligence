@@ -18,11 +18,13 @@ class OlistPowerBI(unittest.TestCase):
             for forbidden in ('File.Contents','pDataFolder','customer_unique_id','order_id','ECommerceOrders','GreenweezFinance'):
                 self.assertNotIn(forbidden,text)
             self.assertEqual({p.stem for p in (model/'tables').glob('*.tmdl')},set(TABLES))
-            for filename in ('REPORT.md','CUSTOMER_PORTFOLIO.md','DELIVERY_OPERATIONS.md'):
+            for filename in ('REPORT.md','CUSTOMER_PORTFOLIO.md','DELIVERY_OPERATIONS.md','REVIEW_SELECTION.md'):
                 report=project.parent/filename
                 self.assertTrue(report.exists())
                 for picture in re.findall(r'!\[[^\]]*\]\(([^)]+)\)',report.read_text(encoding='utf-8')):
                     self.assertTrue((project.parent/picture).is_file(),picture)
+            for file in ('olist_review_protocol.json','review_selection.sql'):
+                self.assertTrue((project.parent/file).is_file())
             pages=project.parent/(NAME+'.Report/definition/pages')
             self.assertEqual(json.loads((pages/'pages.json').read_text())['pageOrder'],[p['id'] for p in PAGES])
             for page in PAGES:
@@ -89,6 +91,20 @@ class OlistPowerBI(unittest.TestCase):
             evidence['quality']['files'][first]['sha256']=original
             (source/'operations_evidence.json').write_text(json.dumps(evidence))
             with (source/'operations_strata.csv').open('a') as stream:stream.write('\n')
+            with self.assertRaisesRegex(ValueError,'Packaged aggregate file hash'):create(source,Path(directory)/'out')
+
+    def test_review_study_rejects_mixed_sources_and_edited_protocol_or_aggregates(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source=Path(directory)/'source';shutil.copytree(ROOT/'docs/advanced-analysis',source)
+            path=source/'review_selection_evidence.json';receipt=json.loads(path.read_text())
+            first=next(iter(receipt['quality']['files']));original=receipt['quality']['files'][first]['sha256']
+            receipt['quality']['files'][first]['sha256']='0'*64;path.write_text(json.dumps(receipt))
+            with self.assertRaisesRegex(ValueError,'Review selection source snapshots'):create(source,Path(directory)/'out')
+            receipt['quality']['files'][first]['sha256']=original;path.write_text(json.dumps(receipt))
+            protocol=source/'olist_review_protocol.json';original=protocol.read_bytes();protocol.write_bytes(original+b'\n')
+            with self.assertRaisesRegex(ValueError,'protocol/query hash'):create(source,Path(directory)/'out')
+            protocol.write_bytes(original)
+            with (source/'review_sensitivity.csv').open('a') as stream:stream.write('\n')
             with self.assertRaisesRegex(ValueError,'Packaged aggregate file hash'):create(source,Path(directory)/'out')
 
 

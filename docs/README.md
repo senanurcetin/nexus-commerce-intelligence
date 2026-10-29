@@ -9,6 +9,7 @@ Start with [Olist advanced research](advanced-analysis/REPORT.md), [project asse
 
 - [Repeat-purchase timing and product portfolio](advanced-analysis/CUSTOMER_PORTFOLIO.md)
 - [Delivery decision readout and rate/mix diagnostics](advanced-analysis/DELIVERY_OPERATIONS.md)
+- [Review availability, partial identification and assumption sensitivity](advanced-analysis/REVIEW_SELECTION.md)
 
 - [KPI semantics](COMMERCE_KPI_SEMANTICS.md)
 - [Power BI delivery](../powerbi/README.md)

@@ -21,6 +21,8 @@ The customer/portfolio extension adds an independently cross-checked survival es
 
 The delivery readout demonstrates an analyst's decision workflow: choose comparable calendar windows, test denominator/grain controls, distinguish mix from within-group movement, publish common-support loss and uncertainty, prioritize record-level investigation and define guardrails. A Simpson-reversal fixture verifies that a worse aggregate rate can coexist with improvement inside every stratum. The single-command research build makes the analysis and report handoff reproducible.
 
+The review-selection extension adds a recorded retrospective protocol, common follow-up across three windows, explicit rating-availability reasons, sharp partial-identification ranges, a pattern-mixture assumption grid and customer-cluster uncertainty. Exhaustive binary-outcome assignments independently verify the bound endpoints. This improves scientific transparency: neither a large sample nor a narrow available-case interval resolves selection or establishes a causal effect. The protocol is not prospective preregistration.
+
 ## Defects addressed
 
 - Funnel referenced a channel column absent from its source model and collapsed sessions across different users. The corrected SQL takes session attribution from the session mart and requires chronological steps within `(session_id, user_id)`.

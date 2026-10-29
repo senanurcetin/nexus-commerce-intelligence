@@ -1,9 +1,9 @@
 {
-  "date": "2026-10-28",
+  "date": "2026-10-29",
   "scope": "local synthetic commerce and independent historical public Olist; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 241,
+    "passed": 252,
     "failed": 0
   },
   "streamlit_headless": {
@@ -76,7 +76,7 @@
     "raw_window_value_reconciled": true,
     "bootstrap_replicates": 1000,
     "raw_identifiers_exported": false,
-    "generated_figures_inspected": 8,
+    "generated_figures_inspected": 10,
     "historical_sql_notebook_structure_validated": true,
     "historical_sql_notebook_executed": false
   },
@@ -116,7 +116,8 @@
     "stale_success_receipt_removed": true,
     "raw_data_downloaded": false,
     "browser_used": false,
-    "native_engine_executed": false
+    "native_engine_executed": false,
+    "analytical_reports": 4
   },
   "metric_contracts": {
     "metrics": 20,
@@ -137,5 +138,28 @@
     "raw_order_line_value_controls_passed": true,
     "raw_branch_dbt_compile_passed": true,
     "gsheet_analysis_disabled_verified": true
+  },
+  "olist_review_selection": {
+    "eligible_mature_orders": 68448,
+    "customers": 66295,
+    "windows_days": [
+      7,
+      30,
+      90
+    ],
+    "primary_window_days": 30,
+    "bootstrap_replicates": 1000,
+    "unique_customer_count_patterns": 98,
+    "independent_raw_counts_reconciled": true,
+    "sharp_bounds_exhaustively_verified_on_fixture": true,
+    "missing_rating_scenarios": 441,
+    "primary_available_case_difference_pp": 11.25744004439718,
+    "primary_sharp_range_pp": [
+      -5.443727756882025,
+      69.44195205067156
+    ],
+    "protocol_prospectively_preregistered": false,
+    "causal_effect_identified": false,
+    "new_native_bi_page": false
   }
 }
