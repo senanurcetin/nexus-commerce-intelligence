@@ -1,0 +1,92 @@
+{
+  "source": "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce",
+  "source_kind": "historical_public_olist_operations",
+  "license": "CC-BY-NC-SA-4.0",
+  "quality": {
+    "files": {
+      "olist_orders_dataset.csv": {
+        "sha256": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
+        "bytes": 17654914,
+        "rows": 99441
+      },
+      "olist_customers_dataset.csv": {
+        "sha256": "983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2",
+        "bytes": 9033957,
+        "rows": 99441
+      },
+      "olist_order_items_dataset.csv": {
+        "sha256": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+        "bytes": 15438671,
+        "rows": 112650
+      },
+      "olist_order_reviews_dataset.csv": {
+        "sha256": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7",
+        "bytes": 14451670,
+        "rows": 99224
+      }
+    },
+    "order_fact_rows": 99441,
+    "raw_item_value": 13591643.70001419,
+    "fact_item_value": 13591643.700012088,
+    "extra_review_rows_collapsed": 551,
+    "orders_without_items": 775,
+    "orders_without_customer_identity": 0
+  },
+  "summary": {
+    "common_strata": 102,
+    "minimum_orders_per_year_stratum": 20,
+    "common_rate_2017": 0.03479992969711172,
+    "common_rate_2018": 0.07629781420765028,
+    "common_rate_change": 0.041497884510538555,
+    "within_contribution": 0.038396155128590743,
+    "mix_contribution": 0.0031017293819478034,
+    "common_orders_2017": 17069,
+    "common_coverage_2017": 0.9587171422152325,
+    "pooled_standardized_rate_2017": 0.03523514169860356,
+    "common_orders_2018": 43920,
+    "common_coverage_2018": 0.946021625813122,
+    "pooled_standardized_rate_2018": 0.07473079144221344,
+    "dominant_within_month": 3,
+    "dominant_within_month_contribution": 0.022134323184763823,
+    "full_rate_change": 0.04303347856574027,
+    "full_change_ci_low": 0.039391897202371524,
+    "full_change_ci_high": 0.04668276367013645,
+    "bootstrap_customers": 62529,
+    "bootstrap_iterations": 1000,
+    "bootstrap_valid_replicates": 1000,
+    "bootstrap_seed": 20261028,
+    "comparison": "January\u2013July 2018 minus January\u2013July 2017; frozen delivered status",
+    "orders_2017": 17804,
+    "late_orders_2017": 647,
+    "full_rate_2017": 0.0363401482812851,
+    "orders_2018": 46426,
+    "late_orders_2018": 3685,
+    "full_rate_2018": 0.07937362684702537,
+    "coverage_overlapping_exclusions": {
+      "candidate_orders": 64237,
+      "missing_dates": 7,
+      "invalid_dates": 0,
+      "missing_customer_identity": 0
+    },
+    "priority_states": [
+      "SP",
+      "RJ",
+      "MG",
+      "BA",
+      "RS"
+    ],
+    "priority_late_order_share": 0.6795115332428765
+  },
+  "implementation_sha256": "8460898185d06c88f9155006f51f989bbb3f02bb01c6ecb619fa05cedb0f5256",
+  "query_sha256": "1f3a65bd514b05e5b59bb51a287b608d53704b9f3969c631d6b2b2c058ede136",
+  "order_fact_sql_sha256": "e589e02701489e4cd0b0f8d65067cf7c24f60e0a786997d0723050b61f215de6",
+  "aggregate_sha256": {
+    "operations_monthly.csv": "9ca88f7baf5007a164a387afadf50893db18306e3e3654205b04468204c149c1",
+    "operations_states.csv": "489f0242148efeff789851a1e536638dc787663dcfdce22c9be2f965c7e758e0",
+    "operations_strata.csv": "d3b03253ce82b632d5fcab4ffd912660f7efb60320f2730d278b9904f2da9301",
+    "operations_month_contributions.csv": "c2a121b26d4d713ae9e961df095e94703fbe287f9b6261b4a5b78a5bead7ff7c",
+    "operations_summary.csv": "521681ad6c36dbf7bd54f24c14c3842baf2eaca09856b6388174f416f7b17c34"
+  },
+  "desktop_render_verified": false,
+  "dax_engine_executed": false
+}

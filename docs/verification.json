@@ -1,0 +1,195 @@
+{
+  "date": "2026-10-30",
+  "scope": "local synthetic commerce and independent historical public Olist; no browser, Playwright or PC screen",
+  "python_unittest": {
+    "command": "python -m unittest discover -s tests -p test_*.py",
+    "passed": 273,
+    "failed": 0
+  },
+  "streamlit_headless": {
+    "command": "python -m unittest discover -s tests -p smoke_google_marketing_app.py",
+    "passed": 11,
+    "failed": 0,
+    "browser_used": false,
+    "last_local_run_date": "2026-10-27"
+  },
+  "node": {
+    "command": "node --test showcase/tests/*.test.mjs storefront/tests/*.test.mjs",
+    "passed": 16,
+    "failed": 0,
+    "last_local_run_date": "2026-10-27"
+  },
+  "dbt_root": {
+    "models_passed": 10,
+    "data_tests_passed": 59,
+    "seed_tables": 4,
+    "errors": 0,
+    "last_local_run_date": "2026-10-27"
+  },
+  "dbt_greenweez": {
+    "build_nodes_passed": 113,
+    "warnings": 4,
+    "errors": 0,
+    "no_op": 1,
+    "seed_tables": 11,
+    "warning_details": {
+      "refund_above_unverified_units": 842,
+      "sheet_orders_missing_shipping": 4,
+      "raw_sales_lines_missing_product": 23,
+      "raw_orders_missing_shipping": 33
+    },
+    "last_local_run_date": "2026-10-27"
+  },
+  "powerbi": {
+    "microsoft_schema_artifacts_validated": 38,
+    "private_pages_structurally_validated": 7,
+    "public_pages": 4,
+    "desktop_render_verified": false,
+    "dax_engine_verified": false,
+    "microsoft_tom_tmdl_parsed": true,
+    "public_semantic_tables": 4,
+    "private_semantic_tables": 8,
+    "olist_pages": 9,
+    "olist_semantic_tables": 16,
+    "olist_microsoft_schema_artifacts_validated": 72,
+    "olist_microsoft_tom_tmdl_parsed": true
+  },
+  "analysis": {
+    "queries_executed": 5,
+    "raw_to_mart_revenue_orders_reconciled": true,
+    "funnel_conservation_reconciled": true,
+    "greenweez_revenue_margin_reconciled": true,
+    "greenweez_coverage_queries_executed": 1,
+    "known_cost_source_reconciled": true
+  },
+  "brand": {
+    "drive_asset_matches_repository": true,
+    "sha256": "ebbdb363c523dcd88bcfa405be025e5b745419caaf57adb992b8ec1e85ed251e"
+  },
+  "cloud_refresh_performed": false,
+  "live_publication_performed": false,
+  "olist_analysis": {
+    "source_orders": 99441,
+    "main_window_delivered_orders": 89860,
+    "source_files": 4,
+    "raw_to_order_value_reconciled": true,
+    "raw_window_value_reconciled": true,
+    "bootstrap_replicates": 1000,
+    "raw_identifiers_exported": false,
+    "generated_figures_inspected": 12,
+    "historical_sql_notebook_structure_validated": true,
+    "historical_sql_notebook_executed": false
+  },
+  "olist_customer_portfolio": {
+    "observed_customer_origins": 86950,
+    "observed_product_ids": 30015,
+    "extra_source_files": 2,
+    "last_observed_day": "2018-07-31",
+    "km_greenwood_matches_scipy": true,
+    "mature_horizon_checks": [
+      30,
+      60,
+      90,
+      180
+    ],
+    "portfolio_value_reconciled": true,
+    "missing_category_lines_retained": 1504,
+    "untranslated_category_lines_retained": 17,
+    "browser_used": false
+  },
+  "olist_delivery_operations": {
+    "eligible_orders": 64230,
+    "matched_purchase_months": "January-July 2017 and 2018",
+    "common_month_state_strata": 102,
+    "rate_mix_reconciled": true,
+    "raw_denominator_reconciled": true,
+    "customer_cluster_bootstrap_replicates": 1000,
+    "bootstrap_customers": 62529,
+    "simpson_reversal_fixture_passed": true,
+    "causal_effect_estimated": false
+  },
+  "research_pipeline": {
+    "command": "python -m scripts.build_research --schemas",
+    "executed_end_to_end": true,
+    "schema_artifacts_validated": 72,
+    "failure_prevents_export": true,
+    "stale_success_receipt_removed": true,
+    "raw_data_downloaded": false,
+    "browser_used": false,
+    "native_engine_executed": false,
+    "analytical_reports": 5
+  },
+  "metric_contracts": {
+    "metrics": 22,
+    "domains": 3,
+    "explicit_denominator_null_unit_grain": true,
+    "source_paths_validated": true,
+    "cross_domain_references_rejected": true,
+    "documentation_links_checked": true,
+    "live_queries_performed": false
+  },
+  "cost_coverage": {
+    "ecommerce_completed_lines": 9,
+    "ecommerce_cost_value_coverage_pct": 100,
+    "greenweez_unpriced_sales_lines": 23,
+    "greenweez_unpriced_sales_value_source_units": 1546.84,
+    "greenweez_incomplete_component_orders": 55,
+    "finance_model_policy_changed": false,
+    "raw_order_line_value_controls_passed": true,
+    "raw_branch_dbt_compile_passed": true,
+    "gsheet_analysis_disabled_verified": true
+  },
+  "olist_review_selection": {
+    "eligible_mature_orders": 68448,
+    "customers": 66295,
+    "windows_days": [
+      7,
+      30,
+      90
+    ],
+    "primary_window_days": 30,
+    "bootstrap_replicates": 1000,
+    "unique_customer_count_patterns": 98,
+    "independent_raw_counts_reconciled": true,
+    "sharp_bounds_exhaustively_verified_on_fixture": true,
+    "missing_rating_scenarios": 441,
+    "primary_available_case_difference_pp": 11.25744004439718,
+    "primary_sharp_range_pp": [
+      -5.443727756882025,
+      69.44195205067156
+    ],
+    "protocol_prospectively_preregistered": false,
+    "causal_effect_identified": false,
+    "new_native_bi_page": false
+  },
+  "portable_release_audit": {
+    "command": "python -m scripts.release_audit --out docs",
+    "archives_passed": 3,
+    "artifact_delivery_ready": true,
+    "native_bi_release_decision": "HOLD",
+    "editable_projects_found_inside_pinned_archives": true,
+    "desktop_refresh_executed": false,
+    "dax_engine_executed": false,
+    "browser_render_verified": false,
+    "live_refresh_required_for_historical_portfolio": false
+  },
+  "olist_forecasting": {
+    "source_placed_orders": 92580,
+    "calendar_days": 577,
+    "evaluated_weeks": 30,
+    "evaluated_days": 210,
+    "unscored_tail_days": 2,
+    "methods": 4,
+    "future_outcome_poisoning_test_passed": true,
+    "ridge_independent_augmented_solution_verified": true,
+    "paired_bootstrap_replicates": 2000,
+    "primary_block_weeks": 4,
+    "primary_mae_improvement_orders_per_day": -0.6885503803677767,
+    "primary_improvement_ci": [
+      -4.669527582721512,
+      3.058108527661232
+    ],
+    "guaranteed_temporal_coverage": false,
+    "live_ingestion_times_verified": false
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "status": "retrospective_analysis_plan_not_prospective_preregistration",
+  "question": "How sensitive is the descriptive late-versus-on-time poor-rating contrast to unavailable post-delivery ratings?",
+  "purchase_start": "2017-01-01",
+  "observation_cutoff_exclusive": "2018-08-01",
+  "windows_days": [7, 30, 90],
+  "primary_window_days": 30,
+  "poor_score_max": 2,
+  "review_policy": "first answer at or after delivery and at or before the window endpoint; answer strictly before observation cutoff; ties: creation timestamp, review ID, score ascending, nulls last",
+  "cohort_policy": "same cohort for every window; delivered status, positive item GMV, customer identity, valid actual/promised dates, purchase from start, delivery plus maximum window strictly before cutoff",
+  "missing_outcome_policy": "unavailable within-window ratings remain unknown, never assigned a good score",
+  "sensitivity_grid_step": 0.05,
+  "bootstrap_iterations": 1000,
+  "bootstrap_seed": 20261029,
+  "interpretation": "descriptive association and hypothetical full-rating sensitivity; no causal effect, no proof of missing-at-random, no current-business claim"
+}

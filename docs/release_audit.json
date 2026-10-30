@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "artifact_delivery_ready": true,
+  "checks": [
+    {
+      "name": "synthetic_powerbi_archive",
+      "passed": true,
+      "details": {
+        "file": "powerbi/NEXUS_Commerce_Demo.zip",
+        "sha256": "d955f9c9f3b0103db792ef379fae87ecdbc6f2e3bed49e26075e33abd97459a4",
+        "bytes": 55344,
+        "entries": 46,
+        "pages": 4,
+        "semantic_tables": 4,
+        "embedded_data_only": true
+      }
+    },
+    {
+      "name": "public_research_archive",
+      "passed": true,
+      "details": {
+        "file": "powerbi/NEXUS_Olist_Research.zip",
+        "sha256": "0199a6915195ca14a5a035535c67ce4eec7be1fd67cbbcd66ae218fde13933a7",
+        "bytes": 1368585,
+        "entries": 147,
+        "pages": 9,
+        "semantic_tables": 16,
+        "embedded_data_only": true,
+        "reports": 5,
+        "figures": 12,
+        "source_snapshots_match": true,
+        "aggregate_hashes_match": true
+      }
+    },
+    {
+      "name": "synthetic_website_archive",
+      "passed": true,
+      "details": {
+        "file": "showcase/NEXUS_Commerce_Web_Demo.zip",
+        "sha256": "00f15167d8075bc0f07e15e0a866a5ffda0054e852c71edadc383e67b72b4bf6",
+        "bytes": 39293,
+        "entries": 7,
+        "synthetic_only": true,
+        "source_files_current": true,
+        "browser_render_verified": false
+      }
+    }
+  ],
+  "errors": [],
+  "native_bi_release_decision": "HOLD",
+  "desktop_render_verified": false,
+  "native_refresh_verified": false,
+  "dax_engine_executed": false,
+  "browser_render_verified": false,
+  "live_refresh_required_for_historical_portfolio": false,
+  "scope": "Content-addressed offline portfolio artifacts. This audit does not run Power BI, a browser, DAX, or cloud queries."
+}

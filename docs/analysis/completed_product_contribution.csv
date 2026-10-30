@@ -1,0 +1,5 @@
+category,completed_lines,completed_revenue,known_cost_completed_lines,known_cost_completed_revenue,unknown_cost_completed_revenue,known_unit_cost,known_cost_product_contribution,cost_revenue_coverage_pct,known_cost_margin_pct
+electronics,3,1009.970000,3,1009.970000,0.000000,569.790000,440.180000,100.0,43.5834727764191
+kitchen,3,239.970000,3,239.970000,0.000000,103.500000,136.470000,100.0,56.869608701087635
+footwear,1,89.990000,1,89.990000,0.000000,44.500000,45.490000,100.0,50.55006111790199
+sports & outdoors,2,69.980000,2,69.980000,0.000000,29.500000,40.480000,100.0,57.84509859959988

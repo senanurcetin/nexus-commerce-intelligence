@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0f19">
+  <meta name="description" content="NEXUS Commerce Intelligence: an end-to-end analytics engineering portfolio combining E-Commerce, Greenweez finance and measurement contracts.">
+  <title>NEXUS | Commerce Intelligence</title>
+  <link rel="icon" href="./favicon.svg"><link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to analytics</a>
+<aside class="sidebar">
+  <a class="brand" href="#overview" aria-label="NEXUS home"><img src="./nexus-logo.png" width="174" height="52" alt="NEXUS"></a>
+  <div class="workspace-label">ANALYTICS WORKSPACE</div>
+  <nav aria-label="Workspace"><a class="active" href="#overview"><span>01</span> Overview <b>↗</b></a><a href="#explorer"><span>02</span> Performance</a><a href="#architecture"><span>03</span> Data architecture</a><a href="#evidence"><span>04</span> Source assurance</a></nav>
+  <div class="sidebar-bottom"><div class="monogram">N</div><div>NEXUS STUDIO<small>Analytics engineering</small></div><span class="signal"></span></div>
+</aside>
+<div class="workspace">
+  <header class="topbar"><div><span class="muted">Workspace</span><span class="slash">/</span>Commerce Intelligence</div><a href="https://github.com/senanurcetin/nexus-commerce-intelligence" target="_blank" rel="noopener">View source <span>↗</span></a></header>
+  <main id="main">
+    <section class="hero" id="overview"><div class="eyebrow"><span class="signal"></span> NEXUS / COMMERCE INTELLIGENCE <span class="edition">PORTFOLIO EDITION · 01</span></div><div class="hero-grid"><div><h1>From commerce data<br>to <em>clear decisions.</em></h1><p>One analytical workspace. Two independent business domains.<br>Engineered for traceable metrics, from source to decision.</p></div><div class="hero-mark" aria-hidden="true"><span>SQL</span><div class="orbit">N<span>+</span></div><span>dbt → BI</span></div></div><div class="hero-footer"><span>BIGQUERY</span><i></i><span>dbt</span><i></i><span>DUCKDB</span><i></i><span>POWER BI</span><a href="#architecture">Explore the pipeline ↗</a></div></section>
+    <div class="section-heading" id="explorer"><div><p class="eyebrow">01 / PERFORMANCE EXPLORER</p><h2>Business performance</h2></div><span class="demo-tag">SYNTHETIC DEMONSTRATION</span></div>
+    <div class="controls"><div class="source-switch" role="group" aria-label="Business domain"><button data-source="ecommerce" aria-pressed="true">E-Commerce</button><button data-source="greenweez" aria-pressed="false">Greenweez</button></div><div class="date-range"><label>From <input type="date" id="start"></label><span>—</span><label>To <input type="date" id="end"></label><button class="reset" id="reset">Reset</button></div></div>
+    <div class="source-context"><span id="source-label">Loading source…</span><span id="period"></span></div>
+    <div id="status" role="status" aria-live="polite">Loading validated demonstration data…</div>
+    <div id="metrics" class="metrics"></div>
+    <div class="charts"><section class="panel trend-panel"><div class="panel-head"><div><p class="eyebrow">DAILY PERFORMANCE</p><h3 id="trend-title">Revenue trajectory</h3></div><span class="legend"><i></i> Source units</span></div><div id="chart" class="chart"></div><div class="chart-caption">Daily aggregates · original source units · no cross-merchant totals</div></section><section class="panel insight-panel"><div class="panel-head"><div><p class="eyebrow">DECISION CONTEXT</p><h3>Read the signal</h3></div><span class="context-icon">↗</span></div><div id="insights"></div><div class="insight-footer"><span class="signal"></span> Definitions before conclusions</div></section></div>
+    <section class="panel ledger"><div class="panel-head"><div><p class="eyebrow">AUDITABLE DETAIL</p><h3>Daily performance ledger</h3></div><button id="download" class="download">Export CSV ↓</button></div><div class="table-scroll" tabindex="0" aria-label="Daily data table"><table id="ledger"></table></div><div class="chart-caption">All filtered observations are included in the CSV export.</div></section>
+    <section id="architecture"><div class="section-heading"><div><p class="eyebrow">02 / ANALYTICS ENGINEERING</p><h2>Built on a clear data contract.</h2></div><span class="muted">Independent domains. Shared standards.</span></div><div class="pipeline"><article><span class="step">01 / INGEST</span><h3>Source systems</h3><p>E-Commerce events & orders<br>Greenweez finance & campaigns</p><small>BigQuery · US / EU</small></article><span class="pipe-arrow">→</span><article><span class="step">02 / TRANSFORM</span><h3>dbt models</h3><p>Staging → intermediate → marts<br>Keys, relationships, reconciliation</p><small>BigQuery / DuckDB adapters</small></article><span class="pipe-arrow">→</span><article><span class="step">03 / PRESENT</span><h3>Decision surfaces</h3><p>Scoped measures & daily aggregates<br>Native Power BI project generator</p><small>English-first · NEXUS identity</small></article></div></section>
+    <section id="evidence"><div class="section-heading"><div><p class="eyebrow">03 / SOURCE ASSURANCE</p><h2>Know what the numbers represent.</h2></div></div><div class="assurance-grid"><article class="panel"><span class="evidence-number">01</span><h3>Reproducible demonstration</h3><p>This public view uses only committed synthetic dbt seeds. It demonstrates the analytical workflow and does not represent actual trading results.</p><span class="evidence-tag">SYNTHETIC · EXPLICITLY LABELLED</span></article><article class="panel"><span class="evidence-number">02</span><h3>Connected warehouse</h3><p>GitHub OIDC verified eight pinned BigQuery table schemas and 62 required fields. Schema access does not certify business performance.</p><a href="https://github.com/senanurcetin/nexus-commerce-intelligence/actions/runs/39071051381" target="_blank" rel="noopener">Inspect connection evidence ↗</a></article><article class="panel"><span class="evidence-number">03</span><h3>Independent measurement</h3><p>GA4 lab events, Search Console and Lighthouse have separate collectors. No private account measurements are included in this public bundle.</p><a href="https://nexus-commerce-lab.vercel.app/" target="_blank" rel="noopener">Open Commerce Lab ↗</a></article></div></section>
+    <footer><div><strong>NEXUS</strong> <span>/</span> Commerce Intelligence</div><span>Portfolio case study · No payments or real checkout</span><a href="https://github.com/senanurcetin/nexus-commerce-intelligence">Explore the engineering ↗</a></footer>
+  </main>
+</div>
+</body></html>

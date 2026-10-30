@@ -1,0 +1,16 @@
+{
+  "file": "NEXUS_Olist_Research.zip",
+  "sha256": "0199a6915195ca14a5a035535c67ce4eec7be1fd67cbbcd66ae218fde13933a7",
+  "bytes": 1368585,
+  "provenance": "historical_public_olist_aggregate_only",
+  "license": "CC-BY-NC-SA-4.0",
+  "source": "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce",
+  "pages": 9,
+  "semantic_tables": 16,
+  "schema_artifacts_validated": 72,
+  "microsoft_tom_tmdl_parsed": true,
+  "desktop_render_verified": false,
+  "dax_engine_executed": false,
+  "bundled_analytical_reports": 5,
+  "bundled_figures": 12
+}

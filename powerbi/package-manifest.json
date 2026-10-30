@@ -1,0 +1,18 @@
+{
+  "powerbi": {
+    "file": "NEXUS_Commerce_Demo.zip",
+    "sha256": "d955f9c9f3b0103db792ef379fae87ecdbc6f2e3bed49e26075e33abd97459a4",
+    "bytes": 55344,
+    "entries": 46,
+    "provenance": "synthetic_dbt_seeds_only"
+  },
+  "website": {
+    "file": "NEXUS_Commerce_Web_Demo.zip",
+    "sha256": "00f15167d8075bc0f07e15e0a866a5ffda0054e852c71edadc383e67b72b4bf6",
+    "bytes": 39293,
+    "entries": 7,
+    "provenance": "synthetic_dbt_seeds_only"
+  },
+  "desktop_render_verified": false,
+  "browser_interaction_verified": false
+}
