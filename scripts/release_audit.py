@@ -16,7 +16,7 @@ import stat
 import zipfile
 
 ROOT=Path(__file__).resolve().parents[1]
-REPORTS=('REPORT.md','CUSTOMER_PORTFOLIO.md','DELIVERY_OPERATIONS.md','REVIEW_SELECTION.md')
+REPORTS=('REPORT.md','CUSTOMER_PORTFOLIO.md','DELIVERY_OPERATIONS.md','REVIEW_SELECTION.md','FORECAST_VALIDATION.md')
 PRIVATE_FIELDS=re.compile(r'\b(?:order_id|order_item_id|customer_id|customer_unique_id|user_id|review_id)\b',re.I)
 
 
@@ -84,7 +84,7 @@ def research_bundle(root,files,manifest):
         raise ValueError('Research provenance/license contract changed')
     if manifest.get('desktop_render_verified') is not False or manifest.get('dax_engine_executed') is not False:
         raise ValueError('Manifest asserts unsupported native BI acceptance')
-    receipts=[json.loads(files[f]) for f in ('evidence.json','extension_evidence.json','operations_evidence.json','review_selection_evidence.json')]
+    receipts=[json.loads(files[f]) for f in ('evidence.json','extension_evidence.json','operations_evidence.json','review_selection_evidence.json','forecast_evidence.json')]
     source=receipts[0]
     for receipt in receipts:
         if receipt['quality']['files']!=source['quality']['files']:raise ValueError('Research reports use different raw snapshots')
@@ -97,7 +97,7 @@ def research_bundle(root,files,manifest):
                 raise ValueError('Broken bundled report link: '+link)
         if files[report].replace(b'\r\n',b'\n')!=(root/'docs/advanced-analysis'/report).read_bytes().replace(b'\r\n',b'\n'):
             raise ValueError('Bundled report differs from current documentation: '+report)
-    review=receipts[-1]
+    review=receipts[3]
     for file,key,canonical in (
         ('olist_review_protocol.json','protocol_sha256','contracts/olist_review_protocol.json'),
         ('review_selection.sql','query_sha256','analytics/olist/review_selection.sql')):
@@ -105,8 +105,16 @@ def research_bundle(root,files,manifest):
             raise ValueError('Research protocol/query is stale')
     if digest((root/'scripts/olist_review_selection.py').read_bytes())!=review['implementation_sha256']:
         raise ValueError('Review analysis implementation is newer than its evidence')
+    prediction=receipts[4]
+    for file,key,canonical in (
+        ('olist_forecast_protocol.json','protocol_sha256','contracts/olist_forecast_protocol.json'),
+        ('daily_order_volume.sql','query_sha256','analytics/olist/daily_order_volume.sql')):
+        if digest(files[file])!=prediction[key] or files[file]!=(root/canonical).read_bytes():
+            raise ValueError('Forecast protocol/query is stale')
+    if digest((root/'scripts/olist_forecast.py').read_bytes())!=prediction['implementation_sha256']:
+        raise ValueError('Forecast implementation is newer than its evidence')
     figures=[key for key in files if '/' not in key and key.endswith('.png')]
-    if len(figures)!=10 or manifest.get('bundled_figures')!=10 or manifest.get('bundled_analytical_reports')!=4:
+    if len(figures)!=12 or manifest.get('bundled_figures')!=12 or manifest.get('bundled_analytical_reports')!=5:
         raise ValueError('Research report/figure count contract changed')
     return {'reports':len(REPORTS),'figures':len(figures),'source_snapshots_match':True,'aggregate_hashes_match':True}
 
@@ -141,7 +149,7 @@ def audit(root:Path=ROOT):
     def research():
         m=json.loads((root/'powerbi/olist-package-manifest.json').read_text())
         f,info=load_pinned(root,'powerbi/NEXUS_Olist_Research.zip',m)
-        return {**info,**native_project(f,'NEXUS_Olist_Research',8,14,(root/'branding/nexus_official_transparent.png').read_bytes()),**research_bundle(root,f,m)}
+        return {**info,**native_project(f,'NEXUS_Olist_Research',9,16,(root/'branding/nexus_official_transparent.png').read_bytes()),**research_bundle(root,f,m)}
     def website():
         m=json.loads((root/'powerbi/package-manifest.json').read_text())['website']
         f,info=load_pinned(root,'showcase/NEXUS_Commerce_Web_Demo.zip',m)
@@ -170,7 +178,7 @@ Regenerate with `python -m scripts.release_audit --out docs`. This checks the ac
 
 The checks cover pinned archive size/SHA-256, bounded safe archive paths, PBIP/report/model bindings, page/table counts, portable model paths, official logo bytes, matching research sources/aggregate hashes, current bundled reports/protocol/query, report links, and synthetic-only website provenance. They do not establish visual fidelity, successful refresh, or DAX results. Microsoft schema and TOM parser results are separate checks recorded in [delivery evidence]({delivery}).
 
-The research package contains four reports and ten figures alongside an eight-page/fourteen-table native BI project. Review-selection sensitivity is a companion report, without a separate native page. E-Commerce and Greenweez fixtures remain synthetic, and Olist remains a separate historical public study under CC BY-NC-SA 4.0. A live private-source refresh is not required to present that explicitly historical portfolio; it is required before making new live-business claims.
+The research package contains five reports and twelve figures alongside a nine-page/sixteen-table native BI project. Review-selection sensitivity is a companion report, without a separate native page; temporal forecasting has its own native page. E-Commerce and Greenweez fixtures remain synthetic, and Olist remains a separate historical public study under CC BY-NC-SA 4.0. A live private-source refresh is not required to present that explicitly historical portfolio; it is required before making new live-business claims.
 
 Outstanding native acceptance requires actual Power BI opening, refresh, DAX execution and visual inspection. This command cannot promote those gates. Browser and PC-screen automation remain excluded from this workflow. PR review and merging are independent repository actions and are not performed by this audit.
 '''

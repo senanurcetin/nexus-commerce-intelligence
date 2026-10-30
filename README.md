@@ -6,7 +6,7 @@
 
 E-Commerce and Greenweez share engineering standards while retaining independent facts, populations and financial definitions. This is a non-commercial portfolio project.
 
-The [20-metric KPI catalog](docs/KPI_CATALOG.md) defines each metric's unit, grain, eligible denominator, null behavior, implementation and limits. The [source coverage table](docs/SOURCE_COVERAGE.md) distinguishes synthetic pipeline evidence, separate Olist history and live integrations not verified by the local build.
+The [22-metric KPI catalog](docs/KPI_CATALOG.md) defines each metric's unit, grain, eligible denominator, null behavior, implementation and limits. The [source coverage table](docs/SOURCE_COVERAGE.md) distinguishes synthetic pipeline evidence, separate Olist history and live integrations not verified by the local build.
 
 Core commerce analysis now reports **known-cost contribution with matched revenue denominators** and **Greenweez product/shipping coverage**. In the synthetic Greenweez fixture, 23 unpriced sales lines carry 1,546.84 source units of sales value and 55 order records have incomplete components. The coverage report preserves the existing finance model while making its exclusions and zero policies visible; it does not infer audited profit or missing costs. See [commerce findings](docs/analysis/REPORT.md).
 
@@ -31,7 +31,7 @@ The [Olist report](docs/advanced-analysis/REPORT.md) reconstructs a **99,441-ord
 | Portfolio concentration | How concentrated is item GMV across products/categories? Top-k shares, HHI, effective product count and complete-quarter comparisons |
 | Comparable delivery diagnostics | Did experience change across the same calendar months? Common-support checks, Kitagawa rate/mix decomposition and customer-cluster uncertainty |
 
-The weighted month-1 repeat rate is **0.48%**, replacing an unsupported historical 3–5% notebook claim. Delivery contrasts change substantially with review timing; the report presents this sensitivity prominently. These are historical marketplace observations, not causal effects, forecasts, audited financial results or current business performance.
+The weighted month-1 repeat rate is **0.48%**, replacing an unsupported historical 3–5% notebook claim. Delivery contrasts change substantially with review timing; the report presents this sensitivity prominently. These are historical marketplace observations, not causal effects, live forecasts, audited financial results or current business performance.
 
 Reproduce with `python -m scripts.advanced_olist --raw target/olist/raw`; exact source-file hashes, aggregate CSVs, eligibility and methods are recorded in [evidence](docs/advanced-analysis/evidence.json). Obtain the four named official CSVs with the free Kaggle CLI as described in the report. Raw files remain in ignored `target/` and are never downloaded in CI.
 
@@ -41,14 +41,16 @@ The [delivery decision readout](docs/advanced-analysis/DELIVERY_OPERATIONS.md) c
 
 The [review-selection study](docs/advanced-analysis/REVIEW_SELECTION.md) adds a retrospective protocol, a fixed mature cohort of **68,448 delivered orders**, 7/30/90-day rating windows, sharp missing-outcome bounds and a 441-scenario assumption grid. At 30 days, available-case poor ratings differ by **+11.26 percentage points**, but the hypothetical full-rating range is **−5.44 to +69.44 pp**. Rating availability is **26.77% for late** and **98.35% for on-time** orders; existing pre-delivery-only reviews are distinguished from absent answers. The range includes zero, so the observed direction is not robust to unrestricted unavailable-rating assumptions. These are not causal effects or confidence bounds.
 
-The separate [eight-page Olist Power BI package](powerbi/NEXUS_Olist_Research.zip) embeds these public aggregates and includes all four analytical reports, their CSV evidence and ten NEXUS figures. The review-selection study is a bundled companion report, without a new native BI page. Native Desktop/DAX acceptance remains unverified.
+The [temporal forecasting benchmark](docs/advanced-analysis/FORECAST_VALIDATION.md) tests seven-day forecasts on **30 non-overlapping future weeks / 210 days**, with only past data used for model selection and interval calibration. The declared selector has MAE **41.19 orders/day**, versus **40.50** for seasonal naive; the paired four-week block interval for improvement is **−4.67 to +3.06 orders/day**. This does not establish superiority. Bands are evaluated for coverage and width, and future-perturbation tests guard against data leakage. The target includes **all placed orders**, independently of final delivery status.
+
+The separate [nine-page Olist Power BI package](powerbi/NEXUS_Olist_Research.zip) embeds these public aggregates and includes all five analytical reports, their CSV evidence and twelve NEXUS figures. The review-selection study is a bundled companion report, without a new native BI page. Native Desktop/DAX acceptance remains unverified.
 
 Reproduce the entire public-data study from the repository root, after installing `requirements-dev.txt`. The Kaggle CLI is only needed for the optional first download:
 
 ```powershell
 # One-time optional download with an authenticated free Kaggle CLI:
 python -m scripts.fetch_olist --products
-# All four studies, report bundle and portable native BI; no data download:
+# All five studies, report bundle and portable native BI; no data download:
 python -m scripts.build_research --raw target/olist/raw --schemas
 ```
 

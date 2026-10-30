@@ -1,0 +1,175 @@
+{
+  "source": "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce",
+  "source_kind": "historical_public_olist_forecast",
+  "synthetic": false,
+  "license": "CC-BY-NC-SA-4.0",
+  "quality": {
+    "files": {
+      "olist_orders_dataset.csv": {
+        "sha256": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
+        "bytes": 17654914,
+        "rows": 99441
+      },
+      "olist_customers_dataset.csv": {
+        "sha256": "983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2",
+        "bytes": 9033957,
+        "rows": 99441
+      },
+      "olist_order_items_dataset.csv": {
+        "sha256": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+        "bytes": 15438671,
+        "rows": 112650
+      },
+      "olist_order_reviews_dataset.csv": {
+        "sha256": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7",
+        "bytes": 14451670,
+        "rows": 99224
+      }
+    },
+    "order_fact_rows": 99441,
+    "raw_item_value": 13591643.70001419,
+    "fact_item_value": 13591643.700012088,
+    "extra_review_rows_collapsed": 551,
+    "orders_without_items": 775,
+    "orders_without_customer_identity": 0
+  },
+  "protocol": {
+    "version": 1,
+    "status": "retrospective_benchmark_not_prospective_preregistration",
+    "target": "daily count of all placed orders in the extract, including cancelled and undelivered orders; no final-status filter",
+    "series_start": "2017-01-01",
+    "series_end_exclusive": "2018-08-01",
+    "calibration_origin_start": "2017-09-25",
+    "evaluation_start": "2018-01-01",
+    "horizon_days": 7,
+    "origin_step_days": 7,
+    "models": [
+      "seasonal_naive",
+      "weekday_mean_28",
+      "ridge_calendar_180"
+    ],
+    "primary_method": "past_mae_selector",
+    "selector_history_weeks": 12,
+    "selector_fallback": "seasonal_naive",
+    "ridge_days": 180,
+    "ridge_penalty": 10.0,
+    "calibration_weeks": 12,
+    "alpha": 0.1,
+    "interval_score": "maximum absolute error within a completed 7-day forecast block; finite-sample upper rank; clip lower interval at zero",
+    "paired_bootstrap_blocks_weeks": [
+      1,
+      4,
+      8
+    ],
+    "primary_bootstrap_block_weeks": 4,
+    "bootstrap_iterations": 2000,
+    "bootstrap_seed": 20261029,
+    "selection_policy": "choose the lowest mean weekly MAE on at most 12 completed past origins; ties use listed model order; evaluation outcomes become usable only after their week ends",
+    "limitations": "rolling calibration is descriptive under dependence/drift; no guaranteed 90% coverage, live ingestion timestamps, future deployment performance, causal effect, or revenue forecast"
+  },
+  "protocol_sha256": "deac03bb1241684cf7ea947d4b9ee2965e9984555bb8588da43a511b87bb68e9",
+  "implementation_sha256": "39a7eff9837850719dacec0a7128fb264015082ee9ed3c2c932dcd2ca027fd55",
+  "query_sha256": "c28b0364f3b0d2182af65aaca9d00570dc6305ff20b1342b1c6443e39e9b6bbf",
+  "order_fact_sql_sha256": "e589e02701489e4cd0b0f8d65067cf7c24f60e0a786997d0723050b61f215de6",
+  "raw_daily_counts_reconciled": true,
+  "series_days": 577,
+  "placed_orders": 92580,
+  "evaluation_days": 210,
+  "evaluation_weeks": 30,
+  "unscored_tail_days": 2,
+  "metrics": [
+    {
+      "method": "seasonal_naive",
+      "evaluated_days": 210,
+      "evaluated_weeks": 30,
+      "mae": 40.5,
+      "rmse": 54.6816326784502,
+      "wape": 0.18146322729309353,
+      "mase": 1.2339793525696057,
+      "day_coverage": 0.980952380952381,
+      "week_coverage": 0.9333333333333333,
+      "mean_width": 570.4857142857143,
+      "interval_score": 588.104761904762
+    },
+    {
+      "method": "weekday_mean_28",
+      "evaluated_days": 210,
+      "evaluated_weeks": 30,
+      "mae": 40.83095238095238,
+      "rmse": 54.67410482207494,
+      "wape": 0.18294608376538862,
+      "mase": 1.2434327330042798,
+      "day_coverage": 0.9761904761904762,
+      "week_coverage": 0.9333333333333333,
+      "mean_width": 556.1119047619047,
+      "interval_score": 573.8976190476191
+    },
+    {
+      "method": "ridge_calendar_180",
+      "evaluated_days": 210,
+      "evaluated_weeks": 30,
+      "mae": 38.69320243552009,
+      "rmse": 50.09225373080856,
+      "wape": 0.17336773798159164,
+      "mase": 1.1794783658610293,
+      "day_coverage": 0.9857142857142858,
+      "week_coverage": 0.9333333333333333,
+      "mean_width": 490.0159005669066,
+      "interval_score": 495.6778387282444
+    },
+    {
+      "method": "past_mae_selector",
+      "evaluated_days": 210,
+      "evaluated_weeks": 30,
+      "mae": 41.18855038036778,
+      "rmse": 54.29019771177544,
+      "wape": 0.18454832789001757,
+      "mase": 1.2530403049784837,
+      "day_coverage": 0.9761904761904762,
+      "week_coverage": 0.9333333333333333,
+      "mean_width": 534.5677904752669,
+      "interval_score": 551.6240075409718
+    }
+  ],
+  "paired_uncertainty": [
+    {
+      "block_weeks": 1,
+      "mae_improvement": -0.6885503803677767,
+      "ci_low": -4.75621826188866,
+      "ci_high": 3.4497150463930333,
+      "iterations": 2000,
+      "seed": 20261029
+    },
+    {
+      "block_weeks": 4,
+      "mae_improvement": -0.6885503803677767,
+      "ci_low": -4.669527582721512,
+      "ci_high": 3.058108527661232,
+      "iterations": 2000,
+      "seed": 20261029
+    },
+    {
+      "block_weeks": 8,
+      "mae_improvement": -0.6885503803677767,
+      "ci_low": -4.219496662283234,
+      "ci_high": 2.4389310522243486,
+      "iterations": 2000,
+      "seed": 20261029
+    }
+  ],
+  "aggregate_sha256": {
+    "forecast_daily.csv": "ee6c4be91045826e8b830193330b415f6a83a2cc998139373fbcecd57c42f811",
+    "forecast_folds.csv": "976dec7be046fd9e22162501e7372b13c9ebe464d369a14292ed7e5be60d47c5",
+    "forecast_metrics.csv": "4c7e6097708f17a559fd9559c269331a8289c2b48a01608a3b9f4e24dfb44f0e",
+    "forecast_uncertainty.csv": "7aed136d4b15e36a636a5e357c01ec4db09d0f6a92b24fdf821f0696c076fdc4",
+    "forecast_volume.csv": "39a95e051975b16f77aef9000d498b6c93eaa96ac30c13f7602516972fdea992"
+  },
+  "method_sources": [
+    "https://otexts.com/fpp3/tscv.html",
+    "https://otexts.com/fpp3/accuracy.html",
+    "https://papers.neurips.cc/paper/2021/file/312f1ba2a72318edaaa995a67835fad5-Paper.pdf"
+  ],
+  "guaranteed_temporal_coverage": false,
+  "real_ingestion_times_verified": false,
+  "native_engine_executed": false
+}

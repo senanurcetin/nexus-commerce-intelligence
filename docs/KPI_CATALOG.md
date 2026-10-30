@@ -211,3 +211,23 @@ Actual delivery calendar date later than promised calendar date / eligible deliv
 Denominator: Valid-date positive-GMV delivered orders in matched seven-month windows. Null policy: Missing/invalid dates are excluded and counted; no review-response filter.
 
 Limit: Delivered-only retrospective endpoint; standardization and rate/mix components are not causal effects. [Implementation](../analytics/olist/delivery_operations.sql).
+
+### Placed orders by calendar day
+
+`olist_placed_orders` · Unit: **orders per source calendar day** · Grain: **one complete source-calendar day**
+
+Count raw order IDs by purchase date, including cancelled, undelivered and itemless orders; complete the declared date grid with zero recorded orders.
+
+Denominator: One source-calendar day in [2017-01-01, 2018-08-01); count is additive over disjoint dates. Null policy: Missing purchase timestamps fail extraction; zero means no records in the frozen extract, not confirmed downtime.
+
+Limit: Different from delivered-only order/GMV measures; extraction completeness, real ingestion times and timestamp timezone remain unverified. [Implementation](../analytics/olist/daily_order_volume.sql).
+
+### Rolling-origin order-volume forecast MAE
+
+`olist_temporal_mae` · Unit: **absolute order-count error per evaluated day** · Grain: **declared method across identical non-overlapping future seven-day blocks**
+
+Sum absolute difference between observed placed orders and origin-frozen point forecasts, divided by evaluated days.
+
+Denominator: 210 identical evaluated dates across 30 complete weeks; training/selection/calibration use only completed past data. Null policy: Absent evaluation or immature calibration fails the benchmark; zero seasonal training scale leaves MASE unavailable.
+
+Limit: Retrospective 2018 benchmark; no test-set tuning, revenue forecast, guaranteed temporal coverage or future deployment superiority. [Implementation](../scripts/olist_forecast.py).

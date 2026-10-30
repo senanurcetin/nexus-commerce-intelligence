@@ -14,7 +14,7 @@ class MetricContracts(unittest.TestCase):
 
     def test_registry_is_complete_and_domain_scoped(self):
         metrics=validate(self.registry)
-        self.assertEqual(len(metrics),20)
+        self.assertEqual(len(metrics),22)
         self.assertEqual({m['domain'] for m in metrics},{'E-Commerce','Greenweez','Olist'})
 
     def test_duplicate_missing_denominator_and_foreign_source_are_rejected(self):

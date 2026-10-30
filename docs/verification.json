@@ -1,9 +1,9 @@
 {
-  "date": "2026-10-29",
+  "date": "2026-10-30",
   "scope": "local synthetic commerce and independent historical public Olist; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 261,
+    "passed": 273,
     "failed": 0
   },
   "streamlit_headless": {
@@ -49,9 +49,9 @@
     "microsoft_tom_tmdl_parsed": true,
     "public_semantic_tables": 4,
     "private_semantic_tables": 8,
-    "olist_pages": 8,
-    "olist_semantic_tables": 14,
-    "olist_microsoft_schema_artifacts_validated": 63,
+    "olist_pages": 9,
+    "olist_semantic_tables": 16,
+    "olist_microsoft_schema_artifacts_validated": 72,
     "olist_microsoft_tom_tmdl_parsed": true
   },
   "analysis": {
@@ -76,7 +76,7 @@
     "raw_window_value_reconciled": true,
     "bootstrap_replicates": 1000,
     "raw_identifiers_exported": false,
-    "generated_figures_inspected": 10,
+    "generated_figures_inspected": 12,
     "historical_sql_notebook_structure_validated": true,
     "historical_sql_notebook_executed": false
   },
@@ -111,16 +111,16 @@
   "research_pipeline": {
     "command": "python -m scripts.build_research --schemas",
     "executed_end_to_end": true,
-    "schema_artifacts_validated": 63,
+    "schema_artifacts_validated": 72,
     "failure_prevents_export": true,
     "stale_success_receipt_removed": true,
     "raw_data_downloaded": false,
     "browser_used": false,
     "native_engine_executed": false,
-    "analytical_reports": 4
+    "analytical_reports": 5
   },
   "metric_contracts": {
-    "metrics": 20,
+    "metrics": 22,
     "domains": 3,
     "explicit_denominator_null_unit_grain": true,
     "source_paths_validated": true,
@@ -172,5 +172,24 @@
     "dax_engine_executed": false,
     "browser_render_verified": false,
     "live_refresh_required_for_historical_portfolio": false
+  },
+  "olist_forecasting": {
+    "source_placed_orders": 92580,
+    "calendar_days": 577,
+    "evaluated_weeks": 30,
+    "evaluated_days": 210,
+    "unscored_tail_days": 2,
+    "methods": 4,
+    "future_outcome_poisoning_test_passed": true,
+    "ridge_independent_augmented_solution_verified": true,
+    "paired_bootstrap_replicates": 2000,
+    "primary_block_weeks": 4,
+    "primary_mae_improvement_orders_per_day": -0.6885503803677767,
+    "primary_improvement_ci": [
+      -4.669527582721512,
+      3.058108527661232
+    ],
+    "guaranteed_temporal_coverage": false,
+    "live_ingestion_times_verified": false
   }
 }

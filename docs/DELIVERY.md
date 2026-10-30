@@ -1,10 +1,10 @@
 # Delivery evidence
 
-Updated 29 October 2026. Non-commercial, English-language NEXUS analytics case study. No Playwright, browser control or PC-screen use in this development pass.
+Updated 30 October 2026. Non-commercial, English-language NEXUS analytics case study. No Playwright, browser control or PC-screen use in this development pass.
 
 ## Implemented
 
-- Added a validated 20-metric registry, generated KPI catalog and source coverage table for the core commerce and independent Olist domains. Source definitions include eligibility, grain, denominator, units, null policies and implementation links.
+- Added a validated 22-metric registry, generated KPI catalog and source coverage table for the core commerce and independent Olist domains. Source definitions include eligibility, grain, denominator, units, null policies and implementation links.
 - Added known-cost completed product contribution with a matched revenue denominator and Greenweez product/shipping coverage. The synthetic fixture has 23 unpriced sales lines and 55 incomplete-component order records; source order/line/value controls reconcile without changing the finance models.
 - Replaced obsolete row-level DAX examples with explicitly scoped reference measures. The static acceptance gate now checks a matched cost denominator rather than requiring a misleading acquisition-cost proxy name; Desktop/DAX acceptance remains separate.
 
@@ -21,16 +21,18 @@ Updated 29 October 2026. Non-commercial, English-language NEXUS analytics case s
 - Reconstructed the official 99,441-order Olist extract independently, with one order per fact row and source-file fingerprints. The principal purchase window contains 89,860 delivered orders.
 - Added observation-aware repeat-purchase cohorts, tie-preserving as-of customer policies, exact Shapley GMV decomposition, 1,000-replicate customer-cluster bootstrap, month-standardization and a full exploratory state FDR family.
 - Published review-timing sensitivity instead of presenting a selected-sample association as an intervention effect. Corrected the historical SQL notebook's unverified retention narrative; its code was not rerun.
-- Delivered ten current NEXUS analytical figures and a separate eight-page portable Olist Power BI package, with original source attribution and CC BY-NC-SA 4.0 data/report terms.
+- Delivered twelve current NEXUS analytical figures and a separate nine-page portable Olist Power BI package, with original source attribution and CC BY-NC-SA 4.0 data/report terms.
 - Added a 86,950-origin customer duration ledger, distinct-purchase-day Kaplan–Meier estimates, pointwise Greenwood intervals and mature-horizon checks. Curves and intervals independently agree with SciPy's right-censored ECDF implementation.
 - Added product/category mix and within-portfolio concentration over 30,015 observed product IDs, with 1,504 missing-category lines retained and 17 untranslated-category lines flagged. Product keys and IDs remain local; published results contain only aggregates.
 - Added a delivery decision readout over 64,230 eligible orders in matched January–July windows, with independent raw denominator reconciliation, cluster uncertainty, common-support coverage and exact rate/mix decomposition. State burden priorities are paired with guardrails and a record-level investigation plan; no causal effect or revenue-loss claim is made.
-- Added a single local `scripts.build_research` command for all four real-data studies, report assets and native BI. It was executed end to end with 63 official schema checks; failure fixtures reject raw/output overlap and stale success receipts. The archive contains the four reports and their aggregate evidence.
+- Added a single local `scripts.build_research` command for all five real-data studies, report assets and native BI. It was executed end to end with 72 official schema checks; failure fixtures reject raw/output overlap and stale success receipts. The archive contains the five reports and their aggregate evidence.
 
-- Added the review-selection study over 68,448 mature delivered orders with a fixed retrospective protocol, first eligible raw-review policy, independent raw/pandas reconciliation, availability-reason ledger, 441 missing-rating scenarios and pointwise customer-cluster intervals. Thirty-day available-case difference is +11.26 pp; the sharp hypothetical full-rating range is −5.44 to +69.44 pp. The range includes zero and is not a causal effect or confidence interval. The fourth report and its protocol/query accompany the unchanged eight-page native BI project.
+- Added the review-selection study over 68,448 mature delivered orders with a fixed retrospective protocol, first eligible raw-review policy, independent raw/pandas reconciliation, availability-reason ledger, 441 missing-rating scenarios and pointwise customer-cluster intervals. Thirty-day available-case difference is +11.26 pp; the sharp hypothetical full-rating range is −5.44 to +69.44 pp. The range includes zero and is not a causal effect or confidence interval. The fourth report and its protocol/query accompany the unchanged nine-page native BI project.
 
 - Added a final audit of the actual three distributed ZIPs: pinned bytes/SHA-256, archive paths, native project/model bindings, page/table counts, logo bytes, report links, research source/aggregate/protocol consistency and current synthetic website sources. All three archives pass; the result is [portable artifact readiness](RELEASE_READINESS.md), not Desktop acceptance. Corruption, stale reports, unsupported native claims and source leakage are rejected by regression fixtures. Native-required mode returns a failure exit code while the independent engine/visual gates remain open.
 - Corrected the Power BI acceptance preflight to recognize validated editable PBIP projects inside the delivered archives; it previously searched only expanded report files. No actual render, refresh or financial audit gate was promoted.
+
+- Added the temporal forecasting study over 92,580 placed orders / 577 calendar days, independently reconciled from the raw order CSV. Thirty non-overlapping evaluation weeks compare three fixed candidates and a past-only selector. Future-outcome poisoning tests, independent ridge arithmetic, past-block interval calibration, MAE/RMSE/WAPE/MASE and paired moving-block uncertainty make prediction quality inspectable. The primary selector comparison does not demonstrate superiority. The new native forecasting page adds two disconnected tables; the research package now contains five reports, twelve figures, nine pages and sixteen tables.
 
 ## Source and brand evidence
 
@@ -49,7 +51,7 @@ The four-page commerce report and web demo use only synthetic fixtures. Their re
 - Four-page public Power BI JSON validates against Microsoft's published schemas. Microsoft TOM successfully deserializes the public four-table and private eight-table TMDL models. Seven-page source/binding integrity is independently checked.
 - Generated analytical figures are file artifacts, not screenshots of a live UI or Power BI.
 - Olist: all-extract raw item value reconciles to the order fact, and the analytical purchase window reconciles independently to raw lines/orders. Cohort observation/denominator, policy ties, future delivery exclusion, many-side fanout, Shapley symmetry/additivity, fixed-seed bootstrap, BH adjustment, aggregate reconciliation and public export tamper tests pass without Kaggle access in CI.
-- The eight-page Olist report validates 63 Microsoft schema-bearing artifacts; Microsoft TOM parses its fourteen-table semantic model. All ten generated figures were inspected as local image files across the development passes. This does not establish BI rendering.
+- The nine-page Olist report validates 72 Microsoft schema-bearing artifacts; Microsoft TOM parses its sixteen-table semantic model. All twelve generated figures were inspected as local image files across the development passes. This does not establish BI rendering.
 
 ## Limits
 

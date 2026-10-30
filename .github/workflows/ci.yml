@@ -284,6 +284,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_olist_customer_portfolio.py' -v
           python -m unittest discover -s tests -p 'test_olist_delivery_operations.py' -v
           python -m unittest discover -s tests -p 'test_olist_review_selection.py' -v
+          python -m unittest discover -s tests -p 'test_olist_forecast.py' -v
           python -m unittest discover -s tests -p 'test_release_audit.py' -v
           python -m unittest discover -s tests -p 'test_build_research.py' -v
           python -m unittest discover -s tests -p 'test_olist_powerbi.py' -v

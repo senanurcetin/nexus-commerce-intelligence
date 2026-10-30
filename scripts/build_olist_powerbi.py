@@ -27,6 +27,8 @@ TABLES = {
     "OperationsMonthly": [("year","int64"),("month","int64"),("orders","int64"),("late_orders","int64"),("late_rate","double"),("median_transit_days","double"),("p90_transit_days","double")],
     "OperationsStates": [("state","string"),("orders","int64"),("late_orders","int64"),("late_rate","double"),("delivered_late_gmv","double"),("p90_transit_days","double"),("late_order_share","double")],
     "OperationsSummary": [(field,"double") for field in ("full_rate_2017","full_rate_2018","full_rate_change","full_change_ci_low","full_change_ci_high","common_rate_change","within_contribution","mix_contribution","common_coverage_2017","common_coverage_2018","pooled_standardized_rate_2017","pooled_standardized_rate_2018")],
+    "ForecastDaily": [("day","dateTime"),("actual_orders","int64"),("prediction","double"),("lower","double"),("upper","double")],
+    "ForecastMetrics": [("method","string"),("mae","double"),("rmse","double"),("wape","double"),("mase","double"),("day_coverage","double"),("week_coverage","double"),("mean_width","double"),("interval_score","double")],
 }
 MEASURES = {
     "Monthly": {"Item GMV (source units)":("SUM(Monthly[gmv])","#,0.00"),
@@ -53,6 +55,12 @@ MEASURES = {
     "OperationsSummary": {"2017 Jan-Jul Rate":("MAX(OperationsSummary[full_rate_2017])","0.00%"),
                           "2018 Jan-Jul Rate":("MAX(OperationsSummary[full_rate_2018])","0.00%"),
                           "Rate Change (pp)":("100 * MAX(OperationsSummary[full_rate_change])","0.00")},
+    "ForecastDaily": {label:(f'IF(HASONEVALUE(ForecastDaily[day]), MAX(ForecastDaily[{field}]))','#,0.0') for label,field in (
+        ('Observed Placed Orders','actual_orders'),('Selected Forecast','prediction'),('Reference Lower','lower'),('Reference Upper','upper'))},
+    "ForecastMetrics": {"Benchmark MAE":('MAX(ForecastMetrics[mae])','0.00'),
+        "Selector MAE":('CALCULATE(MAX(ForecastMetrics[mae]), ForecastMetrics[method] = "past_mae_selector")','0.00'),
+        "Selector Week Coverage":('CALCULATE(MAX(ForecastMetrics[week_coverage]), ForecastMetrics[method] = "past_mae_selector")','0.0%'),
+        "Selector Mean Width":('CALCULATE(MAX(ForecastMetrics[mean_width]), ForecastMetrics[method] = "past_mae_selector")','0.0')},
 }
 PAGES = [
     {"id":"olist_value","title":"Olist | Value and order volume", "cards":[("Monthly",m) for m in MEASURES["Monthly"]],
@@ -75,6 +83,9 @@ PAGES = [
     {"id":"olist_operations","title":"Olist | Comparable delivery experience","cards":[("OperationsSummary",m) for m in MEASURES["OperationsSummary"]],
      "charts":[("lineChart","OperationsMonthly",["month"],"2017 Late Rate","January-July in both years; full eligible delivered-order populations"),
                ("clusteredBarChart","OperationsStates",["state"],"2018 Late Orders","2018 observed late-order burden by state; counts, not quality ranking")]},
+    {"id":"olist_forecasting","title":"Olist | Temporal forecasting validation","cards":[('ForecastMetrics',m) for m in ('Selector MAE','Selector Week Coverage','Selector Mean Width')],
+     "charts":[('lineChart','ForecastDaily',['day'],'Selected Forecast','2018 held-out days: actual, forecast and rolling reference limits'),
+               ('clusteredBarChart','ForecastMetrics',['method'],'Benchmark MAE','Same-date MAE comparison; lower is better; no test-set tuning')]},
 ]
 CONTEXT = {
     "olist_value":"PUBLIC OLIST / 2017–July 2018 purchase window / Item GMV excludes freight; not net revenue",
@@ -85,13 +96,15 @@ CONTEXT = {
     "olist_repeat_timing":"PUBLIC OLIST / Distinct purchase days / Last observation 2018-07-31 / Independent censoring unverified",
     "olist_portfolio":"PUBLIC OLIST / Fixed full-window cards; quarter selections do not recompute them / Unknown categories retained",
     "olist_operations":"PUBLIC OLIST / Fixed Jan-Jul cards / Details and uncertainty in DELIVERY_OPERATIONS.md / Delivered-only, not causal",
+    "olist_forecasting":"PUBLIC OLIST / ALL placed orders / Past-only selection / Fixed benchmark cards / No guaranteed temporal coverage",
 }
 
 
-def create(source: Path, out: Path, extension: Path | None=None, operations: Path | None=None, reviews: Path | None=None) -> Path:
+def create(source: Path, out: Path, extension: Path | None=None, operations: Path | None=None, reviews: Path | None=None, forecast: Path | None=None) -> Path:
     extension=extension or source
     operations=operations or source
     reviews=reviews or source
+    forecast=forecast or source
     evidence=json.loads((source/"evidence.json").read_text(encoding="utf-8"))
     extra=json.loads((extension/'extension_evidence.json').read_text(encoding='utf-8'))
     if extra.get('source_kind')!='historical_public_olist_extension' or extra['summary']['repeat']['last_observed_day']!='2018-07-31':
@@ -118,6 +131,16 @@ def create(source: Path, out: Path, extension: Path | None=None, operations: Pat
     for filename,key in (('olist_review_protocol.json','protocol_sha256'),('review_selection.sql','query_sha256')):
         if hashlib.sha256((reviews/filename).read_bytes()).hexdigest()!=review[key]:
             raise ValueError('Review selection protocol/query hash mismatch: '+filename)
+    prediction=json.loads((forecast/'forecast_evidence.json').read_text(encoding='utf-8'))
+    if prediction.get('source_kind')!='historical_public_olist_forecast' or prediction.get('synthetic') is not False:
+        raise ValueError('Only public Olist forecast accepted')
+    if prediction['quality']['files']!=evidence['quality']['files']:
+        raise ValueError('Forecast source snapshots differ')
+    if prediction.get('order_fact_sql_sha256')!=evidence['sql_sha256']['order_fact.sql']:
+        raise ValueError('Forecast order fact definitions differ')
+    for filename,key in (('olist_forecast_protocol.json','protocol_sha256'),('daily_order_volume.sql','query_sha256')):
+        if hashlib.sha256((forecast/filename).read_bytes()).hexdigest()!=prediction[key]:
+            raise ValueError('Forecast protocol/query hash mismatch: '+filename)
     if evidence.get("source_kind")!="historical_public_olist" or evidence.get("synthetic") is not False:
         raise ValueError("Only content-addressed public Olist aggregates accepted")
     if evidence["summary"]["cutoff"]!="2018-08-01":
@@ -148,6 +171,13 @@ def create(source: Path, out: Path, extension: Path | None=None, operations: Pat
         with path.open(encoding='utf-8',newline='') as stream: records=list(csv.DictReader(stream))
         rows[name]=[{field:(None if r[field]=='' else int(float(r[field])) if kind=='int64' else float(r[field]) if kind=='double' else r[field])
                      for field,kind in TABLES[name]} for r in records]
+    for name,filename in (('ForecastDaily','forecast_daily'),('ForecastMetrics','forecast_metrics')):
+        path=forecast/(filename+'.csv')
+        if hashlib.sha256(path.read_bytes()).hexdigest()!=prediction['aggregate_sha256'][path.name]:
+            raise ValueError('Forecast aggregate file hash mismatch: '+path.name)
+        with path.open(encoding='utf-8',newline='') as stream:records=list(csv.DictReader(stream))
+        if name=='ForecastDaily':records=[r for r in records if r['phase']=='evaluation' and r['method']=='past_mae_selector']
+        rows[name]=[{field:(None if r[field]=='' else int(float(r[field])) if kind=='int64' else float(r[field]) if kind=='double' else r[field]) for field,kind in TABLES[name]} for r in records]
     project=build_project(out,out/"unused",portable_rows=rows,tables=TABLES,measures=MEASURES,pages=PAGES,model_name=NAME)
     model=project.parent/(NAME+".SemanticModel/definition/model.tmdl")
     model.write_text("model Model\n\tculture: en-US\n\tsourceQueryCulture: en-US\n\tdefaultPowerBIDataSourceVersion: powerBI_V3\n",encoding="utf-8")
@@ -166,6 +196,10 @@ def create(source: Path, out: Path, extension: Path | None=None, operations: Pat
     from scripts.build_powerbi import _field
     spec['visual']['query']['queryState']['Y']['projections']=[_field('RepeatCurve',m,True) for m in MEASURES['RepeatCurve']]
     visual.write_text(json.dumps(spec,indent=2)+'\n',encoding='utf-8')
+    visual=project.parent/(NAME+'.Report/definition/pages/olist_forecasting/visuals/00000000000000000004/visual.json')
+    spec=json.loads(visual.read_text())
+    spec['visual']['query']['queryState']['Y']['projections']=[_field('ForecastDaily',m,True) for m in MEASURES['ForecastDaily']]
+    visual.write_text(json.dumps(spec,indent=2)+'\n',encoding='utf-8')
     visual=project.parent/(NAME+'.Report/definition/pages/olist_operations/visuals/00000000000000000004/visual.json')
     spec=json.loads(visual.read_text())
     spec['visual']['query']['queryState']['Y']['projections']=[_field('OperationsMonthly',m,True) for m in MEASURES['OperationsMonthly']]
@@ -175,6 +209,7 @@ def create(source: Path, out: Path, extension: Path | None=None, operations: Pat
              "extension_evidence_sha256":hashlib.sha256((extension/'extension_evidence.json').read_bytes()).hexdigest(),
              "operations_evidence_sha256":hashlib.sha256((operations/'operations_evidence.json').read_bytes()).hexdigest(),
              "review_selection_evidence_sha256":hashlib.sha256((reviews/'review_selection_evidence.json').read_bytes()).hexdigest(),
+             "forecast_evidence_sha256":hashlib.sha256((forecast/'forecast_evidence.json').read_bytes()).hexdigest(),
              "synthetic":False,"desktop_render_verified":False,"dax_engine_executed":False,
              "note":"Association cards are full-sample estimates, independent of monthly table selections."}
     (out/"build_evidence.json").write_text(json.dumps(receipt,indent=2)+"\n",encoding="utf-8")
@@ -195,6 +230,7 @@ def create(source: Path, out: Path, extension: Path | None=None, operations: Pat
         "Rate/mix contributions are descriptive, and late-delivered GMV is not revenue lost. "
         "The fourth bundled study, REVIEW_SELECTION.md, analyzes unavailable ratings with a different mature cohort; "
         "its sharp ranges are not confidence intervals or causal effects. It is a companion report, not a native BI page. "
+        "The forecasting page counts all placed orders, including non-deliveries; its temporal calibration has no guaranteed coverage. "
         "Confidence cards refer to the full sample and do not follow monthly selections.\n\n"
         "Desktop rendering, refresh and DAX execution are unverified. "
         "Open the entire PBIP folder in a compatible Power BI Desktop installation.\n",
@@ -204,6 +240,7 @@ def create(source: Path, out: Path, extension: Path | None=None, operations: Pat
     (project.parent/'extension_evidence.json').write_text(json.dumps(extra,indent=2)+'\n',encoding='utf-8')
     (project.parent/'operations_evidence.json').write_text(json.dumps(ops,indent=2)+'\n',encoding='utf-8')
     (project.parent/'review_selection_evidence.json').write_text(json.dumps(review,indent=2)+'\n',encoding='utf-8')
+    (project.parent/'forecast_evidence.json').write_text(json.dumps(prediction,indent=2)+'\n',encoding='utf-8')
     # Include the inspectable reports and their referenced images/CSV evidence.
     for folder,receipt,names,media in (
         (source,evidence['export_sha256'],('cohorts','segments','monthly','decomposition','delivery_months','delivery_states','delivery_common_support'),
@@ -214,6 +251,8 @@ def create(source: Path, out: Path, extension: Path | None=None, operations: Pat
          ('DELIVERY_OPERATIONS.md','delivery_matched_months.png','delivery_rate_mix.png')),
         (reviews,review['aggregate_sha256'],('review_groups','review_summary','review_sensitivity','review_tipping','review_availability'),
          ('REVIEW_SELECTION.md','review_bounds.png','review_sensitivity_grid.png','olist_review_protocol.json','review_selection.sql')),
+        (forecast,prediction['aggregate_sha256'],('forecast_volume','forecast_daily','forecast_folds','forecast_metrics','forecast_uncertainty'),
+         ('FORECAST_VALIDATION.md','forecast_temporal.png','forecast_benchmarks.png','olist_forecast_protocol.json','daily_order_volume.sql')),
     ):
         for name in names:
             filename=name+'.csv';data=(folder/filename).read_bytes()
@@ -240,8 +279,9 @@ if __name__=="__main__":
     parser.add_argument('--extension',type=Path,help='Extension aggregates; defaults to the same folder as --source')
     parser.add_argument('--operations',type=Path,help='Operations aggregates; defaults to the same folder as --source')
     parser.add_argument('--reviews',type=Path,help='Review-selection aggregates; defaults to the same folder as --source')
+    parser.add_argument('--forecast',type=Path,help='Forecast aggregates; defaults to the same folder as --source')
     parser.add_argument("--package",type=Path)
     args=parser.parse_args()
-    path=create(args.source,args.out,args.extension,args.operations,args.reviews)
+    path=create(args.source,args.out,args.extension,args.operations,args.reviews,args.forecast)
     if args.package: package(path,args.package)
     print(path)

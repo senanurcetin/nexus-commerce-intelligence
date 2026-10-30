@@ -18,13 +18,16 @@ class OlistPowerBI(unittest.TestCase):
             for forbidden in ('File.Contents','pDataFolder','customer_unique_id','order_id','ECommerceOrders','GreenweezFinance'):
                 self.assertNotIn(forbidden,text)
             self.assertEqual({p.stem for p in (model/'tables').glob('*.tmdl')},set(TABLES))
-            for filename in ('REPORT.md','CUSTOMER_PORTFOLIO.md','DELIVERY_OPERATIONS.md','REVIEW_SELECTION.md'):
+            for filename in ('REPORT.md','CUSTOMER_PORTFOLIO.md','DELIVERY_OPERATIONS.md','REVIEW_SELECTION.md','FORECAST_VALIDATION.md'):
                 report=project.parent/filename
                 self.assertTrue(report.exists())
                 for picture in re.findall(r'!\[[^\]]*\]\(([^)]+)\)',report.read_text(encoding='utf-8')):
                     self.assertTrue((project.parent/picture).is_file(),picture)
             for file in ('olist_review_protocol.json','review_selection.sql'):
                 self.assertTrue((project.parent/file).is_file())
+            daily=(model/'tables/ForecastDaily.tmdl').read_text()
+            self.assertIn('HASONEVALUE(ForecastDaily[day])',daily)
+            self.assertNotIn('calibration',daily)
             pages=project.parent/(NAME+'.Report/definition/pages')
             self.assertEqual(json.loads((pages/'pages.json').read_text())['pageOrder'],[p['id'] for p in PAGES])
             for page in PAGES:
@@ -106,6 +109,20 @@ class OlistPowerBI(unittest.TestCase):
             protocol.write_bytes(original)
             with (source/'review_sensitivity.csv').open('a') as stream:stream.write('\n')
             with self.assertRaisesRegex(ValueError,'Packaged aggregate file hash'):create(source,Path(directory)/'out')
+
+    def test_forecast_snapshot_protocol_and_embedded_rows_cannot_be_stale(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source=Path(directory)/'source';shutil.copytree(ROOT/'docs/advanced-analysis',source)
+            path=source/'forecast_evidence.json';e=json.loads(path.read_text())
+            first=next(iter(e['quality']['files']));original=e['quality']['files'][first]['sha256']
+            e['quality']['files'][first]['sha256']='0'*64;path.write_text(json.dumps(e))
+            with self.assertRaisesRegex(ValueError,'Forecast source snapshots'):create(source,Path(directory)/'out')
+            e['quality']['files'][first]['sha256']=original;path.write_text(json.dumps(e))
+            protocol=source/'olist_forecast_protocol.json';original=protocol.read_bytes();protocol.write_bytes(original+b'\n')
+            with self.assertRaisesRegex(ValueError,'Forecast protocol/query'):create(source,Path(directory)/'out')
+            protocol.write_bytes(original)
+            with (source/'forecast_daily.csv').open('a') as stream:stream.write('\n')
+            with self.assertRaisesRegex(ValueError,'Forecast aggregate file hash'):create(source,Path(directory)/'out')
 
 
 if __name__=='__main__': unittest.main()

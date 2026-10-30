@@ -34,5 +34,14 @@ class ResearchSafety(unittest.TestCase):
                 export.assert_not_called()
             self.assertFalse(receipt.exists())
 
+    def test_failed_forecast_stage_prevents_native_export_and_stale_success(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);raw=root/'raw';raw.mkdir();out=root/'out';out.mkdir()
+            receipt=out/'research_build.json';receipt.write_text('{"status":"complete"}')
+            with patch('scripts.build_research.core.run'),patch('scripts.build_research.customer.run'),patch('scripts.build_research.operations.run'),patch('scripts.build_research.reviews.run'),patch('scripts.build_research.forecast.run',side_effect=ValueError('Chronology failed')),patch('scripts.build_research.create') as export:
+                with self.assertRaisesRegex(ValueError,'Chronology'):build(raw,out)
+                export.assert_not_called()
+            self.assertFalse(receipt.exists())
+
 
 if __name__=='__main__':unittest.main()

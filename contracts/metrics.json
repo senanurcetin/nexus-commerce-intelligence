@@ -241,6 +241,30 @@
       "null_policy": "Missing/invalid dates are excluded and counted; no review-response filter",
       "sql": "analytics/olist/delivery_operations.sql",
       "limits": "Delivered-only retrospective endpoint; standardization and rate/mix components are not causal effects"
+    },
+    {
+      "id": "olist_placed_orders",
+      "domain": "Olist",
+      "name": "Placed orders by calendar day",
+      "unit": "orders per source calendar day",
+      "grain": "one complete source-calendar day",
+      "definition": "Count raw order IDs by purchase date, including cancelled, undelivered and itemless orders; complete the declared date grid with zero recorded orders",
+      "denominator": "One source-calendar day in [2017-01-01, 2018-08-01); count is additive over disjoint dates",
+      "null_policy": "Missing purchase timestamps fail extraction; zero means no records in the frozen extract, not confirmed downtime",
+      "sql": "analytics/olist/daily_order_volume.sql",
+      "limits": "Different from delivered-only order/GMV measures; extraction completeness, real ingestion times and timestamp timezone remain unverified"
+    },
+    {
+      "id": "olist_temporal_mae",
+      "domain": "Olist",
+      "name": "Rolling-origin order-volume forecast MAE",
+      "unit": "absolute order-count error per evaluated day",
+      "grain": "declared method across identical non-overlapping future seven-day blocks",
+      "definition": "Sum absolute difference between observed placed orders and origin-frozen point forecasts, divided by evaluated days",
+      "denominator": "210 identical evaluated dates across 30 complete weeks; training/selection/calibration use only completed past data",
+      "null_policy": "Absent evaluation or immature calibration fails the benchmark; zero seasonal training scale leaves MASE unavailable",
+      "sql": "scripts/olist_forecast.py",
+      "limits": "Retrospective 2018 benchmark; no test-set tuning, revenue forecast, guaranteed temporal coverage or future deployment superiority"
     }
   ]
 }
