@@ -181,13 +181,20 @@ def evidence(root):
         receipt=read(folder,name);contract=root/'contracts'/('olist_'+prefix+'_protocol.json')
         need(receipt['protocol']==json.loads(contract.read_text()) and receipt['protocol_sha256']==hashlib.sha256(contract.read_bytes()).hexdigest(),'Published protocol differs from its contract')
     for name,sha in reproduction['pipeline_inputs_sha256'].items():
-        need(hashlib.sha256((root/name).read_bytes()).hexdigest()==sha,'Historical reproduction pipeline fingerprint is stale')
+        path=root/name;raw=path.read_bytes();variants={hashlib.sha256(raw).hexdigest()}
+        # Historical receipts preserve exact captured bytes. Git checkouts may
+        # change only text line endings; binary inputs never receive this allowance.
+        if path.suffix in {'.py','.sql','.json','.in','.lock'}:
+            lf=raw.replace(b'\r\n',b'\n')
+            variants.update((hashlib.sha256(lf).hexdigest(),hashlib.sha256(lf.replace(b'\n',b'\r\n')).hexdigest()))
+        need(sha in variants,'Historical reproduction pipeline fingerprint is stale: '+name)
     for comparison in reproduction['aggregate_comparisons']:
         need(hashlib.sha256((folder/comparison['file']).read_bytes()).hexdigest()==comparison['reproduced_sha256'],'Reproduction aggregate comparison is stale')
     from scripts.executive_readout import render
     text,ledger=render(root)
     need(text==(root/'docs/EXECUTIVE_READOUT.md').read_text(encoding='utf-8') and ledger==read(root/'docs','executive_readout.json'),'Executive readout is stale')
-    return {'source_consistent_studies':5,'aggregate_hashes_checked':exports,'executive_readout_current':True,'reproduction_fingerprints_current':True}
+    return {'source_consistent_studies':5,'aggregate_hashes_checked':exports,'executive_readout_current':True,
+        'reproduction_fingerprints_current':True,'historical_pipeline_hash_policy':'Captured-byte match or CRLF/LF-equivalent text; binary inputs must match exactly'}
 
 
 def fingerprints(root):

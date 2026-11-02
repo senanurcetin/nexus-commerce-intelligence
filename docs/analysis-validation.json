@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "published_calculation_acceptance": "PASS",
-  "implementation_sha256": "fe1e0c3a8284e82fa44e442b173adf5eea853335427ba30d27538a9e65532ff9",
+  "implementation_sha256": "692532efea1aaddd8ffc883477b3791830c42dbd681958f25de707a3fd7881f7",
   "runtime_versions": {
     "python": "3.11.9",
     "numpy": "2.3.5",
@@ -70,7 +70,8 @@
         "source_consistent_studies": 5,
         "aggregate_hashes_checked": 28,
         "executive_readout_current": true,
-        "reproduction_fingerprints_current": true
+        "reproduction_fingerprints_current": true,
+        "historical_pipeline_hash_policy": "Captured-byte match or CRLF/LF-equivalent text; binary inputs must match exactly"
       }
     },
     {

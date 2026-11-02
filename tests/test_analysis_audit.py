@@ -79,6 +79,12 @@ class AnalysisAcceptance(unittest.TestCase):
         names=set(reproduction['pipeline_inputs_sha256'])|{'docs/research_reproduction.json','docs/EXECUTIVE_READOUT.md','docs/executive_readout.json','docs/core-source/status.json','contracts/financial_semantics.json'}
         for name in names:
             dest=root/name;dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(a.ROOT/name,dest)
+        legacy=root/'scripts/build_powerbi.py';lf=legacy.read_bytes().replace(b'\r\n',b'\n')
+        for raw in (lf,lf.replace(b'\n',b'\r\n')):
+            legacy.write_bytes(raw);self.assertTrue(a.evidence(root)['reproduction_fingerprints_current'])
+        legacy.write_bytes(lf+b'\n# Additional text must not bypass the historical fingerprint\n')
+        with self.assertRaisesRegex(ValueError,'pipeline fingerprint is stale'):a.evidence(root)
+        legacy.write_bytes(lf)
         (root/'docs/EXECUTIVE_READOUT.md').write_text('An obsolete positive forecast recommendation')
         with self.assertRaisesRegex(ValueError,'Executive readout is stale'):a.evidence(root)
 
