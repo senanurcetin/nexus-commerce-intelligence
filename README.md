@@ -1,5 +1,10 @@
 # NEXUS Commerce Intelligence
 
+> **Reviewer quick path · 2 November 2026:** [Architecture](docs/ARCHITECTURE.md) → [KPI definitions](docs/KPI_CATALOG.md) → [data/source coverage](docs/SOURCE_COVERAGE.md) → [public Olist analysis](docs/advanced-analysis/REPORT.md) → [synthetic commerce findings](docs/analysis/REPORT.md) → [local reproduction](#reproduce-locally). Read the population, unit, denominator and observation window **before** comparing any figures.
+>
+> **Scope:** public Olist historical analysis, portable synthetic E-Commerce/Greenweez illustrations, and separately governed private observations are **different sources**. The public UI is not a live commercial analytics service. Private finance values and source records are not included in the GitHub evidence, and neither conversion uplift nor audited profit is implied.
+
+
 <img src="branding/nexus_official_transparent.png" alt="NEXUS" width="260">
 
 **A reproducible commerce analytics case study: raw events and order lines → tested dbt marts → analytical findings → Power BI and an English-language demo.**
