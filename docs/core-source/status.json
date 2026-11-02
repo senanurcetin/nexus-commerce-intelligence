@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "observed_at_utc": "2026-11-02T14:16:16.211995+00:00",
+  "origin_classification": "authenticated_warehouse_observation_original_business_truth_unverified",
+  "transport": "bigquery_rest_tabledata_list",
+  "response_bytes": 97126767,
+  "maximum_response_bytes": 100000000,
+  "query_jobs_created": 0,
+  "storage_read_api_used": false,
+  "source_contract_sha256": "380699f438500d83ea6fdfa16cd6241628e23bec38c2f8524243f1ba74f1a6ce",
+  "financial_contract_sha256": "da695ba22289f40531b510ecd201508e98b465498452ff4b7bc032c9a5771521",
+  "tables": {
+    "ecommerce.order_items": {
+      "rows": 180450
+    },
+    "ecommerce.products": {
+      "rows": 29120
+    },
+    "greenweez.gwz_finance_campaign": {
+      "rows": 15
+    },
+    "greenweez.gwz_finance_orders_orders": {
+      "rows": 13362
+    },
+    "greenweez.gwz_finance_refund_sheet_1": {
+      "rows": 13362
+    },
+    "greenweez.gwz_finance_shipping_shipping": {
+      "rows": 13362
+    }
+  },
+  "gates": {
+    "ecommerce_unique_item_and_product_keys": true,
+    "greenweez_unique_order_component_keys": true,
+    "independent_raw_amount_reconciliation": true,
+    "greenweez_dbt_refund_adjusted_net_revenue_remains_null": true,
+    "currency_verified": false,
+    "refund_meaning_verified": false,
+    "transaction_time_cogs_verified": false,
+    "original_real_business_origin_verified": false,
+    "native_bi_execution_verified": false
+  },
+  "local_observed_greenweez_dbt": {
+    "source_orders": 13362,
+    "node_status_counts": {
+      "pass": 41,
+      "success": 11,
+      "warn": 1
+    },
+    "synthetic_seeds_loaded": false,
+    "financial_semantics_certified": false
+  },
+  "public_commerce_payload_replaced": false,
+  "raw_rows_published": false,
+  "financial_amounts_published": false
+}

@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "domains": {
+    "ecommerce": {
+      "currency": {"status": "unverified", "value": null},
+      "sale_price": {"meaning": "Current source sale price per order item", "accounting_recognition_verified": false},
+      "completed_value": {"rule": "sale_price on current Complete item rows; not recognised net accounting revenue", "grain": "item"},
+      "returned_value": {"rule": "sale_price on current Returned item rows", "cash_refund_verified": false},
+      "cost": {"basis": "observed product catalogue snapshot", "transaction_time_cogs_verified": false},
+      "contribution": {"rule": "completed sale_price minus eligible nonnegative catalogue cost on the SAME known-cost rows", "denominator": "completed sale_price on those same known-cost rows", "profit_verified": false},
+      "business_origin": {"status": "unverified", "note": "Authenticated warehouse data may still be training or generated data. Row count does not establish real business origin."}
+    },
+    "greenweez": {
+      "currency": {"status": "unverified", "value": null},
+      "order_grain": "One source order key; uniqueness must be checked before joins",
+      "turnover": {"meaning": "Source turnover field as stored", "tax_discount_inclusion_verified": false, "accounting_recognition_verified": false},
+      "purchase_cost": {"meaning": "Source order purchase_cost as stored", "transaction_time_cogs_verified": false},
+      "refund": {"kind": "unverified", "monetary_amount_verified": false, "subtract_from_turnover_allowed": false},
+      "shipping_fee": {"meaning": "Source order ship_fee as stored", "included_in_turnover_verified": false},
+      "logistics_and_shipping_cost": {"meaning": "Source log_cost and ship_cost as stored", "same_order_date_required_for_complete_component_subtotal": true},
+      "operational_component_subtotal": {"rule": "turnover - purchase_cost + ship_fee - log_cost - ship_cost, only eligible unique same-date complete source components", "financial_semantics_verified": false, "net_profit_verified": false},
+      "ad_spend": {"grain": "source calendar date", "order_allocation_allowed": false},
+      "business_origin": {"status": "unverified", "note": "A connected historical finance worksheet is not independently certified transaction truth."}
+    }
+  },
+  "policy": "Unknown units, refund meaning, cost timing and revenue inclusion cannot be inferred from arithmetic, labels or displayed number formats. Do not set unknown values to zero to manufacture complete margins."
+}

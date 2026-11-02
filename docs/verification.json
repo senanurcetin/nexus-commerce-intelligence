@@ -1,9 +1,9 @@
 {
   "date": "2026-11-02",
-  "scope": "local synthetic commerce and independent historical public Olist; no browser, Playwright or PC screen",
+  "scope": "local synthetic commerce, independent historical public Olist and private bounded core-source observations; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 279,
+    "passed": 302,
     "failed": 0
   },
   "streamlit_headless": {
@@ -66,7 +66,31 @@
     "drive_asset_matches_repository": true,
     "sha256": "ebbdb363c523dcd88bcfa405be025e5b745419caaf57adb992b8ec1e85ed251e"
   },
-  "cloud_refresh_performed": false,
+  "cloud_refresh_performed": true,
+  "cloud_refresh_scope": "Six approved private REST table-data projections only; public demo payloads unchanged; no SQL query jobs or Storage Read API",
+  "observed_core_source": {
+    "status_receipt": "docs/core-source/status.json",
+    "observed_date": "2026-11-02",
+    "tables": 6,
+    "ecommerce_item_rows": 180450,
+    "ecommerce_product_rows": 29120,
+    "greenweez_order_rows": 13362,
+    "response_bytes": 97126767,
+    "maximum_response_bytes": 100000000,
+    "query_jobs_created": 0,
+    "independent_raw_amount_reconciliation": true,
+    "greenweez_local_dbt_models_passed": 11,
+    "greenweez_local_dbt_data_tests_passed": 41,
+    "greenweez_local_dbt_data_test_warnings": 1,
+    "refund_numeric_comparison_warning_rows": 12426,
+    "refund_adjusted_net_revenue_remains_null": true,
+    "new_offline_adversarial_tests": 23,
+    "raw_rows_or_financial_amounts_published": false,
+    "original_real_business_origin_verified": false,
+    "currency_verified": false,
+    "refund_meaning_verified": false,
+    "transaction_time_cogs_verified": false
+  },
   "live_publication_performed": false,
   "olist_analysis": {
     "source_orders": 99441,

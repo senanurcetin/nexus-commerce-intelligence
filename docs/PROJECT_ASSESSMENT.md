@@ -1,16 +1,16 @@
 # Project level and development assessment
 
-Assessment date: 28 October 2026. Scope: repository, local dbt artifacts, executable analysis, reporting and source contracts. No browser, Playwright or PC-screen access.
+Assessment date: 2 November 2026. Scope: repository, local dbt artifacts, executable analysis, reporting and source contracts. No browser, Playwright or PC-screen access.
 
 ## Level
 
-The core commerce KPI registry now connects definitions to executable source-scoped implementations. Cost coverage is part of margin interpretation, with raw reconciliation and adversarial missing-cost/fanout fixtures. Live BigQuery row coverage remains an explicit open gate; synthetic examples are not promoted into real-business results.
+The core commerce KPI registry connects definitions to executable source-scoped implementations. Cost coverage is part of margin interpretation, with raw reconciliation and adversarial missing-cost/fanout fixtures. A bounded private observation now covers six approved main-source projections, including 180,450 E-Commerce items and 13,362 Greenweez orders. Selected existing Greenweez finance marts also run on that observed snapshot. [Source acceptance](core-source/README.md) separates these observations from original business provenance, financial interpretation and the unchanged synthetic public demo.
 
 **Advanced analytical methods implemented within a reproducible portfolio project; intermediate-to-advanced analytics engineering.** This is a qualitative assessment based on executable evidence, not a certification or an invented numeric score. Production operation, current business validity and native BI rendering remain separate acceptance boundaries.
 
 | Dimension | Evidence | Remaining gap |
 | --- | --- | --- |
-| Data engineering | Two independently executable dbt projects, staging/intermediate/marts, adapter branches | Live source refresh and business reconciliation are separate acceptance steps |
+| Data engineering | Two independently executable dbt projects; stable-metadata, hash-checked private source observations; isolated observed Greenweez finance build | Event-level refresh, ingestion-time history and original business provenance remain open |
 | Data quality | Uniqueness, relationships, status/revenue tests and source-isolated adapters | Greenweez warning cases remain visible; they cannot be silently promoted to verified finance |
 | Analytical correctness | Actual Olist order-grain reconstruction, censored cohort grid, as-of RFM, exact Shapley identity, customer-cluster bootstrap, timing sensitivity and exploratory FDR | Historical observational data cannot identify causal effects, current performance or population-wide churn |
 | Reproducibility | Local dbt build; public Olist CSV checksums, executable SQL/statistics, independent raw reconciliation and aggregate results | Download official Olist inputs separately; CI tests methods on bounded adversarial fixtures and builds BI from committed aggregates |

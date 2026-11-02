@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "transport": "bigquery_rest_tabledata_list",
+  "query_jobs_allowed": false,
+  "storage_read_api_allowed": false,
+  "maximum_response_bytes": 100000000,
+  "maximum_rows_per_table": 250000,
+  "page_rows": 10000,
+  "origin_classification": "authenticated_warehouse_observation_original_business_truth_unverified",
+  "tables": {
+    "ecommerce.order_items": ["id", "order_id", "user_id", "product_id", "status", "created_at", "delivered_at", "returned_at", "sale_price"],
+    "ecommerce.products": ["id", "cost", "category", "department", "retail_price"],
+    "greenweez.gwz_finance_orders_orders": ["orders_id", "datetime", "turnover", "purchase_cost", "ship_fee"],
+    "greenweez.gwz_finance_shipping_shipping": ["orders_id", "date_date", "log_cost", "ship_cost"],
+    "greenweez.gwz_finance_refund_sheet_1": ["orders_id", "datetime", "refund"],
+    "greenweez.gwz_finance_campaign": ["datetime", "cost"]
+  },
+  "excluded_sources": {
+    "ecommerce.events": "Not needed for order/cost profiling; existing event dry-run cap remains unchanged",
+    "ecommerce.users": "Personal details are not needed for this analysis"
+  },
+  "publication": "Local ignored snapshot and aggregates only; never replace public synthetic snapshots automatically",
+  "documentation": "https://docs.cloud.google.com/bigquery/docs/managing-table-data"
+}

@@ -6,7 +6,9 @@
 
 E-Commerce and Greenweez share engineering standards while retaining independent facts, populations and financial definitions. This is a non-commercial portfolio project.
 
-The [22-metric KPI catalog](docs/KPI_CATALOG.md) defines each metric's unit, grain, eligible denominator, null behavior, implementation and limits. The [source coverage table](docs/SOURCE_COVERAGE.md) distinguishes synthetic pipeline evidence, separate Olist history and live integrations not verified by the local build.
+The [22-metric KPI catalog](docs/KPI_CATALOG.md) defines each metric's unit, grain, eligible denominator, null behavior, implementation and limits. The [source coverage table](docs/SOURCE_COVERAGE.md) distinguishes public synthetic pipeline evidence, separate Olist history and private source observations.
+
+A [bounded core-source observation](docs/core-source/README.md) now reconciles six approved source projections, including 180,450 E-Commerce items and 13,362 Greenweez orders. Selected existing Greenweez finance marts run locally against those observations without synthetic seeds. Raw records and financial amounts remain private; currency, refund meaning, transaction-time COGS and original business provenance remain unverified. The public website retains its synthetic/historical labels.
 
 Core commerce analysis now reports **known-cost contribution with matched revenue denominators** and **Greenweez product/shipping coverage**. In the synthetic Greenweez fixture, 23 unpriced sales lines carry 1,546.84 source units of sales value and 55 order records have incomplete components. The coverage report preserves the existing finance model while making its exclusions and zero policies visible; it does not infer audited profit or missing costs. See [commerce findings](docs/analysis/REPORT.md).
 
