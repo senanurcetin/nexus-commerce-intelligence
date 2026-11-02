@@ -42,6 +42,8 @@ def build(root: Path = ROOT, out: Path | None = None) -> dict:
     }
     # Finish validation/serialization before touching the previous build.
     encoded = json.dumps(payload, ensure_ascii=False, allow_nan=False, indent=2) + "\n"
+    from scripts.build_research_portal import assets
+    research=assets(root)  # Finish public-history validation before touching a previous build.
     if out == root or root in out.parents and out == root / "showcase":
         raise ValueError("Output must not overwrite showcase sources")
     out.mkdir(parents=True, exist_ok=True)
@@ -49,6 +51,15 @@ def build(root: Path = ROOT, out: Path | None = None) -> dict:
         shutil.copyfile(ROOT / "showcase" / name, out / name)
     shutil.copyfile(ROOT / "branding/nexus_official_transparent.png", out / "nexus-logo.png")
     shutil.copyfile(ROOT / "storefront/favicon.svg", out / "favicon.svg")
+    (out/'serve.py').write_bytes((ROOT/'scripts/serve_portfolio.py').read_bytes().replace(b'\r\n',b'\n'))
+    research_dir=out/'research'
+    if research_dir.is_symlink() or out not in research_dir.resolve().parents:
+        raise ValueError('Research output escaped the static bundle')
+    if research_dir.exists():
+        unexpected={p.relative_to(research_dir).as_posix() for p in research_dir.rglob('*') if p.is_file()}-set(research)
+        if unexpected:raise ValueError('Unexpected stale files in research output')
+    for name,content in research.items():
+        path=research_dir/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(content)
     stage = out / "data.json.tmp"
     stage.write_text(encoded, encoding="utf-8")
     stage.replace(out / "data.json")

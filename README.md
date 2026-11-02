@@ -68,6 +68,10 @@ Output: `target/research/`, including `research_build.json` and `NEXUS_Olist_Res
 
 The [analysis report](docs/analysis/REPORT.md) includes full aggregate CSVs, query hashes, independent source-to-mart reconciliation, limitations and decision implications. The public fixture is suitable for demonstrating methods, not estimating real business performance.
 
+## Interactive research presentation
+
+The packaged website now includes a separate NEXUS **Research Studio** at `/research/index.html`. Five studies connect questions to source-backed findings, decisions and limitations. Explore forecast methods on the same future dates, export the displayed observations, and vary unavailable-rating assumptions without confusing scenarios with observed outcomes. Full reports, twelve figures, aggregate evidence and native BI are bundled for offline inspection. Historical Olist data remains separate from the synthetic commerce explorer.
+
 ## Architecture
 
 ```mermaid
@@ -99,7 +103,7 @@ python -m pip install -r requirements-dev.txt
 python -m scripts.build_demo --deps
 ```
 
-This runs both source-scoped dbt pipelines, imports only synthetic aggregates and produces:
+This runs both source-scoped dbt pipelines, imports synthetic commerce aggregates, validates a separate public-history research package and produces:
 
 | Output | Location |
 | --- | --- |
@@ -113,7 +117,7 @@ If the dbt databases are already built, `python -m scripts.build_demo --skip-dbt
 To view the static demo yourself:
 
 ```powershell
-python -m http.server 8787 --bind 127.0.0.1 --directory target/showcase
+python -m scripts.serve_portfolio
 ```
 
 Open `http://127.0.0.1:8787`. The demo supports domain switching, inclusive date filters, missing-period states and aggregate CSV export. The [existing Commerce Lab](https://nexus-commerce-lab.vercel.app/) remains a separate test-checkout experiment.

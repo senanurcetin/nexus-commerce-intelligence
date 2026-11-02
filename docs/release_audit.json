@@ -33,14 +33,16 @@
       }
     },
     {
-      "name": "synthetic_website_archive",
+      "name": "source_separated_website_archive",
       "passed": true,
       "details": {
         "file": "showcase/NEXUS_Commerce_Web_Demo.zip",
-        "sha256": "00f15167d8075bc0f07e15e0a866a5ffda0054e852c71edadc383e67b72b4bf6",
-        "bytes": 39293,
-        "entries": 7,
-        "synthetic_only": true,
+        "sha256": "77e90442ae7d1b70a100db33879524f76bc72362d541f01c7de8164529e910f2",
+        "bytes": 2682677,
+        "entries": 70,
+        "commerce_synthetic_only": true,
+        "historical_research_separate": true,
+        "research_studies": 5,
         "source_files_current": true,
         "browser_render_verified": false
       }

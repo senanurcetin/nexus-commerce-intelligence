@@ -1,6 +1,6 @@
 # Delivery evidence
 
-Updated 30 October 2026. Non-commercial, English-language NEXUS analytics case study. No Playwright, browser control or PC-screen use in this development pass.
+Updated 2 November 2026. Non-commercial, English-language NEXUS analytics case study. No Playwright, browser control or PC-screen use in this development pass.
 
 ## Implemented
 
@@ -29,10 +29,12 @@ Updated 30 October 2026. Non-commercial, English-language NEXUS analytics case s
 
 - Added the review-selection study over 68,448 mature delivered orders with a fixed retrospective protocol, first eligible raw-review policy, independent raw/pandas reconciliation, availability-reason ledger, 441 missing-rating scenarios and pointwise customer-cluster intervals. Thirty-day available-case difference is +11.26 pp; the sharp hypothetical full-rating range is −5.44 to +69.44 pp. The range includes zero and is not a causal effect or confidence interval. The fourth report and its protocol/query accompany the unchanged nine-page native BI project.
 
-- Added a final audit of the actual three distributed ZIPs: pinned bytes/SHA-256, archive paths, native project/model bindings, page/table counts, logo bytes, report links, research source/aggregate/protocol consistency and current synthetic website sources. All three archives pass; the result is [portable artifact readiness](RELEASE_READINESS.md), not Desktop acceptance. Corruption, stale reports, unsupported native claims and source leakage are rejected by regression fixtures. Native-required mode returns a failure exit code while the independent engine/visual gates remain open.
+- Added a final audit of the actual three distributed ZIPs: pinned bytes/SHA-256, archive paths, native project/model bindings, page/table counts, logo bytes, report links, research source/aggregate/protocol consistency and current commerce and research presentation sources. All three archives pass; the result is [portable artifact readiness](RELEASE_READINESS.md), not Desktop acceptance. Corruption, stale reports, unsupported native claims and source leakage are rejected by regression fixtures. Native-required mode returns a failure exit code while the independent engine/visual gates remain open.
 - Corrected the Power BI acceptance preflight to recognize validated editable PBIP projects inside the delivered archives; it previously searched only expanded report files. No actual render, refresh or financial audit gate was promoted.
 
 - Added the temporal forecasting study over 92,580 placed orders / 577 calendar days, independently reconciled from the raw order CSV. Thirty non-overlapping evaluation weeks compare three fixed candidates and a past-only selector. Future-outcome poisoning tests, independent ridge arithmetic, past-block interval calibration, MAE/RMSE/WAPE/MASE and paired moving-block uncertainty make prediction quality inspectable. The primary selector comparison does not demonstrate superiority. The new native forecasting page adds two disconnected tables; the research package now contains five reports, twelve figures, nine pages and sixteen tables.
+
+- Added an integrated NEXUS Research Studio with five evidence-backed study views, a recorded-forecast explorer, CSV export, fixed full-benchmark comparisons and a missing-rating assumption explorer. Distinct populations and interpretation limits stay beside each finding. The website now bundles historical public research separately from the synthetic commerce page, including reports, aggregate evidence, figures and the native BI download. Archive provenance and acceptance checks were updated to represent both surfaces truthfully. Browser rendering and assistive-technology behavior remain unverified.
 
 ## Source and brand evidence
 
@@ -62,3 +64,5 @@ Greenweez fixtures contain unmatched product/shipping records and ambiguous refu
 ## Cost
 
 Local open-source processing plus static files. No recurring infrastructure, LLM calls, custom domain or billing dependency. Public demo page loads do not query the warehouse. Private refresh remains explicit and quota-bounded.
+
+The static website was also served through the provided loopback HTTP handler in a bounded test: every one of its 70 files matched the shipped bytes, and ES modules had a JavaScript MIME type. A Windows registry association had made generic serving return `text/plain` for `.mjs`; `scripts.serve_portfolio` and the bundled `serve.py` correct that deployment issue. This verifies HTTP delivery and content types, not browser rendering or actual keyboard/screen-reader behavior.

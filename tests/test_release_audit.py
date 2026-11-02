@@ -64,7 +64,7 @@ class ReleaseAudit(unittest.TestCase):
         files=read_archive((ROOT/'showcase/NEXUS_Commerce_Web_Demo.zip').read_bytes())
         logo=(ROOT/'branding/nexus_official_transparent.png').read_bytes()
         for file in ('index.html','app.mjs','metrics.mjs','styles.css'):files[file]=files[file].replace(b'\r\n',b'\n')
-        self.assertTrue(website_bundle(ROOT,files,logo)['synthetic_only'])
+        self.assertTrue(website_bundle(ROOT,files,logo)['commerce_synthetic_only'])
         data=json.loads(files['data.json']);data['sources']['ecommerce']['origin']='live_private';files['data.json']=json.dumps(data).encode()
         with self.assertRaisesRegex(ValueError,'not synthetic'):website_bundle(ROOT,files,logo)
         files['app.mjs']+=b'\nalert("stale");'

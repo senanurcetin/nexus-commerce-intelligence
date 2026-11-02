@@ -1,9 +1,9 @@
 {
-  "date": "2026-10-30",
+  "date": "2026-11-02",
   "scope": "local synthetic commerce and independent historical public Olist; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 273,
+    "passed": 279,
     "failed": 0
   },
   "streamlit_headless": {
@@ -15,9 +15,9 @@
   },
   "node": {
     "command": "node --test showcase/tests/*.test.mjs storefront/tests/*.test.mjs",
-    "passed": 16,
+    "passed": 21,
     "failed": 0,
-    "last_local_run_date": "2026-10-27"
+    "last_local_run_date": "2026-11-02"
   },
   "dbt_root": {
     "models_passed": 10,
@@ -191,5 +191,20 @@
     ],
     "guaranteed_temporal_coverage": false,
     "live_ingestion_times_verified": false
+  },
+  "research_portal": {
+    "study_views": 5,
+    "forecast_methods": 4,
+    "forecast_evaluation_rows": 840,
+    "matching_future_dates_and_actual_counts_verified": true,
+    "interactive_formula_tests_passed": true,
+    "evidence_links_resolve": true,
+    "website_entries": 70,
+    "local_http_assets_verified": 70,
+    "javascript_module_mime_verified": true,
+    "portable_python_server_included": true,
+    "research_population_separate_from_synthetic_commerce": true,
+    "browser_render_verified": false,
+    "assistive_technology_verified": false
   }
 }

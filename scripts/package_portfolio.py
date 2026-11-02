@@ -1,4 +1,4 @@
-"""Package only the public, synthetic portfolio builds with stable ZIP metadata."""
+"""Package source-separated public portfolio builds with stable ZIP metadata."""
 from __future__ import annotations
 
 import hashlib
@@ -10,7 +10,7 @@ from scripts.build_public_powerbi import create
 from scripts.build_showcase import ROOT
 
 
-def archive(folder: Path, output: Path) -> dict:
+def archive(folder: Path, output: Path,provenance='synthetic_dbt_seeds_only') -> dict:
     output.parent.mkdir(parents=True,exist_ok=True)
     stage=output.with_suffix(".zip.tmp")
     names=[]
@@ -26,14 +26,15 @@ def archive(folder: Path, output: Path) -> dict:
             names.append(name)
     stage.replace(output)
     return {"file":output.name,"sha256":hashlib.sha256(output.read_bytes()).hexdigest(),
-            "bytes":output.stat().st_size,"entries":len(names),"provenance":"synthetic_dbt_seeds_only"}
+            "bytes":output.stat().st_size,"entries":len(names),"provenance":provenance}
 
 
 def package(root: Path = ROOT) -> dict:
     root=root.resolve()
     create(root)
+    from scripts.build_research_portal import WEBSITE_PROVENANCE
     result={"powerbi":archive(root/"target/powerbi-public/project",root/"powerbi/NEXUS_Commerce_Demo.zip"),
-            "website":archive(root/"target/showcase",root/"showcase/NEXUS_Commerce_Web_Demo.zip"),
+            "website":archive(root/"target/showcase",root/"showcase/NEXUS_Commerce_Web_Demo.zip",WEBSITE_PROVENANCE),
             "desktop_render_verified":False,"browser_interaction_verified":False}
     (root/"powerbi/package-manifest.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
     return result

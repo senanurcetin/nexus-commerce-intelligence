@@ -2,6 +2,8 @@
 
 Start with [Olist advanced research](advanced-analysis/REPORT.md), [project assessment](PROJECT_ASSESSMENT.md), [synthetic mart findings](analysis/REPORT.md), [architecture](ARCHITECTURE.md) and [delivery evidence](DELIVERY.md).
 
+The packaged static website also includes a separate historical Research Studio; see [presentation and local serving](../showcase/README.md).
+
 ## Analytical and BI contracts
 
 - [Source-scoped KPI catalog](KPI_CATALOG.md)

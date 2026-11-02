@@ -120,19 +120,26 @@ def research_bundle(root,files,manifest):
 
 
 def website_bundle(root,files,logo):
-    expected={'app.mjs','data.json','favicon.svg','index.html','metrics.mjs','nexus-logo.png','styles.css'}
+    from scripts.build_research_portal import assets
+    research={'research/'+name:content for name,content in assets(root).items()}
+    expected={'app.mjs','data.json','favicon.svg','index.html','metrics.mjs','nexus-logo.png','styles.css','serve.py'}|set(research)
     if set(files)!=expected:raise ValueError('Unexpected website files')
     for file in ('app.mjs','index.html','metrics.mjs','styles.css'):
         if files[file].replace(b'\r\n',b'\n')!=(root/'showcase'/file).read_bytes().replace(b'\r\n',b'\n'):
             raise ValueError('Website archive is stale: '+file)
     if files['nexus-logo.png']!=logo:raise ValueError('Website logo differs from official asset')
+    if files['serve.py']!=(root/'scripts/serve_portfolio.py').read_bytes().replace(b'\r\n',b'\n'):
+        raise ValueError('Packaged static server is stale')
     data=json.loads(files['data.json']);sources=data['sources']
     if data.get('provenance')!='Synthetic dbt demonstration · not trading results' or set(sources)!={'ecommerce','greenweez'}:
         raise ValueError('Website must contain only separate synthetic commerce sources')
     if sources['ecommerce'].get('origin')!='synthetic_ci' or sources['greenweez'].get('origin')!='synthetic_demo':
         raise ValueError('Website source provenance is not synthetic')
     if PRIVATE_FIELDS.search(json.dumps(data)):raise ValueError('Website contains raw identifier fields')
-    return {'synthetic_only':True,'source_files_current':True,'browser_render_verified':False}
+    for name,content in research.items():
+        if files[name]!=content:raise ValueError('Research portal asset differs from validated source: '+name)
+    return {'commerce_synthetic_only':True,'historical_research_separate':True,'research_studies':5,
+            'source_files_current':True,'browser_render_verified':False}
 
 
 def audit(root:Path=ROOT):
@@ -152,9 +159,11 @@ def audit(root:Path=ROOT):
         return {**info,**native_project(f,'NEXUS_Olist_Research',9,16,(root/'branding/nexus_official_transparent.png').read_bytes()),**research_bundle(root,f,m)}
     def website():
         m=json.loads((root/'powerbi/package-manifest.json').read_text())['website']
+        from scripts.build_research_portal import WEBSITE_PROVENANCE
+        if m['provenance']!=WEBSITE_PROVENANCE:raise ValueError('Website provenance must distinguish historical research from synthetic commerce')
         f,info=load_pinned(root,'showcase/NEXUS_Commerce_Web_Demo.zip',m)
         return {**info,**website_bundle(root,f,(root/'branding/nexus_official_transparent.png').read_bytes())}
-    check('synthetic_powerbi_archive',commerce);check('public_research_archive',research);check('synthetic_website_archive',website)
+    check('synthetic_powerbi_archive',commerce);check('public_research_archive',research);check('source_separated_website_archive',website)
     return {'schema_version':1,'artifact_delivery_ready':not errors,'checks':checks,'errors':errors,
         'native_bi_release_decision':'HOLD','desktop_render_verified':False,'native_refresh_verified':False,
         'dax_engine_executed':False,'browser_render_verified':False,'live_refresh_required_for_historical_portfolio':False,
@@ -176,7 +185,7 @@ Regenerate with `python -m scripts.release_audit --out docs`. This checks the ac
 | --- | --- |
 {rows}
 
-The checks cover pinned archive size/SHA-256, bounded safe archive paths, PBIP/report/model bindings, page/table counts, portable model paths, official logo bytes, matching research sources/aggregate hashes, current bundled reports/protocol/query, report links, and synthetic-only website provenance. They do not establish visual fidelity, successful refresh, or DAX results. Microsoft schema and TOM parser results are separate checks recorded in [delivery evidence]({delivery}).
+The checks cover pinned archive size/SHA-256, bounded safe archive paths, PBIP/report/model bindings, page/table counts, portable model paths, official logo bytes, matching research sources/aggregate hashes, current bundled reports/protocol/query, report links, synthetic commerce provenance, and the separate public-history research portal. Portal values, evidence files, interface sources and its downloadable BI archive must match the pinned public research. They do not establish browser visual fidelity, successful refresh, or DAX results. Microsoft schema and TOM parser results are separate checks recorded in [delivery evidence]({delivery}).
 
 The research package contains five reports and twelve figures alongside a nine-page/sixteen-table native BI project. Review-selection sensitivity is a companion report, without a separate native page; temporal forecasting has its own native page. E-Commerce and Greenweez fixtures remain synthetic, and Olist remains a separate historical public study under CC BY-NC-SA 4.0. A live private-source refresh is not required to present that explicitly historical portfolio; it is required before making new live-business claims.
 
