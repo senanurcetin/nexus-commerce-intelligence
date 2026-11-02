@@ -4,6 +4,9 @@ Updated 2 November 2026. Non-commercial, English-language NEXUS analytics case s
 
 ## Implemented
 
+- Added a bounded private observation of six main-source projections and an isolated observed Greenweez finance build. Public evidence contains counts and gate outcomes; raw rows and financial amounts stay ignored locally. Source origin, currency, refund meaning and transaction-time COGS remain unverified.
+- Added a hash-locked research runtime, actual-version/build-input receipts and a complete synthetic success-path test for all five studies and native BI. Sparse common-month support and boundary survival intervals now remain explicitly unavailable in reports instead of crashing. See [reproduction](RESEARCH_REPRODUCIBILITY.md) and [remaining programme](DEVELOPMENT_PROGRAM.md).
+
 - Added a validated 22-metric registry, generated KPI catalog and source coverage table for the core commerce and independent Olist domains. Source definitions include eligibility, grain, denominator, units, null policies and implementation links.
 - Added known-cost completed product contribution with a matched revenue denominator and Greenweez product/shipping coverage. The synthetic fixture has 23 unpriced sales lines and 55 incomplete-component order records; source order/line/value controls reconcile without changing the finance models.
 - Replaced obsolete row-level DAX examples with explicitly scoped reference measures. The static acceptance gate now checks a matched cost denominator rather than requiring a misleading acquisition-cost proxy name; Desktop/DAX acceptance remains separate.
@@ -46,7 +49,7 @@ The four-page commerce report and web demo use only synthetic fixtures. Their re
 
 ## Verification scope
 
-- Python unit/contract tests, 11 headless Streamlit AppTests and 16 Node tests passed. Exact current counts and commands: [machine-readable verification](verification.json).
+- Python unit/contract tests, 11 headless Streamlit AppTests and 21 Node tests passed. Exact current counts and commands: [machine-readable verification](verification.json).
 - Full local rebuild: 10 E-Commerce models plus 59 model-level tests passed; Greenweez completed with 113 passed build nodes, four documented warnings and no errors.
 - Five E-Commerce analytical SQL templates and the independent Greenweez raw-branch coverage query execute locally. Raw-to-mart value/order, funnel and known-cost population controls reconcile. Both dbt projects compile the new analysis within their own source scope.
 - Greenweez raw-sales revenue reconciles to daily finance; daily contribution identities reconcile.
@@ -57,7 +60,7 @@ The four-page commerce report and web demo use only synthetic fixtures. Their re
 
 ## Limits
 
-Power BI Desktop rendering, DAX execution/refresh, mobile/browser interaction and live BI publication are not verified. Current instructions prohibit screen/browser testing, so these remain explicitly unclaimed. No commercial launch, payment integration, hosted job or paid resource was created. No manually dispatched CI or cloud refresh was run.
+Power BI Desktop rendering, DAX execution/refresh, mobile/browser interaction and live BI publication are not verified. Current instructions prohibit screen/browser testing, so these remain explicitly unclaimed. No commercial launch, payment integration, hosted job or paid resource was created. No CI, dbt Cloud or hosted job was manually dispatched. The separate private REST source observation created no SQL query jobs and is documented in [source acceptance](core-source/README.md).
 
 Greenweez fixtures contain unmatched product/shipping records and ambiguous refund worksheet units. Reconciliation of arithmetic does not make their financial interpretation audited. The public E-Commerce fixture is too small for a channel winner or a chi-square conclusion.
 

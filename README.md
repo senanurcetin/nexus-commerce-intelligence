@@ -15,6 +15,10 @@ The [22-metric KPI catalog](docs/KPI_CATALOG.md) defines each metric's unit, gra
 
 A [bounded core-source observation](docs/core-source/README.md) now reconciles six approved source projections, including 180,450 E-Commerce items and 13,362 Greenweez orders. Selected existing Greenweez finance marts run locally against those observations without synthetic seeds. Raw records and financial amounts remain private; currency, refund meaning, transaction-time COGS and original business provenance remain unverified. The public website retains its synthetic/historical labels.
 
+The [research reproduction guide](docs/RESEARCH_REPRODUCIBILITY.md) provides a hash-locked Python 3.11 environment and a complete raw-CSV-to-native-package test for all five studies. Builds record actual dependency versions and lock agreement; temporary synthetic test results remain separate from historical findings.
+
+The [executive readout](docs/EXECUTIVE_READOUT.md) connects the evidence to proposed decisions, financial and operational acceptance gates, and the additional data required for stronger claims. It is generated from versioned receipts, with checks against mixed populations and stale conclusions.
+
 Core commerce analysis now reports **known-cost contribution with matched revenue denominators** and **Greenweez product/shipping coverage**. In the synthetic Greenweez fixture, 23 unpriced sales lines carry 1,546.84 source units of sales value and 55 order records have incomplete components. The coverage report preserves the existing finance model while making its exclusions and zero policies visible; it does not infer audited profit or missing costs. See [commerce findings](docs/analysis/REPORT.md).
 
 [Olist advanced analysis](docs/advanced-analysis/REPORT.md) · [Synthetic mart findings](docs/analysis/REPORT.md) · [Architecture](docs/ARCHITECTURE.md) · [Power BI](powerbi/README.md) · [Delivery evidence](docs/DELIVERY.md)

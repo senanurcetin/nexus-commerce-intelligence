@@ -3,7 +3,7 @@
   "scope": "local synthetic commerce, independent historical public Olist and private bounded core-source observations; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 302,
+    "passed": 308,
     "failed": 0
   },
   "streamlit_headless": {
@@ -230,5 +230,34 @@
     "research_population_separate_from_synthetic_commerce": true,
     "browser_render_verified": false,
     "assistive_technology_verified": false
+  },
+  "research_reproduction": {
+    "verification_date": "2026-11-02",
+    "python": "3.11.9",
+    "clean_virtual_environment": true,
+    "hash_locked_installation": true,
+    "active_locked_packages": 21,
+    "dependency_graph_check_passed": true,
+    "research_environment_matches_lock": true,
+    "unmocked_five_study_fixture_tests_passed": 2,
+    "pipeline_change_failure_test_passed": true,
+    "historical_source_orders": 99441,
+    "historical_aggregate_tables_compared": 28,
+    "historical_aggregate_tables_identical_bytes": 28,
+    "historical_figures_changed": 0,
+    "microsoft_schema_checks": 72,
+    "microsoft_tom_tmdl_parsed": true,
+    "native_dax_refresh_render_verified": false,
+    "receipt": "docs/research_reproduction.json"
+  },
+  "executive_readout": {
+    "generated_from_committed_receipts": true,
+    "source_inputs": 7,
+    "decision_questions": 5,
+    "offline_guard_tests_passed": 3,
+    "mixed_populations_rejected": true,
+    "changed_primary_protocol_or_financial_gates_rejected": true,
+    "private_financial_amounts_excluded": true,
+    "operational_utility_or_causal_effect_certified": false
   }
 }

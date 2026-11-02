@@ -82,7 +82,7 @@
       "effective_product_count": 2529.9141417576625
     }
   },
-  "implementation_sha256": "214709b506a62f1ac446d7626fbc89fc9d17e0fe69f0f55040993a26d90b3994",
+  "implementation_sha256": "72774c32d0626f0a85bf2801147d39c8e42b41992f301695359e01f16ab2bc46",
   "query_sha256": "292e58fdfd8ce720749b6c7b5cdd4394fa0a9036d06a25b7014088b32854e784",
   "order_fact_sql_sha256": "e589e02701489e4cd0b0f8d65067cf7c24f60e0a786997d0723050b61f215de6",
   "aggregate_sha256": {

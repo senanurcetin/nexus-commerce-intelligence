@@ -8,8 +8,8 @@
   },
   "website": {
     "file": "NEXUS_Commerce_Web_Demo.zip",
-    "sha256": "77e90442ae7d1b70a100db33879524f76bc72362d541f01c7de8164529e910f2",
-    "bytes": 2682677,
+    "sha256": "9a608df69eae49e1137c99332fd61f81c7efd0dcdc23b3c7112de7b5c07308f7",
+    "bytes": 2682538,
     "entries": 70,
     "provenance": "synthetic_commerce_and_separate_historical_public_olist"
   },

@@ -68,8 +68,10 @@ def repeat_analysis(con) -> tuple[dict,dict]:
         row=curve[curve.day==day].iloc[0]
         horizons.append(dict(day=day,mature_customers=denominator,mature_repeats=numerator,
                              mature_repeat_rate=numerator/denominator if denominator else None,
-                             km_repeat_probability=row.repeat_probability,at_risk=int(row.at_risk),
-                             ci_low=row.ci_low,ci_high=row.ci_high))
+                             km_repeat_probability=float(row.repeat_probability) if pd.notna(row.repeat_probability) else None,
+                             at_risk=int(row.at_risk),
+                             ci_low=float(row.ci_low) if pd.notna(row.ci_low) else None,
+                             ci_high=float(row.ci_high) if pd.notna(row.ci_high) else None))
     summary={'origins':int(ledger.customers.sum()),'observed_second_purchase_days':int(ledger[ledger.event].customers.sum()),
              'origin_start':'2017-01-01','last_observed_day':'2018-07-31',
              'horizon_days':180,'confidence_method':'Greenwood log-log pointwise 95%; null at survival boundaries',
@@ -146,7 +148,8 @@ def present(tables,summary,out):
     c=tables['repeat_curve'];h=tables['repeat_horizons']
     fig,ax=plt.subplots(figsize=(12,6))
     ax.step(c.day,c.repeat_probability*100,where='post',color='#00E0FF',label='Pooled Kaplan–Meier')
-    ax.fill_between(c.day,c.ci_low*100,c.ci_high*100,step='post',alpha=.22,color='#00E0FF',label='Pointwise 95% interval')
+    ax.fill_between(c.day.to_numpy(dtype=float),c.ci_low.to_numpy(dtype=float)*100,c.ci_high.to_numpy(dtype=float)*100,
+                    step='post',alpha=.22,color='#00E0FF',label='Pointwise 95% interval')
     ax.scatter(h.day,h.mature_repeat_rate*100,color='#8F9BFF',s=45,label='Fully observed customers at each horizon')
     ax.set(xlabel='Days after first observed delivered-purchase day',ylabel='Second distinct purchase day (%)',title='Time to another purchase day: censoring and mature-cohort checks')
     ax.legend(facecolor='#0B0F19',labelcolor='#EDF2F8')
@@ -156,13 +159,15 @@ def present(tables,summary,out):
     ax.set(xlabel='Share of delivered item GMV (%)',title='Category portfolio: ten largest GMV contributors')
     save(fig,'category_portfolio.png','January 2017–July 2018 | Source price units; freight excluded | Category-order incidences are not additive orders',left=.28)
     r=summary['repeat']['repeat_day_90'];p=summary['portfolio']
+    interval=(f"{r['ci_low']:.2%}–{r['ci_high']:.2%}"
+              if pd.notna(r['ci_low']) and pd.notna(r['ci_high']) else 'not estimable at this boundary')
     report=f'''# Olist: repeat-purchase timing and portfolio concentration
 
 Independent extension of the [controlled Olist study](REPORT.md), using the same delivered positive-item-GMV purchase window. Source: [Olist public data]({SOURCE}). All derived CSVs, figures and the data-containing Olist BI package retain [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). NEXUS authored the transformations; no endorsement by Olist is implied. E-Commerce and Greenweez populations remain separate.
 
 ## Findings and implications
 
-- **{summary['repeat']['origins']:,} observed customer origins**, beginning January 2017. Pooled Kaplan–Meier probability of another distinct purchase day by day 90 is **{r['km_repeat_probability']:.2%}**, with pointwise Greenwood log-log 95% interval **{r['ci_low']:.2%}–{r['ci_high']:.2%}**. There are {r['at_risk']:,} customers at risk immediately before day 90. This is a historical descriptive estimate, not a forecast or churn probability.
+- **{summary['repeat']['origins']:,} observed customer origins**, beginning January 2017. Pooled Kaplan–Meier probability of another distinct purchase day by day 90 is **{r['km_repeat_probability']:.2%}**, with pointwise Greenwood log-log 95% interval **{interval}**. There are {r['at_risk']:,} customers at risk immediately before day 90. This is a historical descriptive estimate, not a forecast or churn probability.
 - Among **{r['mature_customers']:,} customers with a full 90-day observation window**, {r['mature_repeats']:,} returned on another day within 90 days: **{r['mature_repeat_rate']:.2%}**. This maturity check describes an older calendar-origin population; differences from pooled KM do not by themselves establish bias or a trend.
 - Across **{p['observed_products']:,} observed product IDs**, the top 10 contribute **{p['top_10_share']:.2%}** of item GMV and the top 100 contribute **{p['top_100_share']:.2%}**. Within-portfolio HHI is **{p['hhi']:.6f}**, equivalent to **{p['effective_product_count']:,.1f} equally weighted products**. This measures SKU value concentration within this extract, not market power or competition between firms.
 

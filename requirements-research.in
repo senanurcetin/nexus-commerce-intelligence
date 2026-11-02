@@ -1,0 +1,8 @@
+# Python 3.11 research reproduction; intentionally excludes apps and cloud clients.
+# Direct versions match the validated analytical environment.
+numpy==2.3.5
+scipy==1.17.0
+pandas==2.2.3
+duckdb==1.5.2
+matplotlib==3.10.9
+jsonschema==4.26.0
