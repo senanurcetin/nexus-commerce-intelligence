@@ -18,7 +18,8 @@ jobs:
           cache: pip
           cache-dependency-path: requirements-research.lock
       - name: Install hash-locked research dependencies
-        run: python -m pip install --require-hashes --only-binary :all: -r requirements-research.lock
+        run: |
+          python -m pip install --require-hashes --only-binary :all: -r requirements-research.lock
       - name: Check installed dependency graph and lock agreement
         run: |
           python -m pip check
