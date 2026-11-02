@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "entries": 1,
+  "head_sha256": "41b246a7a05c1e51ec663d9af2323a2043a20ad9f9c37bf3db62d555fb876f3b",
+  "earliest_available_at_utc": "2026-11-02T21:11:50.460482+00:00",
+  "latest_available_at_utc": "2026-11-02T21:11:50.460482+00:00",
+  "available_from_registration_only": true,
+  "historical_business_time_backfill_allowed": false,
+  "source_ingestion_times_verified": false,
+  "transactional_source_snapshot_verified": false,
+  "current_business_validity_verified": false,
+  "raw_rows_published": false,
+  "financial_amounts_published": false,
+  "limitations": "Local integrity/selection control, not authenticated original source ingestion history. Entirely rewritten or truncated history needs an independent previously published anchor to detect."
+}

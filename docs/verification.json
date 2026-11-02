@@ -1,9 +1,9 @@
 {
-  "date": "2026-11-02",
+  "date": "2026-11-03",
   "scope": "local synthetic commerce, independent historical public Olist and private bounded core-source observations; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 308,
+    "passed": 323,
     "failed": 0
   },
   "streamlit_headless": {
@@ -259,5 +259,22 @@
     "changed_primary_protocol_or_financial_gates_rejected": true,
     "private_financial_amounts_excluded": true,
     "operational_utility_or_causal_effect_certified": false
+  },
+  "core_source_temporal_availability": {
+    "verification_date_local": "2026-11-03",
+    "private_registered_snapshots": 1,
+    "offline_temporal_control_tests": 15,
+    "no_cloud_read_performed": true,
+    "business_time_backfill_allowed": false,
+    "unavailable_cutoff_never_falls_back_to_latest": true,
+    "inclusive_registration_boundary_verified": true,
+    "timezone_aware_cutoffs_required": true,
+    "concurrent_registration_atomic_and_idempotent": true,
+    "source_file_and_receipt_tampering_rejected": true,
+    "published_anchor_comparison_passed": true,
+    "original_profile_and_dbt_receipt_preserved": true,
+    "source_ingestion_history_verified": false,
+    "status": "docs/core-source/temporal-status.json",
+    "receipt": "docs/core-source/temporal-verification.json"
   }
 }

@@ -19,6 +19,8 @@ The [research reproduction guide](docs/RESEARCH_REPRODUCIBILITY.md) provides a h
 
 The [executive readout](docs/EXECUTIVE_READOUT.md) connects the evidence to proposed decisions, financial and operational acceptance gates, and the additional data required for stronger claims. It is generated from versioned receipts, with checks against mixed populations and stale conclusions.
 
+[Core-source availability history](docs/core-source/TEMPORAL_AVAILABILITY.md) prevents a requested historical cutoff from silently using the latest snapshot. Registration times are recorded separately from business/source-observation dates; as-of profiles retain that boundary without reconstructing unavailable original ingestion history.
+
 Core commerce analysis now reports **known-cost contribution with matched revenue denominators** and **Greenweez product/shipping coverage**. In the synthetic Greenweez fixture, 23 unpriced sales lines carry 1,546.84 source units of sales value and 55 order records have incomplete components. The coverage report preserves the existing finance model while making its exclusions and zero policies visible; it does not infer audited profit or missing costs. See [commerce findings](docs/analysis/REPORT.md).
 
 [Olist advanced analysis](docs/advanced-analysis/REPORT.md) · [Synthetic mart findings](docs/analysis/REPORT.md) · [Architecture](docs/ARCHITECTURE.md) · [Power BI](powerbi/README.md) · [Delivery evidence](docs/DELIVERY.md)

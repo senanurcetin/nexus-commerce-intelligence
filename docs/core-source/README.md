@@ -32,4 +32,6 @@ The selected Greenweez finance dbt build uses an isolated local database, no syn
 
 ## Remaining acceptance
 
+[Temporal availability](TEMPORAL_AVAILABILITY.md) now provides a private whole-snapshot registration history and strict as-of selection. It prevents latest-snapshot fallback before local availability and retains separate observation/registration times. This creates a forward-looking control; it does not reconstruct source ingestion history or make the historical finance fields point-in-time valid.
+
 Obtain an authoritative currency/unit/refund/cost-timing definition and source-origin statement before presenting business finance conclusions. Establish ingestion-time/as-of history before retrospective operational prediction. Native Power BI refresh, DAX execution and rendering remain unverified. Public demo fixtures and distributed archives retain their existing synthetic/historical labels. This remains a noncommercial portfolio; no payment flow, recurring paid resource or monetization feature is introduced.

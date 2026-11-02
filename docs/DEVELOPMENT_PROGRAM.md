@@ -1,6 +1,6 @@
 # Advanced analytics development programme
 
-Updated 2 November 2026. Objective: a noncommercial, English-language NEXUS data-analysis portfolio with inspectable scientific work, source-separated results and professional delivery. Budget: zero recurring cost. Payment integration and revenue validation do not apply to this portfolio. Do not introduce paid services, manual cloud-job dispatch, browser/Playwright/screen automation or automatic PR merge.
+Updated 3 November 2026. Objective: a noncommercial, English-language NEXUS data-analysis portfolio with inspectable scientific work, source-separated results and professional delivery. Budget: zero recurring cost. Payment integration and revenue validation do not apply to this portfolio. Do not introduce paid services, manual cloud-job dispatch, browser/Playwright/screen automation or automatic PR merge.
 
 | Priority | Workstream | Current evidence | Acceptance still required |
 | --- | --- | --- | --- |
@@ -8,7 +8,7 @@ Updated 2 November 2026. Objective: a noncommercial, English-language NEXUS data
 | 2 | Financial correctness | Explicit currency/refund/cost contracts; matched eligible denominators; unknown refund units never subtracted; missing components exposed | Authoritative currency, refund semantics, tax/shipping inclusion, transaction-time COGS; no audited-profit claim until resolved |
 | 3 | Reproducible science | Hash-locked research environment, actual-version receipts, pipeline-input stability, complete synthetic integration test and separate historical rebuild | Maintain lock checks on Linux CI; do not confuse environment agreement with cross-platform figure identity or event-time validity |
 | 4 | Decision communication | Five research views plus a generated [executive readout](EXECUTIVE_READOUT.md), receipt hashes, action/acceptance sequence and explicit data-acquisition requirements | Validate operational loss budgets and interventions against actual business decisions; preserve separate populations and inconclusive results |
-| 5 | Temporal validity | Past-only forecasting selection/calibration and poisoning tests; baseline superiority is not established | Obtain new future evaluation data and reliable ingestion-time/as-of history before operational forecasting claims; extra model complexity is not an acceptance criterion |
+| 5 | Temporal validity | Past-only forecasting controls plus [local source availability history](core-source/TEMPORAL_AVAILABILITY.md), strict whole-snapshot as-of selection and no latest fallback; baseline superiority is not established | Original source ingestion history and new future outcomes remain unavailable; local registration starts a conservative forward record, not a reconstructed historical backtest |
 | 6 | Native BI acceptance | Editable native projects, official JSON schemas, Microsoft TOM parsing, structural/source checks | Actual DAX evaluation, model refresh and rendering remain unverified; schema/parsing success does not close this gate |
 | 7 | Presentation acceptance | Official logo, NEXUS design system, five-study portal, package integrity and loopback HTTP/MIME checks | Browser, keyboard and assistive-technology behaviour remain unverified under the current no-browser/no-screen constraint |
 
