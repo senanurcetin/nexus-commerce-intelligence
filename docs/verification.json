@@ -3,7 +3,7 @@
   "scope": "local synthetic commerce, independent historical public Olist and private bounded core-source observations; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 333,
+    "passed": 348,
     "failed": 0
   },
   "streamlit_headless": {
@@ -293,5 +293,27 @@
     "production_estimator_helpers_reused": false,
     "customer_cluster_review_intervals_replayed": false,
     "financial_native_and_operational_gates": "HOLD"
+  },
+  "synthetic_experiment_design_lab": {
+    "verification_date_local": "2026-11-03",
+    "receipt": "docs/experiment-design/evidence.json",
+    "source_kind": "synthetic_experiment_design",
+    "real_customers_enrolled": 0,
+    "planning_scenarios": 9,
+    "simulation_scenarios": 3,
+    "replicates_per_scenario": 2000,
+    "planned_total_customers_assumed_scenario": 21780,
+    "new_tests_passed": 15,
+    "fixed_horizon_missing_outcome_assignment_and_srm_gates_tested": true,
+    "sample_size_and_newcombe_references_cross_checked": true,
+    "wilson_cross_checked_against_scipy": true,
+    "fisher_cross_checked_by_independent_enumeration": true,
+    "full_temporary_build_reproduces_numeric_outputs": true,
+    "official_nexus_logo_used": true,
+    "generated_figure_inspected_locally": true,
+    "current_business_baseline_verified": false,
+    "causal_effect_execution_verified": false,
+    "financial_roi_estimated": false,
+    "adoption_recommended": false
   }
 }

@@ -32,6 +32,10 @@ jobs:
         run: |
           python -m unittest discover -s tests -p 'test_analysis_audit.py' -v
           python -m scripts.analysis_audit
+      - name: Validate the separate synthetic prospective experiment-design laboratory
+        env:
+          MPLBACKEND: Agg
+        run: python -m unittest discover -s tests -p 'test_experiment_design.py' -v
 
   dbt-ci:
     runs-on: ubuntu-latest
