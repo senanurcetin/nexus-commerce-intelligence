@@ -40,8 +40,9 @@ def render(root=ROOT):
     rating_decision=('The unrestricted missing-rating range includes zero; its direction is not identified under those assumptions.'
         if p['bound_low']<=0<=p['bound_high'] else 'The unrestricted missing-rating range excludes zero; observational confounding remains unresolved.')
     ledger={'schema_version':1,'purpose':'noncommercial_portfolio_decision_readout',
-        'inputs_sha256':{name:hashlib.sha256((root/name).read_bytes()).hexdigest() for name in INPUTS},
-        'implementation_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'input_hash_basis':'canonical_json_utf8_sorted_keys',
+        'inputs_sha256':{name:hashlib.sha256(json.dumps(item,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode('utf-8')).hexdigest() for name,item in zip(INPUTS,data)},
+        'implementation_sha256':hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
         'historical_public_olist':{'source_orders':base['quality']['order_fact_rows'],'m1_repeat_rate':s['weighted_m1_retention'],
             'km_90_day_repeat_probability':r['km_repeat_probability'],'delivery_rate_change':o['full_rate_change'],
             'rating_30_day_difference':p['complete_case_difference'],'rating_bound_low':p['bound_low'],'rating_bound_high':p['bound_high'],
@@ -78,7 +79,7 @@ No capital, paid resource, payment product or commercial launch is introduced. T
 
 [Core-source acceptance](core-source/README.md) · [Base Olist study](advanced-analysis/REPORT.md) · [Repeat/portfolio study](advanced-analysis/CUSTOMER_PORTFOLIO.md) · [Delivery diagnosis](advanced-analysis/DELIVERY_OPERATIONS.md) · [Rating sensitivity](advanced-analysis/REVIEW_SELECTION.md) · [Forecast validation](advanced-analysis/FORECAST_VALIDATION.md) · [Reproduction](RESEARCH_REPRODUCIBILITY.md) · [Machine-readable decision evidence](executive_readout.json).
 
-Regenerate with `python -m scripts.executive_readout`. This reads committed receipts only: it performs no cloud reads, inference service calls, browser actions or new statistical estimation. Input hashes make stale readouts detectable. Unsupported source, duplicate primary windows, mixed Olist snapshots or changed financial acceptance policy are rejected.
+Regenerate with `python -m scripts.executive_readout`. This reads committed receipts only: it performs no cloud reads, inference service calls, browser actions or new statistical estimation. Canonical JSON input hashes make stale readouts detectable across Windows/Linux line endings and formatting; the implementation hash normalizes CRLF to LF. Unsupported source, duplicate primary windows, mixed Olist snapshots or changed financial acceptance policy are rejected.
 '''
     return text,ledger
 

@@ -27,6 +27,10 @@ class DecisionReadout(unittest.TestCase):
         self.assertIn('No demonstrated primary selector improvement',text)
         self.assertIn('direction is not identified',text)
         self.assertEqual(ledger['private_core_observation']['financial_acceptance'],'HOLD')
+        root=self.fixture()
+        for name in INPUTS:
+            p=root/name;p.write_bytes(p.read_bytes().replace(b'\r\n',b'\n').replace(b'\n',b'\r\n'))
+        self.assertEqual(render(root),(text,ledger))
 
     def test_mixed_snapshots_and_changed_financial_or_primary_gates_are_rejected(self):
         changes=[(1,lambda x:x['quality']['files'].clear(),'Mixed'),

@@ -1,16 +1,17 @@
 {
   "schema_version": 1,
   "purpose": "noncommercial_portfolio_decision_readout",
+  "input_hash_basis": "canonical_json_utf8_sorted_keys",
   "inputs_sha256": {
-    "docs/advanced-analysis/evidence.json": "bd31952820efa43ae12de4c0bab407ad5009443c3703e3d8506a181b509c58e2",
-    "docs/advanced-analysis/extension_evidence.json": "c17c41ee27e3a27b244cc7801ac877550ebfabfed98eb595e194833928bb7fb0",
-    "docs/advanced-analysis/operations_evidence.json": "ad1b38180f6d8566941ad1d06383185a699267aeb789bc1c277eb85084b60fa6",
-    "docs/advanced-analysis/review_selection_evidence.json": "eeb4a11d0f00b9e8b06a0fee4cd83b60b64130a5669c6ea488391f5598cb309d",
-    "docs/advanced-analysis/forecast_evidence.json": "efd20bebcde0fe6ea72150b1e1f787735907e882f799091cbdddafab538d0d06",
-    "docs/core-source/status.json": "56496a2385e8125f4351a57e8e3dc52f79329caf8e8056933f52958a56c002b0",
-    "contracts/financial_semantics.json": "da695ba22289f40531b510ecd201508e98b465498452ff4b7bc032c9a5771521"
+    "docs/advanced-analysis/evidence.json": "6cc7e4fbec9d89918afe6d2a68b175e955ae866f7173fcf8a3621163bfd1cfe5",
+    "docs/advanced-analysis/extension_evidence.json": "87d6e3c93efd7bd03dd4fcd62b34cc05b3571eb0831e0b4311c0859792c7c077",
+    "docs/advanced-analysis/operations_evidence.json": "68fb078ae59b1f971e039cfb388a42eeae7db974c24c4b6d676d83f67e4f5f49",
+    "docs/advanced-analysis/review_selection_evidence.json": "56c627deb9cd823c284893b01192ab830516548536c1d95cc817ae39e8b2e20a",
+    "docs/advanced-analysis/forecast_evidence.json": "eaf5202cb21a8f6cdb223cf1dd507ecb7159965241721483cb5855149fabcefa",
+    "docs/core-source/status.json": "a585750e18593b415a1ec0de1593e9378a64599b35942d02be2f441cee96cf94",
+    "contracts/financial_semantics.json": "8829af75689fa0a7f9a8411f9ac11a0b4d3933f4855d2c44ea12ea78c1d7b681"
   },
-  "implementation_sha256": "82f8b831b2d40ff5197a6f9f0c5f70a52419c945d5b2f765fb60722dfea2e8ff",
+  "implementation_sha256": "16af0f493c670ac22d9af27dc77ef0ca75d72e6624db1f264a6f125d25a91bd4",
   "historical_public_olist": {
     "source_orders": 99441,
     "m1_repeat_rate": 0.004802409846792015,
