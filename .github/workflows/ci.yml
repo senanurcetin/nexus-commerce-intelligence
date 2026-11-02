@@ -28,6 +28,10 @@ jobs:
         env:
           MPLBACKEND: Agg
         run: python -m unittest discover -s tests -p 'test_research_reproduction.py' -v
+      - name: Independently replay published conclusions in the locked research runtime
+        run: |
+          python -m unittest discover -s tests -p 'test_analysis_audit.py' -v
+          python -m scripts.analysis_audit
 
   dbt-ci:
     runs-on: ubuntu-latest
@@ -304,7 +308,6 @@ jobs:
           python -m unittest discover -s tests -p 'test_core_source.py' -v
           python -m unittest discover -s tests -p 'test_core_source_history.py' -v
           python -m unittest discover -s tests -p 'test_executive_readout.py' -v
-          python -m unittest discover -s tests -p 'test_analysis_audit.py' -v
           python -m unittest discover -s tests -p 'test_portfolio_build.py' -v
           python -m unittest discover -s tests -p 'test_advanced_olist.py' -v
           python -m unittest discover -s tests -p 'test_olist_customer_portfolio.py' -v
@@ -320,7 +323,6 @@ jobs:
           python -m scripts.build_public_powerbi
           python -m scripts.build_olist_powerbi
           python -m scripts.release_audit
-          python -m scripts.analysis_audit
           node --test showcase/tests/*.test.mjs
 
       - name: Set up .NET for Microsoft's TMDL parser
