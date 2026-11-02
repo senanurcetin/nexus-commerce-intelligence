@@ -1,0 +1,6 @@
+product_cost_coverage,shipping_coverage,orders,sales_lines,unpriced_lines,missing_revenue_lines,revenue,known_cost_line_revenue,unknown_cost_line_revenue,known_cost_product_contribution,reported_product_margin,reported_operational_margin,complete_components_operational_margin
+fully_priced,complete,1171,2975,0,0,242188.540000,242188.540000,0.000000,78197.690000,78197.690000,71381.510000,71381.510000
+fully_priced,missing_or_invalid,32,86,0,0,7082.370000,7082.370000,0.000000,2274.320000,2274.320000,2274.320000,
+partly_priced,complete,15,41,15,0,3632.510000,2590.780000,1041.730000,905.390000,905.390000,810.380000,
+unpriced,complete,7,7,7,0,420.650000,0.000000,420.650000,,,-28.750000,
+unpriced,missing_or_invalid,1,1,1,0,84.460000,0.000000,84.460000,,,0.000000,

@@ -1,0 +1,7 @@
+product_id,product_name,category,brand,total_orders,gross_revenue,net_revenue,return_rate_pct,avg_sale_price,revenue_rank,return_risk_rank
+1,ProBook Laptop 15,electronics,TechBrand,3,1499.98,749.99,50.0,749.99,1,1
+4,SoundPro Headphones,electronics,AudioPro,3,389.97,259.98,33.3,129.99,2,2
+6,BrewMaster Coffee Maker,kitchen,HomePlus,3,239.97,239.97,0.0,79.99,3,3
+2,UltraRun Running Shoes,footwear,SportBrand,3,89.99,89.99,0.0,89.99,4,3
+5,Eco Yoga Mat,sports & outdoors,FitGear,2,69.98,69.98,0.0,34.99,5,3
+3,Winter Parka Jacket,clothing,FashionCo,1,0.00,0.00,,69.99,6,6

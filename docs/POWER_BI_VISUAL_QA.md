@@ -1,41 +1,27 @@
-# NEXUS Commerce Intelligence — Power BI visual and Desktop release gates
+# Power BI verification boundaries
 
-## Source of truth
+The portable four-page synthetic and nine-page Olist reports are delivered as native PBIP/PBIR/TMDL. The separate private-source generator retains seven pages. Refer to [Power BI delivery](../powerbi/README.md), [artifact readiness](RELEASE_READINESS.md) and [current evidence](DELIVERY.md).
 
-- **Data/model source:** repository dbt models, tests, Jinja macros and `analyses/` SQL, with BigQuery as the historical warehouse and DuckDB for reproducible local checks.
-- **Power BI evidence:** three **historical screenshots** under `docs/assets/`, [DAX measure documentation](dax-measures.md), and the [importable JSON theme](../powerbi/themes/nexus-commerce.json).
-- **Generated source, Desktop acceptance pending:** the repository now includes a reproducible **seven-page native PBIP generator** (not a committed PBIX report); its output is created locally under the gitignored `target/powerbi/project/`. CI checks structural integrity and source isolation, **not** Microsoft Power BI Desktop rendering, model refresh, licenses or source-accounted finance. See [PBIP pipeline](../powerbi/PBIP_PIPELINE.md).
-- **Separate dataset:** the Olist notebooks are public dataset analysis, not the clickstream/order mart backing the three Power BI screenshots. Do not combine their results in one dashboard caption.
+## Verified in code
 
-## Existing images (repository assets, not fresh report validation)
+- Official NEXUS logo is bundled and registered.
+- Microsoft schema-bearing report files validate against their published schemas.
+- Microsoft TOM deserializes both the four-table public and eight-table private TMDL models.
+- Microsoft TOM also deserializes the sixteen-table Olist model. The actual distributed archives pass `scripts.release_audit`; the acceptance preflight recognizes their embedded editable PBIP projects.
+- Field references resolve to known source-scoped columns/measures.
+- Public source snapshots are synthetic; external source exports are rejected.
+- Public Power Query embeds aggregates without machine-specific paths.
+- Visual positions remain within the page and do not overlap.
+- Completed revenue, returned value and session denominators retain distinct definitions.
 
-| Page | PNG | Tracked size |
-| --- | --- | ---: |
-| Channel Acquisition Efficiency | [powerbi-channel-performance.png](assets/powerbi-channel-performance.png) | 347,816 bytes |
-| Signups and Basket Value | [powerbi-traffic-trend.png](assets/powerbi-traffic-trend.png) | 781,854 bytes |
-| Demographics and Customer Type | [powerbi-demographics.png](assets/powerbi-demographics.png) | 567,435 bytes |
+## Outstanding rendered acceptance
 
-File presence, dimensions and chart labels must be checked against an actual report render before calling these current. The screenshots have not been replaced in this documentation/theme change. The larger files warrant a **visually reviewed** compression plan if they are later reused on a public website, not automatic quality-reducing conversion.
+No browser, Playwright or PC-screen automation is permitted in this pass. Therefore Desktop rendering, DAX engine results, refresh, responsive layout, slicer behavior and service publication remain unverified. Old screenshots were removed; the analytical figures in `docs/analysis/` are not substituted as BI screenshots.
 
-## Semantic acceptance checks
+When Desktop verification is separately performed, confirm all pages open, refresh the embedded data, compare measures to `docs/analysis/` under the same filters, inspect clipping/contrast and capture only genuine current report images.
 
-1. **Acquisition versus sessions:** `dim_user.signup_traffic_source` (search/organic/facebook/email/display) records user signup attribution; `fct_marketing_web_performance.traffic_source` (email/adwords/youtube/facebook/organic) records individual session attribution. Never label these as the same channel variable.
-2. **Denominators:** ensure user counts, distinct customers, session counts, conversions and order-item revenue use their intended grains. Preserve filters and data-type semantics across the two facts.
-3. **Conversion ranking:** [`analyses/channel_conversion_significance.sql`](../analyses/channel_conversion_significance.sql) documents a historical five-source chi-square result `χ² = 6.73` (df=4, p≈0.15); do not claim significant session-source conversion differences without a new run on the current data.
-4. **PE4 efficiency score:** [DAX documentation](dax-measures.md) weights conversion/revenue/session-count proxies. There is **no observed marketing spend or true customer-acquisition cost** in this calculation; do not label its CAC proxy as actual cost.
-5. **Units and date coverage:** Turkish **B** means *bin* (thousand), not billion. The historical report describes 2026 as a partial year; apparent declines must not be read without period alignment.
-6. **Returns / net revenue:** reconcile the sign and grain of `revenue` and `returned_revenue` in the marts before presenting return rates, margin or financial performance as current.
+## Attribution and financial semantics
 
-## Power BI Desktop acceptance checklist — not completed here
+`dim_user.signup_traffic_source` describes signup acquisition. `fct_marketing_web_performance.traffic_source` describes session first touch. Order attribution is a separate descriptive rule. Keep all three distinct.
 
-- [x] Generate the seven-page PBIP from local source-scoped aggregate-only inputs and run `python -m scripts.powerbi_structure_audit --out target/powerbi` in CI; results are *structural* only.
-- [ ] Open the generated PBIP in **Power BI Desktop**, verify the registered NEXUS theme and original logo, save a versioned copy, and confirm import compatibility.
-- [ ] Refresh the model from an authorized data source and record successful/failed queries; verify calendar relationships and measure filter contexts.
-- [ ] Inspect **all seven generated pages** at desktop and mobile widths: source status, historical E-Commerce, sessions, Greenweez finance, source quality, import evidence and Commerce Lab. Check titles, card axes, legends, format strings, slicers, tooltips and interactions.
-- [ ] Separately inspect the three **historical screenshot** pages; they are not screenshots of the new seven-page report.
-- [ ] Run/reconcile SQL and DAX spot checks for core metrics: signups, conversions, session count, order revenue, average basket, returns and PE4 rankings.
-- [ ] Verify source/attribution semantics and ensure there is no mixing of Olist notebook figures with the main mart.
-- [ ] Re-capture genuine PNGs and record the Power BI report version, data refresh date and screenshot date.
-- [ ] Confirm the repository README, portfolio card and Social Preview label the version and source honestly.
-
-**Current release decision: HOLD.** Offline CI now proves that seven generated PBIP pages have declared model bindings and isolated aggregate CSV inputs. It does NOT establish Desktop rendering, source refresh, human visual acceptance, currency units, refunds or independently verified finance. Existing historical PNGs remain archival evidence.
+The misleading historical CAC Proxy label was removed from the DAX reference: sessions per user do not measure monetary CAC. Returned-line value is not cash refunded, source units do not establish a currency, and Greenweez contribution with incomplete costs is not audited profit. Summed daily distinct orders are order-days, not period-distinct orders.

@@ -75,9 +75,9 @@ TABLES = {
 }
 MEASURES = {
     "ECommerceOrders": {
-        "Completed Orders": ("IF(ISEMPTY(ECommerceOrders), BLANK(), SUM(ECommerceOrders[completed_orders]))", "#,0"),
+        "Completed Order-Days": ("IF(ISEMPTY(ECommerceOrders), BLANK(), SUM(ECommerceOrders[completed_orders]))", "#,0"),
         "Completed Line Revenue (source units)": ("IF(ISEMPTY(ECommerceOrders), BLANK(), SUM(ECommerceOrders[completed_revenue]))", "#,0.00"),
-        "Returned Orders": ("IF(ISEMPTY(ECommerceOrders), BLANK(), SUM(ECommerceOrders[returned_orders]))", "#,0"),
+        "Returned Order-Days": ("IF(ISEMPTY(ECommerceOrders), BLANK(), SUM(ECommerceOrders[returned_orders]))", "#,0"),
     },
     "ECommerceSessions": {
         "Sessions (historical)": ("IF(ISEMPTY(ECommerceSessions), BLANK(), SUM(ECommerceSessions[sessions]))", "#,0"),
@@ -110,11 +110,11 @@ PAGES = [
          ("tableEx", "SourceRegistry", ["source", "status", "rows", "provenance"], None, "Independent source evidence"),
      ]},
     {"id": "b785831efa4283780c12", "title": "02 · Historical E-Commerce",
-     "cards": [("ECommerceOrders", "Completed Orders"), ("ECommerceOrders", "Completed Line Revenue (source units)"),
-               ("ECommerceOrders", "Returned Orders")],
+     "cards": [("ECommerceOrders", "Completed Order-Days"), ("ECommerceOrders", "Completed Line Revenue (source units)"),
+               ("ECommerceOrders", "Returned Order-Days")],
      "charts": [
          ("lineChart", "ECommerceOrders", ["date"], "Completed Line Revenue (source units)", "Daily completed-line revenue"),
-         ("clusteredColumnChart", "ECommerceOrders", ["date"], "Completed Orders", "Completed orders (distinct/order-day)"),
+         ("clusteredColumnChart", "ECommerceOrders", ["date"], "Completed Order-Days", "Completed order-days (daily distinct)"),
      ]},
     {"id": "c17f944dab306796b2e9", "title": "03 · E-Commerce Sessions",
      "cards": [("ECommerceSessions", "Sessions (historical)"),
@@ -213,7 +213,7 @@ def export_csv(data_dir: Path, rows: dict[str, list[dict]]) -> dict:
     return counts
 
 
-def table_tmdl(name: str, fields: list[tuple[str, str]]) -> str:
+def table_tmdl(name: str, fields: list[tuple[str, str]], rows: list[dict] | None = None, *, measures: dict | None = None) -> str:
     lines = [f"table {name}", ""]
     for field, kind in fields:
         lines.extend([
@@ -223,7 +223,7 @@ def table_tmdl(name: str, fields: list[tuple[str, str]]) -> str:
             f"\t\tsourceColumn: {field}",
             "",
         ])
-    for measure_name, (formula, fmt) in MEASURES.get(name, {}).items():
+    for measure_name, (formula, fmt) in (MEASURES if measures is None else measures).get(name, {}).items():
         lines.extend([
             f"\tmeasure '{measure_name}' = {formula}",
             f"\t\tformatString: {fmt}",
@@ -236,19 +236,33 @@ def table_tmdl(name: str, fields: list[tuple[str, str]]) -> str:
                             for field, kind in fields)
     m = [
         "let",
-        f'    Raw = Csv.Document(File.Contents(pDataFolder & "\\\\{name}.csv"), '
+        f'    Raw = Csv.Document(File.Contents(pDataFolder & "/{name}.csv"), '
         '[Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),',
         "    Headers = Table.PromoteHeaders(Raw, [PromoteAllScalars=true]),",
         f"    Typed = Table.TransformColumnTypes(Headers, {{{conversions}}}, \"en-US\")",
         "in",
         "    Typed",
     ]
+    if rows is not None:
+        def literal(value: object) -> str:
+            if value is None:
+                return "null"
+            if isinstance(value, (int, float)):
+                return json.dumps(value, allow_nan=False)
+            return '"' + str(value).replace('"', '""').replace('\n', '#(lf)').replace('\r', '#(cr)') + '"'
+        headers = ", ".join(literal(field) for field, _ in fields)
+        values = ",\n        ".join("{" + ", ".join(literal(row.get(field)) for field, _ in fields) + "}" for row in rows)
+        m = ["let", f"    Raw = #table({{{headers}}}, {{{values}}}),",
+             f"    Typed = Table.TransformColumnTypes(Raw, {{{conversions}}}, \"en-US\")",
+             "in", "    Typed"]
     lines += [
         f"\tpartition {name} = m",
         "\t\tmode: import",
         "\t\tsource =",
     ]
-    lines += ["\t\t\t" + part for part in m]
+    # Every physical line of a multiline Power Query expression must remain
+    # inside the TMDL partition source indentation, including embedded rows.
+    lines += ["\t\t\t" + line for part in m for line in part.splitlines()]
     return "\n".join(lines) + "\n"
 
 
@@ -271,6 +285,12 @@ def visual_json(visual_id: str, typ: str, table: str, columns: list[str],
         roles = {"Data": {"projections": [_field(table, measure or "", True)]}}
     elif typ == "tableEx":
         roles = {"Values": {"projections": [_field(table, col, False) for col in columns]}}
+    elif typ == "pivotTable":
+        if len(columns) != 2 or not measure:
+            raise ValueError("Matrix requires a row, column and measure")
+        roles = {"Rows": {"projections": [_field(table, columns[0], False)]},
+                 "Columns": {"projections": [_field(table, columns[1], False)]},
+                 "Values": {"projections": [_field(table, measure, True)]}}
     else:
         roles = {
             "Category": {"projections": [_field(table, col, False) for col in columns]},
@@ -326,15 +346,21 @@ def official_logo_visual() -> dict:
     }
 
 
-def build_project(base: Path, data_dir: Path) -> Path:
+def build_project(base: Path, data_dir: Path, *, portable_rows: dict[str, list[dict]] | None = None,
+                  tables: dict | None = None, measures: dict | None = None,
+                  pages: list | None = None, model_name: str = MODEL_NAME) -> Path:
+    tables = TABLES if tables is None else tables
+    pages = PAGES if pages is None else pages
+    if not re.fullmatch(r"[A-Za-z][A-Za-z0-9_]*", model_name):
+        raise ValueError("Invalid model name")
     proj_dir = base / "project"
-    model = proj_dir / (MODEL_NAME + ".SemanticModel")
-    report = proj_dir / (MODEL_NAME + ".Report")
+    model = proj_dir / (model_name + ".SemanticModel")
+    report = proj_dir / (model_name + ".Report")
     # One project per source dataset, no cross-dataset relationships.
-    _write_json(proj_dir / (MODEL_NAME + ".pbip"), {
+    _write_json(proj_dir / (model_name + ".pbip"), {
         "$schema": SCHEMA_ROOT + "pbip/pbipProperties/1.0.0/schema.json",
         "version": "1.0",
-        "artifacts": [{"report": {"path": MODEL_NAME + ".Report"}}],
+        "artifacts": [{"report": {"path": model_name + ".Report"}}],
         "settings": {"enableAutoRecovery": True},
     })
     _write_json(model / "definition.pbism", {
@@ -344,7 +370,7 @@ def build_project(base: Path, data_dir: Path) -> Path:
     })
     (model / "definition").mkdir(parents=True, exist_ok=True)
     (model / "definition/database.tmdl").write_text(
-        "database NEXUS_Commerce\n\tcompatibilityLevel: 1600\n", encoding="utf-8",
+        f"database {model_name}\n\tcompatibilityLevel: 1600\n", encoding="utf-8",
     )
     # Power Query/M strings escape double-quotes as "" (not backslashes).
     absolute = str(data_dir.resolve())
@@ -357,14 +383,14 @@ def build_project(base: Path, data_dir: Path) -> Path:
         '[IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]\n',
         encoding="utf-8",
     )
-    for name, fields in TABLES.items():
+    for name, fields in tables.items():
         path = model / "definition" / "tables" / f"{name}.tmdl"
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(table_tmdl(name, fields), encoding="utf-8")
+        path.write_text(table_tmdl(name, fields, None if portable_rows is None else portable_rows[name], measures=measures), encoding="utf-8")
     _write_json(report / "definition.pbir", {
         "$schema": SCHEMA_ROOT + "item/report/definitionProperties/2.0.0/schema.json",
         "version": "4.0",
-        "datasetReference": {"byPath": {"path": "../" + MODEL_NAME + ".SemanticModel"}},
+        "datasetReference": {"byPath": {"path": "../" + model_name + ".SemanticModel"}},
     })
     definition = report / "definition"
     _write_json(definition / "version.json", {
@@ -408,10 +434,10 @@ def build_project(base: Path, data_dir: Path) -> Path:
     })
     _write_json(definition / "pages/pages.json", {
         "$schema": SCHEMA_ROOT + "item/report/definition/pagesMetadata/1.0.0/schema.json",
-        "pageOrder": [p["id"] for p in PAGES],
-        "activePageName": PAGES[0]["id"],
+        "pageOrder": [p["id"] for p in pages],
+        "activePageName": pages[0]["id"],
     })
-    for page in PAGES:
+    for page in pages:
         pid = page["id"]
         page_dir = definition / "pages" / pid
         _write_json(page_dir / "page.json", {
@@ -438,10 +464,10 @@ def build_project(base: Path, data_dir: Path) -> Path:
             vid = f"{index + 1:020x}"
             _write_json(page_dir / "visuals" / vid / "visual.json",
                         visual_json(vid, typ, table, cols, measure, title,
-                                    24 + (n % 2) * 630, 205 if page["cards"] else 40,
-                                    608 if typ != "tableEx" else 1220, 400, index))
+                                    24 + (n % 2) * 630, 275 if page["cards"] else 115,
+                                    1220 if typ in {"tableEx", "pivotTable"} else 608, 400, index))
             index += 1
-    return proj_dir / (MODEL_NAME + ".pbip")
+    return proj_dir / (model_name + ".pbip")
 
 
 def build(root: Path = ROOT, out: Path | None = None) -> dict:

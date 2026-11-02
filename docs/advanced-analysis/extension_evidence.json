@@ -1,0 +1,98 @@
+{
+  "source": "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce",
+  "source_kind": "historical_public_olist_extension",
+  "license": "CC-BY-NC-SA-4.0",
+  "quality": {
+    "files": {
+      "olist_orders_dataset.csv": {
+        "sha256": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
+        "bytes": 17654914,
+        "rows": 99441
+      },
+      "olist_customers_dataset.csv": {
+        "sha256": "983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2",
+        "bytes": 9033957,
+        "rows": 99441
+      },
+      "olist_order_items_dataset.csv": {
+        "sha256": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+        "bytes": 15438671,
+        "rows": 112650
+      },
+      "olist_order_reviews_dataset.csv": {
+        "sha256": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7",
+        "bytes": 14451670,
+        "rows": 99224
+      }
+    },
+    "order_fact_rows": 99441,
+    "raw_item_value": 13591643.70001419,
+    "fact_item_value": 13591643.700012088,
+    "extra_review_rows_collapsed": 551,
+    "orders_without_items": 775,
+    "orders_without_customer_identity": 0
+  },
+  "summary": {
+    "repeat": {
+      "origins": 86950,
+      "observed_second_purchase_days": 1835,
+      "origin_start": "2017-01-01",
+      "last_observed_day": "2018-07-31",
+      "horizon_days": 180,
+      "confidence_method": "Greenwood log-log pointwise 95%; null at survival boundaries",
+      "censoring_assumption_verified": false,
+      "repeat_day_90": {
+        "day": 90,
+        "mature_customers": 69142,
+        "mature_repeats": 903,
+        "mature_repeat_rate": 0.013060079257180874,
+        "km_repeat_probability": 0.01287012514860375,
+        "at_risk": 68243,
+        "ci_low": 0.0121114779444369,
+        "ci_high": 0.013675963257110846
+      }
+    },
+    "portfolio": {
+      "files": {
+        "olist_order_items_dataset.csv": {
+          "sha256": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+          "rows": 112650
+        },
+        "olist_products_dataset.csv": {
+          "sha256": "3e6569628a17fbc75fd206ee357b59e20364b9afa90f5b6cd5b4d624c58aa9cc",
+          "rows": 32951
+        },
+        "product_category_name_translation.csv": {
+          "sha256": "a81f0d1f27b27e7293f761bc79e3ce8f348ee39c4b3ed3e49bde38f478586278",
+          "rows": 71
+        }
+      },
+      "coverage": {
+        "item_lines": 102738,
+        "missing_product_lines": 0,
+        "missing_category_lines": 1504,
+        "untranslated_category_lines": 17
+      },
+      "observed_products": 30015,
+      "gmv": 12342450.490000002,
+      "top_1_share": 0.0044010709254220385,
+      "top_10_share": 0.034577203315157956,
+      "top_100_share": 0.14146205175500778,
+      "hhi": 0.0003952703309153599,
+      "effective_product_count": 2529.9141417576625
+    }
+  },
+  "implementation_sha256": "214709b506a62f1ac446d7626fbc89fc9d17e0fe69f0f55040993a26d90b3994",
+  "query_sha256": "292e58fdfd8ce720749b6c7b5cdd4394fa0a9036d06a25b7014088b32854e784",
+  "order_fact_sql_sha256": "e589e02701489e4cd0b0f8d65067cf7c24f60e0a786997d0723050b61f215de6",
+  "aggregate_sha256": {
+    "repeat_ledger.csv": "1241d6c91fca9e7f21227678006663d3a85f1e74b75ef9c52bbcfd8a43936ea2",
+    "repeat_curve.csv": "acad54beb85a8da7c974ac1159c83f478a53b69198f95d2abfdefc507a8130e1",
+    "repeat_horizons.csv": "09d3760156edd4baa88fea3ca79a0f92b3513e32eabf994bc27d27ff3ae7b92e",
+    "category_portfolio.csv": "e8892f20e28733a59c7ca8d22a37507fb330cd41be8f2590ba05bb734edcffdb",
+    "product_concentration.csv": "a4eaf0ca0db2931f37d58573b8890d94369cbdc1eff0f70e4f9263fae45e4573",
+    "quarter_concentration.csv": "6d47310a17898758efa51cd9618800f2adb38bdadb904d572022e8c2e457dafa"
+  },
+  "desktop_render_verified": false,
+  "dax_engine_executed": false
+}

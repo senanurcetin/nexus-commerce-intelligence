@@ -64,10 +64,28 @@ def export_fixture(root: Path) -> None:
     (root / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
 
 
+def isolated_app():
+    """Do not let a developer's persisted bridge files contaminate fixtures."""
+    app = AppTest.from_file(str(APP), default_timeout=30).run()
+    # Only test widget state changes: never delete or rename the user's data.
+    with tempfile.TemporaryDirectory() as folder:
+        absent = Path(folder)
+        defaults = {
+            "Validated export folder": absent / "google",
+            "Historical E-Commerce snapshot file": absent / "historical.json",
+            "Greenweez original Sheets evidence": absent / "sheets.json",
+            "Greenweez snapshot file": absent / "finance.json",
+        }
+        for field in app.text_input:
+            if field.label in defaults:
+                field.set_value(str(defaults[field.label]))
+        return app.run()
+
+
 class GoogleMeasurementAppSmokeTests(unittest.TestCase):
     def test_no_snapshot_never_claims_real_metrics(self):
         with tempfile.TemporaryDirectory() as folder:
-            app = AppTest.from_file(str(APP), default_timeout=30).run()
+            app = isolated_app()
             next(field for field in app.text_input if field.label == "Validated export folder").set_value(folder).run()
             self.assertEqual(len(app.exception), 0, [e.message for e in app.exception])
             self.assertEqual(len(app.exception), 0, [e.message for e in app.exception])
@@ -98,12 +116,12 @@ class GoogleMeasurementAppSmokeTests(unittest.TestCase):
                 "row_counts": {"orders": 1, "sessions": 1},
             }
             historical.write_text(json.dumps(validate_historical(payload)), encoding="utf-8")
-            app = AppTest.from_file(str(APP), default_timeout=30).run()
+            app = isolated_app()
             next(x for x in app.text_input if x.label == "Validated export folder").set_value(str(root)).run()
             next(x for x in app.text_input if x.label == "Historical E-Commerce snapshot file").set_value(str(historical)).run()
             self.assertEqual(len(app.exception), 0, [e.message for e in app.exception])
             labels = [m.label for m in app.metric]
-            self.assertIn("Completed orders · distinct order IDs", labels)
+            self.assertIn("Completed order-days · daily distinct IDs", labels)
             self.assertIn("Sessions · dbt historical", labels)
             self.assertNotIn("Greenweez revenue · stored units", labels)
             self.assertNotIn("Purchase revenue · property currency", labels)
@@ -137,7 +155,7 @@ class GoogleMeasurementAppSmokeTests(unittest.TestCase):
                 "row_counts": {"daily": 1, "monthly": 1, "marketing_source": 0, "refunds": 0},
             }
             sample.write_text(json.dumps(validate_greenweez(value)), encoding="utf-8")
-            app = AppTest.from_file(str(APP), default_timeout=30).run()
+            app = isolated_app()
             next(field for field in app.text_input if field.label == "Validated export folder").set_value(str(root)).run()
             next(field for field in app.text_input if field.label == "Greenweez snapshot file").set_value(str(sample)).run()
             self.assertEqual(len(app.exception), 0, [e.message for e in app.exception])
@@ -153,7 +171,7 @@ class GoogleMeasurementAppSmokeTests(unittest.TestCase):
             root = Path(folder)
             corrupted = root / "corrupt.json"
             corrupted.write_text(json.dumps({"rows": [{"revenue": 99999999}]}), encoding="utf-8")
-            app = AppTest.from_file(str(APP), default_timeout=30).run()
+            app = isolated_app()
             next(field for field in app.text_input if field.label == "Validated export folder").set_value(str(root)).run()
             next(field for field in app.text_input if field.label == "Greenweez snapshot file").set_value(str(corrupted)).run()
             self.assertEqual(len(app.exception), 0, [e.message for e in app.exception])
@@ -162,7 +180,7 @@ class GoogleMeasurementAppSmokeTests(unittest.TestCase):
 
     def test_commerce_lab_tab_never_fabricates_unconnected_revenue(self):
         with tempfile.TemporaryDirectory() as folder:
-            app = AppTest.from_file(str(APP), default_timeout=30).run()
+            app = isolated_app()
             next(field for field in app.text_input if field.label == "Validated export folder").set_value(folder).run()
             self.assertEqual(len(app.exception), 0, [e.message for e in app.exception])
             self.assertTrue(any("Commerce Lab" in tab.label for tab in app.tabs))
@@ -171,7 +189,7 @@ class GoogleMeasurementAppSmokeTests(unittest.TestCase):
 
     def test_ecommerce_demo_picker_prefills_url_without_scanning(self):
         with tempfile.TemporaryDirectory() as folder:
-            app = AppTest.from_file(str(APP), default_timeout=30).run()
+            app = isolated_app()
             next(field for field in app.text_input if field.label == "Validated export folder").set_value(folder).run()
             store = next(field for field in app.selectbox if field.label == "Measurement target")
             store.set_value("Tricentis Demo Web Shop (third-party)").run()
@@ -182,7 +200,7 @@ class GoogleMeasurementAppSmokeTests(unittest.TestCase):
 
     def test_own_store_is_initial_website_target_and_no_api_is_called(self):
         with tempfile.TemporaryDirectory() as folder:
-            app = AppTest.from_file(str(APP), default_timeout=30).run()
+            app = isolated_app()
             next(field for field in app.text_input if field.label == "Validated export folder").set_value(folder).run()
             store = next(field for field in app.selectbox if field.label == "Measurement target")
             self.assertEqual(store.value, "NEXUS Commerce Lab (owned test storefront)")
@@ -204,7 +222,7 @@ class GoogleMeasurementAppSmokeTests(unittest.TestCase):
                     writer.writeheader()
                 manifest["source_summary"][spec["source_system"]]["rows"] = 0
             manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
-            app = AppTest.from_file(str(APP), default_timeout=30).run()
+            app = isolated_app()
             next(field for field in app.text_input if field.label == "Validated export folder").set_value(folder).run()
             self.assertEqual(len(app.exception), 0, [e.message for e in app.exception])
             labels = [metric.label for metric in app.metric]
@@ -214,7 +232,7 @@ class GoogleMeasurementAppSmokeTests(unittest.TestCase):
     def test_verified_csv_contract_drives_all_three_views(self):
         with tempfile.TemporaryDirectory() as folder:
             export_fixture(Path(folder))
-            app = AppTest.from_file(str(APP), default_timeout=30).run()
+            app = isolated_app()
             next(field for field in app.text_input if field.label == "Validated export folder").set_value(folder).run()
             self.assertEqual(len(app.exception), 0, [e.message for e in app.exception])
             labels = [metric.label for metric in app.metric]
@@ -232,7 +250,7 @@ class GoogleMeasurementAppSmokeTests(unittest.TestCase):
             empty = root / "empty"
             empty.mkdir()
             export_fixture(valid)
-            app = AppTest.from_file(str(APP), default_timeout=30).run()
+            app = isolated_app()
             source = next(x for x in app.text_input
                           if x.label == "Validated export folder")
             source.set_value(str(valid)).run()
@@ -250,7 +268,7 @@ class GoogleMeasurementAppSmokeTests(unittest.TestCase):
         """Removing GSC device rows must not hide independent GA4 counters."""
         with tempfile.TemporaryDirectory() as folder:
             export_fixture(Path(folder))
-            app = AppTest.from_file(str(APP), default_timeout=30).run()
+            app = isolated_app()
             next(x for x in app.text_input
                  if x.label == "Validated export folder").set_value(folder).run()
             devices = next(x for x in app.multiselect if x.label == "Devices")

@@ -1,0 +1,4 @@
+channel_group,total_sessions,page_view_sessions,cart_sessions,purchase_sessions,view_to_cart_pct,cart_to_purchase_pct,overall_cvr_pct
+paid,4,4,3,3,75.0,100.0,75.0
+organic,2,2,1,1,50.0,100.0,50.0
+owned,3,3,2,1,66.7,50.0,33.3

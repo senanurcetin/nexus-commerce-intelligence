@@ -1,268 +1,99 @@
-# Power BI DAX Measures
+# Historical row-level DAX reference
 
-30 measures documented here, across mart tables and disconnected parameter tables.
-Model: `dim_user` → `fct_order_marketing` ← `dim_products` | `fct_marketing_web_performance`
+This page documents intended measures for the historical row-level E-Commerce star schema. It is separate from the generated portable aggregate reports, whose actual TMDL measures live in `scripts/build_powerbi.py` and `scripts/build_olist_powerbi.py`. Editable PBIP projects are available; Desktop rendering, refresh and DAX engine execution remain unverified.
 
----
+The [KPI catalog](KPI_CATALOG.md) controls metric meaning. Required relationships for these reference formulas are a tested one-to-many `dim_products[product_id]` to `fct_order_marketing[product_id]`, with the appropriate date dimension/filter context. These relationships are not asserted to exist in the independent aggregate models.
 
-## Data Model
-
-| Table | Type | Role |
-|-------|------|------|
-| `fct_order_marketing` | Fact | Orders, revenue, returns |
-| `fct_marketing_web_performance` | Fact | Sessions, conversions |
-| `dim_user` | Dimension | Demographics, age segment, channel |
-| `dim_products` | Dimension | Category, margin |
-| `Analiz Metriği` | Disconnected | Field parameter — dynamic metric switcher |
-| `Acquisition Metric` | Disconnected | Field parameter — acquisition KPI switcher |
-| `Measurement Table` | Disconnected | Dynamic axis / title resolver |
-
----
-
-## Semantic correctness notes (documentation only; Desktop validation pending)
-
-- `fct_order_marketing` contains **one order item per row**. `Total Orders` uses distinct `order_id`, while the AOV denominator counts orders with at least one completed item. A partially returned multi-item order remains an order with completed revenue.
-- `revenue` already excludes returned item values because only current `complete` statuses count. `returned_revenue` is **value of items currently marked returned**, not verified refund cash. **Do not subtract it a second time** when reporting current recognized revenue.
-- `Return Rate` is an item-count fraction among completed-or-returned items, not financial value or refunded-order incidence. For returned-value share use a separate explicitly named measure.
-- `Total Margin` is completed-item revenue minus available product unit costs; it excludes shipping, logistics, advertising and all non-completed rows. This is not Greenweez operational margin.
-- `ARPU` and `Müşteri Başına Gelir` currently divide by **purchasing users in the order fact**, not all active/registered users, so they should not be presented as acquisition-wide ARPU without a verified eligible-user denominator.
-- This page documents intended DAX changes; the repository still lacks an editable Power BI report. These measures must be entered and visually reconciled in Power BI Desktop before claiming that the screenshots reflect them.
-
-## Core KPI Measures
+## Counts and completed value
 
 ```dax
-Total Orders =
--- Order-item fact has multiple lines per order; count distinct orders.
-DISTINCTCOUNT(fct_order_marketing[order_id])
+Completed Item Value = SUM(fct_order_marketing[revenue])
 
-Toplam Gelir (Uyumlu Dönem) =
--- Time-aligned revenue; respects date slicer boundaries on both fact tables
+Period-Distinct Completed Orders =
 CALCULATE(
-    SUM(fct_order_marketing[revenue]),
-    USERELATIONSHIP(fct_order_marketing[order_date], 'Calendar'[Date])
+    DISTINCTCOUNT(fct_order_marketing[order_id]),
+    fct_order_marketing[is_completed_order] = 1
 )
 
-Müşteri Başına Gelir =
-DIVIDE(
-    SUM(fct_order_marketing[revenue]),
-    DISTINCTCOUNT(fct_order_marketing[user_id])
-)
+Completed Value per Completed Order =
+DIVIDE([Completed Item Value], [Period-Distinct Completed Orders])
 
-ARPU =
--- Average Revenue Per User across all active users in period
+Revenue per Completed Purchasing User =
 DIVIDE(
-    SUM(fct_order_marketing[revenue]),
-    DISTINCTCOUNT(fct_order_marketing[user_id])
-)
-
-Ortalama Sepet Bedeli =
--- Average recognized order value (AOV), not average line-item sale price.
--- Only orders with at least one currently completed item are in the denominator.
-DIVIDE(
-    SUM(fct_order_marketing[revenue]),
+    [Completed Item Value],
     CALCULATE(
-        DISTINCTCOUNT(fct_order_marketing[order_id]),
+        DISTINCTCOUNT(fct_order_marketing[user_id]),
         fct_order_marketing[is_completed_order] = 1
     )
 )
+```
 
-Dönüşüm Oranı =
+Completed value reflects current complete item status, not recognized accounting revenue. Mixed completed/returned orders remain eligible when they have a completed item. Period-distinct counts must be recomputed over the selected rows: neither daily order-days nor channel-order incidences can be added as a distinct-order denominator. Revenue per completed purchasing user is not ARPU across all active or registered users.
+
+## Returns
+
+```dax
+Returned Item Value = SUM(fct_order_marketing[returned_revenue])
+
+Returned Item Share =
 DIVIDE(
-    CALCULATE(COUNTROWS(fct_marketing_web_performance),
-              fct_marketing_web_performance[is_converted] = 1),
-    COUNTROWS(fct_marketing_web_performance)
-)
-
-Conversion Rate = [Dönüşüm Oranı]
-
-Toplam Oturum =
-COUNTROWS(fct_marketing_web_performance)
-
-Müşteri Başına Oturum (CAC Proxy) =
-DIVIDE(
-    COUNTROWS(fct_marketing_web_performance),
-    DISTINCTCOUNT(fct_marketing_web_performance[user_id])
-)
-
-Oturum Başına Gelir =
-DIVIDE(
-    SUM(fct_order_marketing[revenue]),
-    COUNTROWS(fct_marketing_web_performance)
-)
-
-Revenue per Conversion =
-DIVIDE(
-    SUM(fct_order_marketing[revenue]),
-    CALCULATE(COUNTROWS(fct_marketing_web_performance),
-              fct_marketing_web_performance[is_converted] = 1)
-)
-
-Sessions per Conversion =
-DIVIDE(
-    COUNTROWS(fct_marketing_web_performance),
-    CALCULATE(COUNTROWS(fct_marketing_web_performance),
-              fct_marketing_web_performance[is_converted] = 1)
+    SUM(fct_order_marketing[is_returned_order]),
+    SUM(fct_order_marketing[is_returned_order]) +
+    SUM(fct_order_marketing[is_completed_order])
 )
 ```
 
----
+Format the share as a percentage. These are current returned item rows and item values, not settled refund cash or product defect probabilities. Never subtract returned item value again from completed item value.
 
-## Customer Acquisition Measures
+## Product contribution with matched cost coverage
 
 ```dax
-İlk Sipariş Müşteri Sayısı =
--- New customers: users whose first-ever order falls within the current filter context
-CALCULATE(
-    DISTINCTCOUNT(fct_order_marketing[user_id]),
-    FILTER(
-        fct_order_marketing,
-        fct_order_marketing[order_date] =
-            CALCULATE(MIN(fct_order_marketing[order_date]),
-                      ALLEXCEPT(fct_order_marketing, fct_order_marketing[user_id]))
+Known-Cost Completed Item Value =
+IF(
+    ISBLANK([Completed Item Value]), BLANK(),
+    COALESCE(
+        SUMX(
+            FILTER(
+                fct_order_marketing,
+                fct_order_marketing[is_completed_order] = 1 &&
+                NOT ISBLANK(RELATED(dim_products[cost])) &&
+                RELATED(dim_products[cost]) >= 0
+            ),
+            fct_order_marketing[revenue]
+        ), 0
     )
 )
 
-First Purchase Conversion Rate =
-DIVIDE([İlk Sipariş Müşteri Sayısı], DISTINCTCOUNT(fct_marketing_web_performance[user_id]))
-
-Aynı Gün Satın Alan Kullanıcılar =
--- Users who converted on the same calendar day as their first session
-CALCULATE(
-    DISTINCTCOUNT(fct_order_marketing[user_id]),
-    FILTER(
-        fct_order_marketing,
-        fct_order_marketing[order_date] =
-            CALCULATE(MIN(fct_marketing_web_performance[session_date]),
-                      ALLEXCEPT(fct_marketing_web_performance,
-                                fct_marketing_web_performance[user_id]))
-    )
-)
-
-Aynı Gün Satın Alan Oranı =
-DIVIDE([Aynı Gün Satın Alan Kullanıcılar], [İlk Sipariş Müşteri Sayısı])
-```
-
----
-
-## Margin Measures
-
-```dax
-Total Margin =
--- Product gross contribution on completed item rows with a known unit cost;
--- not operational/ads-adjusted profit. Excludes cancelled/returned items.
+Known-Cost Product Contribution =
 SUMX(
-    FILTER(fct_order_marketing, fct_order_marketing[is_completed_order] = 1),
-    VAR UnitCost = RELATED(dim_products[cost])
-    RETURN IF(ISBLANK(UnitCost), BLANK(), fct_order_marketing[revenue] - UnitCost)
+    FILTER(
+        fct_order_marketing,
+        fct_order_marketing[is_completed_order] = 1 &&
+        NOT ISBLANK(RELATED(dim_products[cost])) &&
+        RELATED(dim_products[cost]) >= 0
+    ),
+    fct_order_marketing[revenue] - RELATED(dim_products[cost])
 )
 
-Total Margin % =
-DIVIDE([Total Margin], SUM(fct_order_marketing[revenue]))
+Known-Cost Product Margin Rate =
+DIVIDE([Known-Cost Product Contribution], [Known-Cost Completed Item Value])
 
-Return Rate =
--- Order-item return share, excluding other statuses from the denominator.
+Completed-Value Cost Coverage =
+DIVIDE([Known-Cost Completed Item Value], [Completed Item Value])
+```
+
+The margin numerator and denominator use exactly the same eligible completed items. All-unpriced selections return no estimable contribution; a missing cost is not free inventory. Coverage can be zero when observed completed value exists without any eligible costs. The lookup uses the observed product catalog cost; transaction-time cost history is not established. Contribution excludes shipping, logistics and advertising and must not be presented as net profit. The portable synthetic report does not expose these row-level formulas; inspect [executable SQL](../analyses/completed_product_contribution.sql) and [cost coverage results](analysis/REPORT.md).
+
+## Session metrics
+
+```dax
+Historical Sessions = COUNTROWS(fct_marketing_web_performance)
+
+Historical Event Session Conversion =
 DIVIDE(
-    CALCULATE(COUNTROWS(fct_order_marketing), fct_order_marketing[is_returned_order] = 1),
-    CALCULATE(
-        COUNTROWS(fct_order_marketing),
-        fct_order_marketing[is_completed_order] = 1 ||
-        fct_order_marketing[is_returned_order] = 1
-    )
+    SUM(fct_marketing_web_performance[is_converted]),
+    [Historical Sessions]
 )
 ```
 
----
-
-## PE4 Channel Scorecard
-
-Weighted composite scoring channel efficiency (0–100). Built across three pages with dynamic titles that update based on the selected channel filter.
-
-```dax
-PE4 Verimlilik Skoru =
--- 40% conversion quality + 40% revenue quality + 20% acquisition efficiency
-VAR cvr_weight =
-    DIVIDE([Dönüşüm Oranı],
-           CALCULATE([Dönüşüm Oranı],
-                     ALL(fct_marketing_web_performance[channel_group]))) * 40
-
-VAR rev_weight =
-    DIVIDE([Müşteri Başına Gelir],
-           CALCULATE([Müşteri Başına Gelir],
-                     ALL(fct_order_marketing[channel_group]))) * 40
-
-VAR cac_weight =
-    DIVIDE(CALCULATE([Müşteri Başına Oturum (CAC Proxy)],
-                     ALL(fct_marketing_web_performance[channel_group])),
-           [Müşteri Başına Oturum (CAC Proxy)]) * 20  -- inverted: fewer sessions = efficient
-
-RETURN MIN(ROUND(cvr_weight + rev_weight + cac_weight, 0), 100)
-
-PE4 Kanal Rolü =
--- Text label used in scorecard table
-SWITCH(
-    TRUE(),
-    [PE4 Verimlilik Skoru] >= 80, "Öncelik: ölçekle",
-    [PE4 Verimlilik Skoru] >= 50, "Optimize et",
-    "Büyüt: hacim düşük"
-)
-
-PE4 Karar Sinyali = [PE4 Kanal Rolü]
-
-PE4 Oturum Verimlilik Farkı =
--- Deviation of channel's sessions/customer from the overall average
-[Müşteri Başına Oturum (CAC Proxy)]
-- CALCULATE([Müşteri Başına Oturum (CAC Proxy)],
-            ALL(fct_marketing_web_performance[channel_group]))
-
-PE4 Skor Kartı Detay =
--- Multi-line text for the scorecard detail column
-"Rol: " & [PE4 Kanal Rolü] & UNICHAR(10) &
-"Yeni: " & FORMAT([İlk Sipariş Müşteri Sayısı], "#,0") &
-" | Dönüşüm: " & FORMAT([Dönüşüm Oranı], "0.0%") & UNICHAR(10) &
-"Gelir/Müş.: $" & FORMAT([Müşteri Başına Gelir], "#,0.00") &
-" | Oturum/Müş.: " & FORMAT([Müşteri Başına Oturum (CAC Proxy)], "#,0.00") & UNICHAR(10) &
-"Ort. fark: " & FORMAT([PE4 Oturum Verimlilik Farkı], "+#,0.00;-#,0.00")
-```
-
----
-
-## Dynamic Titles (Measurement Table + Field Parameters)
-
-The `Analiz Metriği` and `Acquisition Metric` tables are **disconnected field parameter tables** that drive dynamic chart titles and axis labels based on slicer selection.
-
-```dax
-Dinamik Eksen İsmi =
-SELECTEDVALUE('Analiz Metriği'[Analiz Metriği], "Metrik")
-
-PE4 Main Chart Title =
-"Edinim Verimliliği | " & [Dinamik Eksen İsmi]
-
-PE4 Scorecard Title =
-"Yönetici Skor Kartı | Kanal Karşılaştırması"
-
-Pazarlama Kanalı TR (Ölçü) =
-SWITCH(
-    SELECTEDVALUE(fct_order_marketing[channel_group]),
-    "paid",    "Ücretli",
-    "owned",   "Sahipli",
-    "organic", "Organik",
-    "other",   "Diğer",
-    "Tüm Kanallar"
-)
-
-Cinsiyet Dağılımı Başlığı =
-"Tüm Kanallar Genelinde Cinsiyete Göre Toplam Ciro Dağılımı"
-
-Müşteri Tipi Başlığı =
-"Tüm Kanallar Genelinde Müşteri Tipine Göre Toplam Ciro Oranı"
-```
-
----
-
-## Notes
-
-- `DIVIDE()` used throughout instead of `/` — handles zero denominators safely.
-- `ALL()` / `ALLEXCEPT()` removes filter context for ratio denominators and period-level baselines.
-- Disconnected tables (`Analiz Metriği`, `Acquisition Metric`) use field parameters — no relationship to fact tables, controlled by slicers only.
-- `UNICHAR(10)` inserts line breaks inside card/table text measures.
-- `PE4 Skor Kartı Detay` is a formatted multi-line string measure, not a numeric value.
+The session grain is `(session_id, user_id)`, not session ID alone. Event purchase conversion does not establish completed order settlement. Sessions per user do not measure customer acquisition cost, and revenue divided by sessions from an independently attributed fact is not verified session-level revenue attribution. Arbitrary composite performance scores are not part of the controlled KPI catalog.

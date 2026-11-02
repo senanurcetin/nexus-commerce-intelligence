@@ -15,6 +15,7 @@ class KeylessAuthTests(unittest.TestCase):
         existing.assert_called_once_with(GA4_SCOPE)
 
     @patch.dict(os.environ, {"NEXUS_GA4_KEYLESS_IMPERSONATION": "1"})
+    @patch("scripts.google_measurement.os.name", "posix")
     @patch("scripts.google_measurement.fetch_json",
            return_value={"accessToken": "impersonated-ci-token"})
     @patch("scripts.google_measurement.subprocess.run")

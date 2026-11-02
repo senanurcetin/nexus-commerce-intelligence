@@ -1,6 +1,7 @@
 """Test static Power BI gates are not misrepresented as a fresh Desktop QA."""
 from pathlib import Path
 import tempfile
+import shutil
 import unittest
 
 from scripts.powerbi_acceptance import audit, ROOT
@@ -8,6 +9,19 @@ from dashboard.nexus_theme import COLORS, plot_layout
 
 
 class NexusDesignPowerBIAcceptanceTests(unittest.TestCase):
+    def test_reference_margin_denominator_must_use_the_known_cost_population(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);(root/'docs').mkdir();(root/'powerbi/themes').mkdir(parents=True)
+            for name in ('POWER_BI_VISUAL_QA.md','dax-measures.md'):shutil.copyfile(ROOT/'docs'/name,root/'docs'/name)
+            shutil.copyfile(ROOT/'powerbi/themes/nexus-commerce.json',root/'powerbi/themes/nexus-commerce.json')
+            path=root/'docs/dax-measures.md'
+            path.write_text(path.read_text().replace('DIVIDE([Known-Cost Product Contribution], [Known-Cost Completed Item Value])',
+                'DIVIDE([Known-Cost Product Contribution], [Completed Item Value])'))
+            result=audit(root)
+            self.assertTrue(result['checks']['dax_documentation'])
+            self.assertFalse(result['checks']['dax_semantics'])
+            self.assertEqual(result['release_decision'],'HOLD')
+
     def test_theme_and_documented_kpis_ok_but_release_stays_on_hold(self):
         result = audit(ROOT)
         self.assertTrue(result["checks"]["theme_json"])

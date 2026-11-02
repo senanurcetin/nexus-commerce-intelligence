@@ -1,0 +1,15 @@
+# Source fingerprints and public aggregate hashes must survive platform checkouts.
+analytics/olist/*.sql text eol=lf
+scripts/advanced_olist.py text eol=lf
+scripts/olist_customer_portfolio.py text eol=lf
+scripts/olist_delivery_operations.py text eol=lf
+scripts/olist_review_selection.py text eol=lf
+scripts/olist_forecast.py text eol=lf
+contracts/olist_forecast_protocol.json text eol=lf
+docs/advanced-analysis/olist_forecast_protocol.json text eol=lf
+docs/advanced-analysis/daily_order_volume.sql text eol=lf
+contracts/olist_review_protocol.json text eol=lf
+docs/advanced-analysis/olist_review_protocol.json text eol=lf
+docs/advanced-analysis/review_selection.sql text eol=lf
+docs/advanced-analysis/*.csv text eol=lf
+docs/analysis/*.csv text eol=lf

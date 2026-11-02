@@ -64,9 +64,9 @@ def historical_ecommerce_tab(path: Path) -> None:
 
     st.markdown("#### Historical completed-order line revenue")
     c1, c2, c3 = st.columns(3)
-    c1.metric("Completed orders · distinct order IDs", f"{orders['completed_orders'].sum():,}")
+    c1.metric("Completed order-days · daily distinct IDs", f"{orders['completed_orders'].sum():,}")
     c2.metric("Completed line revenue · source units", f"{orders['completed_revenue'].sum():,.2f}")
-    c3.metric("Returned orders · distinct order IDs", f"{orders['returned_orders'].sum():,}")
+    c3.metric("Returned order-days · daily distinct IDs", f"{orders['returned_orders'].sum():,}")
     fig = px.line(
         orders, x="date", y="completed_revenue", markers=True,
         color_discrete_sequence=[COLORS["cyan"]],

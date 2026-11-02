@@ -1,5 +1,6 @@
 -- Top products by revenue and return rate
--- Answers: which products drive the most value and which have quality issues?
+-- Answers: where do completed value and observed returned-item shares concentrate?
+-- Returned-item share alone does not establish a product defect or quality issue.
 
 with product_metrics as (
     select
@@ -35,4 +36,4 @@ select
     rank() over (order by net_revenue desc)     as revenue_rank,
     rank() over (order by return_rate_pct desc) as return_risk_rank
 from product_metrics
-order by net_revenue desc
+order by net_revenue desc, product_id
