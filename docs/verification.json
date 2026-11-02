@@ -3,7 +3,7 @@
   "scope": "local synthetic commerce, independent historical public Olist and private bounded core-source observations; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 323,
+    "passed": 333,
     "failed": 0
   },
   "streamlit_headless": {
@@ -276,5 +276,22 @@
     "source_ingestion_history_verified": false,
     "status": "docs/core-source/temporal-status.json",
     "receipt": "docs/core-source/temporal-verification.json"
+  },
+  "independent_published_calculation_audit": {
+    "verification_date_local": "2026-11-03",
+    "receipt": "docs/analysis-validation.json",
+    "acceptance": "PASS",
+    "checks_passed": 6,
+    "fingerprinted_inputs": 45,
+    "forecast_origins_replayed": 44,
+    "forecast_methods_replayed": 4,
+    "evaluation_weeks_replayed": 30,
+    "paired_block_intervals_replayed": 3,
+    "review_windows_replayed": 3,
+    "missing_rating_scenarios_replayed": 441,
+    "new_adversarial_tests_passed": 10,
+    "production_estimator_helpers_reused": false,
+    "customer_cluster_review_intervals_replayed": false,
+    "financial_native_and_operational_gates": "HOLD"
   }
 }

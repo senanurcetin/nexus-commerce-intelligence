@@ -44,6 +44,20 @@ A failed build removes an old success receipt and prevents native export after a
 
 The build receipt also fingerprints the scientific/reporting scripts, analytical SQL, both protocols, environment inputs and official logo. These fingerprints must remain unchanged across analysis and export; otherwise the build refuses a success receipt. Raw CSV hashes remain independently recorded and cross-checked across the five studies. These checks establish observed file stability, not a transactional filesystem snapshot or independently authenticated business origin. The [historical reproduction receipt](research_reproduction.json) records the completed local locked run and comparison with previously published aggregate tables.
 
+## Validate published calculations without raw inputs
+
+```powershell
+target/research-repro-venv/Scripts/python.exe -m scripts.analysis_audit --out target/analysis-validation.json
+```
+
+This read-only audit uses published aggregates and receipts, without cloud credentials, private raw files or a UI. It independently reconstructs all three forecasting candidates at 44 origins, including an augmented least-squares ridge solution instead of production normal equations. It replays past-fold selection, calibration upper ranks, all four methods' evaluation metrics and the three paired block-bootstrap intervals. It also reconstructs sharp missing-rating bounds at three windows and the complete 441-scenario primary assumption grid from integer outcome counts. Production estimator/bootstrap/bound helpers are not called; tests explicitly disable them during the real audit.
+
+Six checks combine an input fingerprint snapshot, cross-study/evidence and executive-readout integrity, independent forecast replay, independent missing-rating replay, the three actual portable archives, and final input stability. Forty-five input files are content-addressed with canonical JSON or LF-normalized text. The receipt records the validator's implementation hash, numerical tolerances and actual runtime versions. The [committed result](analysis-validation.json) captures the completed local check; repeat it rather than relying on an old PASS after edits.
+
+The CLI exits unsuccessfully and writes a FAIL receipt if an input is missing, a formula does not reproduce, evidence is stale or files change during validation. That replaces an old result, preventing stale success. Matching CSV and JSON summaries are insufficient: tests forge both a positive forecasting interval and a rating bound together, and independent arithmetic still rejects them. Unknown metrics remain null rather than becoming zero.
+
+PASS applies only to the checked published calculations and artifacts. It does not certify original raw-source authenticity, source ingestion times, current business validity, financial interpretation, causal effects, original review customer-cluster sampling intervals, prospective forecast utility or native DAX/refresh/rendering. The review sampling intervals require their original customer-level evidence and are explicitly marked **not replayed** here. The financial, operational and native BI gates remain HOLD. This adds a reproducible verification path, not a new business study or a revised scientific conclusion. Olist-derived results retain CC BY-NC-SA 4.0 attribution and noncommercial use.
+
 ## Updating the lock
 
 Change the direct requirements deliberately, regenerate with the documented command in the lock header, inspect the diff, create a fresh environment and repeat dependency, method and complete-build checks. Do not silently upgrade versions while reproducing an existing result. The lock generator (`uv`) is an authoring tool, not a runtime requirement; ordinary pip installs the result.

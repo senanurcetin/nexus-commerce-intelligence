@@ -21,6 +21,8 @@ The [executive readout](docs/EXECUTIVE_READOUT.md) connects the evidence to prop
 
 [Core-source availability history](docs/core-source/TEMPORAL_AVAILABILITY.md) prevents a requested historical cutoff from silently using the latest snapshot. Registration times are recorded separately from business/source-observation dates; as-of profiles retain that boundary without reconstructing unavailable original ingestion history.
 
+`python -m scripts.analysis_audit` independently replays the published forecast fits, past-only selection/calibration, error metrics, paired uncertainty and missing-rating bounds/scenarios. It also checks evidence fingerprints, the executive readout and shipped archives. [The recorded calculation acceptance](docs/analysis-validation.json) preserves separate HOLD gates for financial semantics, operational forecasting and native BI. See [scope and reproduction](docs/RESEARCH_REPRODUCIBILITY.md#validate-published-calculations-without-raw-inputs).
+
 Core commerce analysis now reports **known-cost contribution with matched revenue denominators** and **Greenweez product/shipping coverage**. In the synthetic Greenweez fixture, 23 unpriced sales lines carry 1,546.84 source units of sales value and 55 order records have incomplete components. The coverage report preserves the existing finance model while making its exclusions and zero policies visible; it does not infer audited profit or missing costs. See [commerce findings](docs/analysis/REPORT.md).
 
 [Olist advanced analysis](docs/advanced-analysis/REPORT.md) · [Synthetic mart findings](docs/analysis/REPORT.md) · [Architecture](docs/ARCHITECTURE.md) · [Power BI](powerbi/README.md) · [Delivery evidence](docs/DELIVERY.md)
