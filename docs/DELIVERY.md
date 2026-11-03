@@ -1,8 +1,10 @@
 # Delivery evidence
 
-Updated 2 November 2026. Non-commercial, English-language NEXUS analytics case study. No Playwright, browser control or PC-screen use in this development pass.
+Updated 3 November 2026. Non-commercial, English-language NEXUS analytics case study. No Playwright, browser control or PC-screen use in this development pass.
 
 ## Implemented
+
+- Upgraded both portable Power BI reports with eighteen native slicers across thirteen pages, explicit filter interactions, scope notes, semantic number formats and protected full-sample uncertainty. Research adds a native Shapley contribution stack, delivery-group rates with denominators, stepwise repeat timing with at-risk context, and a four-method forecast selector with fixed-window metrics. These are editable PBIR objects, with six regression tests; native rendering, refresh and DAX remain unverified. See [visual design contract](POWER_BI_VISUAL_QA.md).
 
 - Added a bounded private observation of six main-source projections and an isolated observed Greenweez finance build. Public evidence contains counts and gate outcomes; raw rows and financial amounts stay ignored locally. Source origin, currency, refund meaning and transaction-time COGS remain unverified.
 - Added a hash-locked research runtime, actual-version/build-input receipts and a complete synthetic success-path test for all five studies and native BI. Sparse common-month support and boundary survival intervals now remain explicitly unavailable in reports instead of crashing. See [reproduction](RESEARCH_REPRODUCIBILITY.md) and [remaining programme](DEVELOPMENT_PROGRAM.md).
@@ -28,7 +30,7 @@ Updated 2 November 2026. Non-commercial, English-language NEXUS analytics case s
 - Added a 86,950-origin customer duration ledger, distinct-purchase-day Kaplan–Meier estimates, pointwise Greenwood intervals and mature-horizon checks. Curves and intervals independently agree with SciPy's right-censored ECDF implementation.
 - Added product/category mix and within-portfolio concentration over 30,015 observed product IDs, with 1,504 missing-category lines retained and 17 untranslated-category lines flagged. Product keys and IDs remain local; published results contain only aggregates.
 - Added a delivery decision readout over 64,230 eligible orders in matched January–July windows, with independent raw denominator reconciliation, cluster uncertainty, common-support coverage and exact rate/mix decomposition. State burden priorities are paired with guardrails and a record-level investigation plan; no causal effect or revenue-loss claim is made.
-- Added a single local `scripts.build_research` command for all five real-data studies, report assets and native BI. It was executed end to end with 72 official schema checks; failure fixtures reject raw/output overlap and stale success receipts. The archive contains the five reports and their aggregate evidence.
+- Added a single local `scripts.build_research` command for all five real-data studies, report assets and native BI. It was executed end to end with 109 official schema checks; failure fixtures reject raw/output overlap and stale success receipts. The archive contains the five reports and their aggregate evidence.
 
 - Added the review-selection study over 68,448 mature delivered orders with a fixed retrospective protocol, first eligible raw-review policy, independent raw/pandas reconciliation, availability-reason ledger, 441 missing-rating scenarios and pointwise customer-cluster intervals. Thirty-day available-case difference is +11.26 pp; the sharp hypothetical full-rating range is −5.44 to +69.44 pp. The range includes zero and is not a causal effect or confidence interval. The fourth report and its protocol/query accompany the unchanged nine-page native BI project.
 
@@ -56,7 +58,7 @@ The four-page commerce report and web demo use only synthetic fixtures. Their re
 - Four-page public Power BI JSON validates against Microsoft's published schemas. Microsoft TOM successfully deserializes the public four-table and private eight-table TMDL models. Seven-page source/binding integrity is independently checked.
 - Generated analytical figures are file artifacts, not screenshots of a live UI or Power BI.
 - Olist: all-extract raw item value reconciles to the order fact, and the analytical purchase window reconciles independently to raw lines/orders. Cohort observation/denominator, policy ties, future delivery exclusion, many-side fanout, Shapley symmetry/additivity, fixed-seed bootstrap, BH adjustment, aggregate reconciliation and public export tamper tests pass without Kaggle access in CI.
-- The nine-page Olist report validates 72 Microsoft schema-bearing artifacts; Microsoft TOM parses its sixteen-table semantic model. All twelve generated figures were inspected as local image files across the development passes. This does not establish BI rendering.
+- The nine-page Olist report validates 109 Microsoft schema-bearing artifacts; the four-page synthetic report validates 50. Microsoft TOM parses both semantic models. All twelve generated figures were inspected as local image files across the development passes. This does not establish BI rendering.
 
 ## Limits
 

@@ -66,11 +66,27 @@ def create(root: Path = ROOT, out: Path | None = None) -> dict:
         if table_file.stem not in active_tables:
             table_file.unlink()
     model.write_text("model Model\n\tculture: en-US\n\tsourceQueryCulture: en-US\n\tdefaultPowerBIDataSourceVersion: powerBI_V3\n", encoding="utf-8")
+    from scripts.build_powerbi import TABLES
+    from scripts.powerbi_design import apply
+    configurations={
+        public_pages[0]['id']:{'filters':[('SourceRegistry','source','Independent source')],
+            'scope':'Source selection affects the evidence table only.',
+            'note':'Synthetic demonstration only. Registry row counts describe exported aggregate records, not trading transactions or financial certification.'},
+        public_pages[1]['id']:{'filters':[('ECommerceOrders','date','Synthetic order date')],
+            'scope':'Date filters the charts and cards on this page.',
+            'note':'Daily distinct orders sum to order-days, not period-unique orders. Returned-line value does not establish cash refunded.'},
+        public_pages[2]['id']:{'filters':[('ECommerceSessions','date','Synthetic session date')],
+            'scope':'Date filters session counts and the weighted conversion rate.',
+            'note':'Converted sessions / sessions is recomputed from the selected counts. This synthetic historical denominator is separate from orders and GA4 lab events.'},
+        public_pages[3]['id']:{'filters':[('GreenweezFinance','date','Synthetic finance date')],
+            'scope':'Date filters the independent Greenweez illustrations.',
+            'note':'Source units and documented missing-cost policies apply. Contribution after advertising is not audited net profit; unknown refund units are not subtracted.'}}
+    design=apply(project,MODEL_NAME,public_pages,{t:TABLES[t] for t in active_tables},configurations)
     evidence = {"pages": [p["title"] for p in public_pages],
                      "exported_table_rows": {key: len(value) for key,value in rows.items()},
                      "powerbi_project": str(project),
                      "powerbi_desktop_accepted": False, "financial_claims_verified": False,
-                     "portable_embedded_data": True, "provenance": "synthetic_dbt_seeds_only",
+                     "visual_design":design,"portable_embedded_data": True, "provenance": "synthetic_dbt_seeds_only",
                      "statement": "Editable four-page portfolio report; Desktop rendering has not been verified."}
     (out / "build_evidence.json").write_text(json.dumps(evidence,indent=2)+"\n",encoding="utf-8")
     return evidence

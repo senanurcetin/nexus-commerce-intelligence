@@ -22,7 +22,7 @@ def pipeline_inputs():
     """Version the local scientific/reporting inputs, separately from raw CSVs."""
     paths=[core.ROOT/'scripts'/name for name in (
         'build_research.py','advanced_olist.py','olist_customer_portfolio.py','olist_delivery_operations.py',
-        'olist_review_selection.py','olist_forecast.py','build_olist_powerbi.py','build_powerbi.py','research_environment.py')]
+        'olist_review_selection.py','olist_forecast.py','build_olist_powerbi.py','build_powerbi.py','powerbi_design.py','research_environment.py')]
     paths+=sorted(core.SQL.glob('*.sql'))
     paths+=[reviews.PROTOCOL,forecast.PROTOCOL,core.ROOT/'requirements-research.in',
             core.ROOT/'requirements-research.lock',core.ROOT/'branding/nexus_official_transparent.png']

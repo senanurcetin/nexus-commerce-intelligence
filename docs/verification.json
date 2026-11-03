@@ -3,7 +3,7 @@
   "scope": "local synthetic commerce, independent historical public Olist and private bounded core-source observations; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 348,
+    "passed": 354,
     "failed": 0
   },
   "streamlit_headless": {
@@ -17,7 +17,7 @@
     "command": "node --test showcase/tests/*.test.mjs storefront/tests/*.test.mjs",
     "passed": 21,
     "failed": 0,
-    "last_local_run_date": "2026-11-02"
+    "last_local_run_date": "2026-11-03"
   },
   "dbt_root": {
     "models_passed": 10,
@@ -41,7 +41,7 @@
     "last_local_run_date": "2026-10-27"
   },
   "powerbi": {
-    "microsoft_schema_artifacts_validated": 38,
+    "microsoft_schema_artifacts_validated": 50,
     "private_pages_structurally_validated": 7,
     "public_pages": 4,
     "desktop_render_verified": false,
@@ -51,8 +51,17 @@
     "private_semantic_tables": 8,
     "olist_pages": 9,
     "olist_semantic_tables": 16,
-    "olist_microsoft_schema_artifacts_validated": 72,
-    "olist_microsoft_tom_tmdl_parsed": true
+    "olist_microsoft_schema_artifacts_validated": 109,
+    "olist_microsoft_tom_tmdl_parsed": true,
+    "native_visual_design": {
+      "research_slicers": 14,
+      "synthetic_slicers": 4,
+      "authoring_contract_tests_passed": 6,
+      "four_method_evaluation_rows": 840,
+      "explicit_filter_interactions": true,
+      "runtime_filter_behavior_verified": false,
+      "visual_design_contract": "docs/POWER_BI_VISUAL_QA.md"
+    }
   },
   "analysis": {
     "queries_executed": 5,
@@ -135,7 +144,7 @@
   "research_pipeline": {
     "command": "python -m scripts.build_research --schemas",
     "executed_end_to_end": true,
-    "schema_artifacts_validated": 72,
+    "schema_artifacts_validated": 109,
     "failure_prevents_export": true,
     "stale_success_receipt_removed": true,
     "raw_data_downloaded": false,
@@ -232,7 +241,7 @@
     "assistive_technology_verified": false
   },
   "research_reproduction": {
-    "verification_date": "2026-11-02",
+    "verification_date": "2026-11-03",
     "python": "3.11.9",
     "clean_virtual_environment": true,
     "hash_locked_installation": true,
@@ -245,7 +254,7 @@
     "historical_aggregate_tables_compared": 28,
     "historical_aggregate_tables_identical_bytes": 28,
     "historical_figures_changed": 0,
-    "microsoft_schema_checks": 72,
+    "microsoft_schema_checks": 109,
     "microsoft_tom_tmdl_parsed": true,
     "native_dax_refresh_render_verified": false,
     "receipt": "docs/research_reproduction.json"
