@@ -3,7 +3,7 @@
   "scope": "local synthetic commerce, independent historical public Olist and private bounded core-source observations; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 368,
+    "passed": 380,
     "failed": 0
   },
   "streamlit_headless": {
@@ -347,5 +347,25 @@
     "raw_rows_exported": false,
     "causal_or_simultaneous_set_coverage_verified": false,
     "receipt": "docs/review-cluster-validation.json"
+  },
+  "delivery_association_raw_replay": {
+    "command": "target/research-repro-venv/Scripts/python.exe -m scripts.delivery_association_audit",
+    "acceptance": "PASS",
+    "reviewed_orders": 84763,
+    "customer_clusters": 82228,
+    "bootstrap_iterations": 1000,
+    "valid_replicates": 1000,
+    "monthly_cells_reconciled": 38,
+    "common_support_months": 13,
+    "new_synthetic_adversarial_tests": 12,
+    "production_analysis_helpers_called": false,
+    "post_cutoff_selected_answers": 2761,
+    "post_cutoff_deliveries": 1862,
+    "earlier_eligible_answers_reselected": 3,
+    "event_restricted_orders": 82005,
+    "event_restriction_is_genuine_asof_backtest": false,
+    "event_restricted_sampling_interval_computed": false,
+    "raw_rows_exported": false,
+    "receipt": "docs/delivery-association-validation.json"
   }
 }

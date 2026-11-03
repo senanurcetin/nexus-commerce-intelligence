@@ -55,9 +55,9 @@
         "docs/core-source/status.json": "a585750e18593b415a1ec0de1593e9378a64599b35942d02be2f441cee96cf94",
         "docs/executive_readout.json": "8da93e565146a5e453f37a50795a96635e34c95cdbd527c25349a7da8f6d7809",
         "docs/EXECUTIVE_READOUT.md": "48f031cb54556a7ab202327c62e3060691117132a5591f0c5dd49b35402435d6",
-        "docs/research_reproduction.json": "b8ac7498692e38f89beed79bde79fbeb6db32cce1788a08777a2b84591a44ab9",
-        "powerbi/olist-package-manifest.json": "253f4bd06d77c21f814a0589fb7bdf5f35421ab2a69fd447ff18dbd728888b1e",
-        "powerbi/package-manifest.json": "68dbfa8e265bc7de65a89124a081facdf29ba8c23c439617c1a5101d3db9900c",
+        "docs/research_reproduction.json": "4d483a4c6a3132f82882dd73a19d9671443be00db8a3190c7e7796825df8ebac",
+        "powerbi/olist-package-manifest.json": "7f8cfb3cb80d5a675c62c17bc8fb72163045fd23ea9672999471a29f2423c6b7",
+        "powerbi/package-manifest.json": "5b70e24fb576f081cd799ebb2693c04304f2472b246050ec8bd7172bcbb0abbf",
         "scripts/build_research_portal.py": "3b0654ca3cdf4ea22b4aaf593bd31eedc88079d57a18d7bd847980775656ef50",
         "scripts/executive_readout.py": "16af0f493c670ac22d9af27dc77ef0ca75d72e6624db1f264a6f125d25a91bd4",
         "scripts/release_audit.py": "66cc759b7a7549503c964d51d72acadeccc581c89fbf4608d3f5fb83a8cd9f94"

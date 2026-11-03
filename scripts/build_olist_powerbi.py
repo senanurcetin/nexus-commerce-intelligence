@@ -106,7 +106,7 @@ CONTEXT = {
     "olist_cohorts":"PUBLIC OLIST / Retrospective delivered status / Original cohort denominator; no lifetime acquisition claim",
     "olist_segments":"PUBLIC OLIST / As of 2018-08-01 / Earlier observed purchase history included / Demonstration policy",
     "olist_decomposition":"PUBLIC OLIST / Orders × items per order × value per item / Adjacent complete purchase months",
-    "olist_delivery":"PUBLIC OLIST / Customer-cluster bootstrap 95% interval / Fixed overall contrast; does not follow month filters",
+    "olist_delivery":"PUBLIC OLIST / Retrospective delivery/answers may follow purchase cutoff / Full-sample customer-cluster 95% limits",
     "olist_repeat_timing":"PUBLIC OLIST / Distinct purchase days / Last observation 2018-07-31 / Independent censoring unverified",
     "olist_portfolio":"PUBLIC OLIST / Fixed full-window cards; quarter selections do not recompute them / Unknown categories retained",
     "olist_operations":"PUBLIC OLIST / Fixed Jan-Jul cards / Details and uncertainty in DELIVERY_OPERATIONS.md / Delivered-only, not causal",
@@ -131,7 +131,7 @@ def design_config(operations):
             'Positive and negative Shapley components sum to the adjacent-month GMV change. Sums over selected months are not a new causal counterfactual.'),
         'olist_delivery':([('Delivery','month','Purchase month'),('Delivery','late','Delivery group')],
             'Filters affect monthly rates and denominators.\nFull-sample association/interval cards stay fixed.',
-            'Poor = scores 1–2 among post-delivery answers. Cards are percentage points with customer-cluster 95% limits; no causal effect is identified.'),
+            'Poor = 1–2 among post-delivery answers. Delivery/answers may follow purchase cutoff. Full-sample cards: pp and cluster 95% limits; no causal effect.'),
         'olist_repeat_timing':([('RepeatCurve','day','Observation day (curve only)')],
             'Day filters the pooled curve, without re-estimating it.\nMature-window reference rows remain fixed.',
             'Step estimate and dotted pointwise 95% limits; limits are blank at undefined boundaries. Mature rates have different calendar denominators.'),
@@ -286,6 +286,7 @@ def create(source: Path, out: Path, extension: Path | None=None, operations: Pat
         "Purchase window: January 2017 through July 2018. As-of customer policies include earlier observed history. "
         "Item GMV is in source price units, excludes freight and is not net revenue or profit. "
         "Late-delivery contrasts use post-delivery review answers and are selected-sample associations, not causal effects. "
+        "Delivery and selected answers may follow the purchase cutoff; final statuses do not establish original point-in-time availability. "
         "Repeat timing uses distinct purchase days with administrative censoring; pointwise intervals do not validate independent censoring. "
         "Product concentration is within this portfolio, not a market-wide competition measure. "
         "Operations compares January-July in both years, without a review-response filter. "

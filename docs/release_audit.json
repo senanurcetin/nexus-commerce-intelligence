@@ -20,8 +20,8 @@
       "passed": true,
       "details": {
         "file": "powerbi/NEXUS_Olist_Research.zip",
-        "sha256": "ac9e6e5db64aefd47288ca154c38728b6737e821332b4fc6164ca5b15dca556d",
-        "bytes": 1417814,
+        "sha256": "770e13c5d7178f6874ae5b551fc536733f961e811822d0de36fa74cafc1980f2",
+        "bytes": 1417885,
         "entries": 185,
         "pages": 9,
         "semantic_tables": 16,
@@ -37,8 +37,8 @@
       "passed": true,
       "details": {
         "file": "showcase/NEXUS_Commerce_Web_Demo.zip",
-        "sha256": "37bbece8b71fb8e3c92b7814a97f575ec3fdb5b88ed4766040f42c98b15ee2f9",
-        "bytes": 2722893,
+        "sha256": "59234be030bbb2ca11f303f923636783c6f3f28bc4dd63356fee8fd1aeec0033",
+        "bytes": 2723015,
         "entries": 70,
         "commerce_synthetic_only": true,
         "historical_research_separate": true,

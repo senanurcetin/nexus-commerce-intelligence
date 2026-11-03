@@ -1,7 +1,7 @@
 {
   "file": "NEXUS_Olist_Research.zip",
-  "sha256": "ac9e6e5db64aefd47288ca154c38728b6737e821332b4fc6164ca5b15dca556d",
-  "bytes": 1417814,
+  "sha256": "770e13c5d7178f6874ae5b551fc536733f961e811822d0de36fa74cafc1980f2",
+  "bytes": 1417885,
   "provenance": "historical_public_olist_aggregate_only",
   "license": "CC-BY-NC-SA-4.0",
   "source": "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce",

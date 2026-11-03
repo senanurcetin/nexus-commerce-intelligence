@@ -12,7 +12,7 @@ Both distributed reports retain the official transparent NEXUS logo, midnight su
 | Observed cohorts | Cohort and age → matrix | Original cohort denominators; unobserved future cells and mixed-age totals blank |
 | As-of policies | Policy → cards, ranking and lookup | Demonstration policies, not predicted CLV |
 | GMV decomposition | Month → three-component native stack and exact lookup | Descriptive Shapley contributions; no causal interpretation |
-| Delivery/reviews | Month and delivery group → rate lines and denominator table | Overall association and customer-cluster limits remain fixed; cards in percentage points |
+| Delivery/reviews | Month and delivery group → rate lines and denominator table | Overall association/limits fixed; cards in percentage points; retrospective delivery/answers may follow purchase cutoff |
 | Repeat timing | Observation day → pooled step curve only | Dotted pointwise limits, at-risk tooltip; mature-horizon table retains different denominators |
 | Product concentration | Category → GMV bars; quarter → concentration trend | Full-window cards stay fixed; category-order incidences are not additive orders |
 | Comparable delivery | Month → year comparison; state → burden | Full-window rates/change stay fixed; uncertainty caption; burden is a count |

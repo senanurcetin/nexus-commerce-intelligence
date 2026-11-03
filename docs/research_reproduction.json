@@ -10,7 +10,7 @@
   ],
   "project": "powerbi/project/NEXUS_Olist_Research.pbip",
   "archive": "NEXUS_Olist_Research.zip",
-  "archive_sha256": "ac9e6e5db64aefd47288ca154c38728b6737e821332b4fc6164ca5b15dca556d",
+  "archive_sha256": "770e13c5d7178f6874ae5b551fc536733f961e811822d0de36fa74cafc1980f2",
   "schema_artifacts_validated": 109,
   "environment": {
     "python": "3.11.9",
@@ -116,7 +116,7 @@
     "scripts/olist_delivery_operations.py": "8460898185d06c88f9155006f51f989bbb3f02bb01c6ecb619fa05cedb0f5256",
     "scripts/olist_review_selection.py": "7eba83c6ed65827ea29841ea23612f9fa795b7c02b88202fff8494d6724d2c10",
     "scripts/olist_forecast.py": "39a7eff9837850719dacec0a7128fb264015082ee9ed3c2c932dcd2ca027fd55",
-    "scripts/build_olist_powerbi.py": "0d3b8a73e07496fa4d2330d0f2c1bec594b78d3234054c16dbb1fd74e10f43b5",
+    "scripts/build_olist_powerbi.py": "c2f41214beed9dbf0474d53b0017aac25293c23f25eb7013e6a903f57c040b59",
     "scripts/build_powerbi.py": "f1a1f23e62fceed4e216415d810bc78f479d38b43a26ab8e4c6e8aad5a0cc93c",
     "scripts/powerbi_design.py": "6e12ecb18b22bf6de87e10567175f96bb3ea521c41ea6330e108b0a28dfccfd6",
     "scripts/research_environment.py": "614248ffa5c0d9957efdde1ef99ce8589c86cac769c660f9144e05282b416b1d",

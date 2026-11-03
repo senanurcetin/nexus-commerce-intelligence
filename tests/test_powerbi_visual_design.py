@@ -54,6 +54,9 @@ class NativeVisualDesign(unittest.TestCase):
         for label in METHOD_LABELS.values():self.assertIn(label,metrics)
 
     def test_fixed_association_and_operations_estimates_are_not_subgroup_recalculations(self):
+        delivery=self.visuals('olist_delivery')
+        self.assertIn('may follow purchase cutoff',json.dumps(delivery['nexus_metric_note']))
+        self.assertIn('Retrospective',json.dumps(delivery['context']))
         rules=self.interactions('olist_delivery')
         for name in ('nexus_filter_1','nexus_filter_2'):
             self.assertEqual(rules[name,'00000000000000000001'],'NoFilter')
