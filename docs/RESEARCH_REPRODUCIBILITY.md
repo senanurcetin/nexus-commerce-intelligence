@@ -94,6 +94,12 @@ The additional descriptive event-time restriction requires delivery before the c
 
 Raw hashes are byte-exact; public/helper text snapshots normalize CRLF/LF. Inputs and both independent implementations must remain stable around validation. A failed CLI run removes stale success and writes FAIL without raw keys, review text or absolute source paths. Olist-derived aggregate receipts retain CC BY-NC-SA 4.0; no paid infrastructure or cloud queries are added.
 
+## Replay the matched-period delivery comparison
+
+Run `python -m scripts.operations_audit` with the three local order, customer and item CSVs. The command reconstructs the January–July cohorts and groups customer orders across both years for the seeded bootstrap. It checks the fourteen monthly counts and rates, all 102 common-support strata, pooled standardization and the rate and mix contributions against the published CSVs and evidence.
+
+The historical replay covers 64,230 delivered orders and 62,529 customer clusters. The crude late-rate increase was 4.30 percentage points, with a 95% customer-cluster percentile interval of 3.94 to 4.67 points. In the common-support comparison, within-stratum changes contributed 3.84 points and changes in stratum weights contributed 0.31 points. The decomposition is descriptive and the interval applies to the crude comparison. [Historical receipt](operations-validation.json)
+
 ## Updating the lock
 
 Change the direct requirements deliberately, regenerate with the documented command in the lock header, inspect the diff, create a fresh environment and repeat dependency, method and complete-build checks. Do not silently upgrade versions while reproducing an existing result. The lock generator (`uv`) is an authoring tool, not a runtime requirement; ordinary pip installs the result.
