@@ -3,7 +3,7 @@
   "scope": "local synthetic commerce, independent historical public Olist and private bounded core-source observations; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 354,
+    "passed": 368,
     "failed": 0
   },
   "streamlit_headless": {
@@ -324,5 +324,28 @@
     "causal_effect_execution_verified": false,
     "financial_roi_estimated": false,
     "adoption_recommended": false
+  },
+  "review_cluster_raw_replay": {
+    "command": "target/research-repro-venv/Scripts/python.exe -m scripts.review_cluster_audit",
+    "acceptance": "PASS",
+    "eligible_orders": 68448,
+    "customers": 66295,
+    "windows_days": [
+      7,
+      30,
+      90
+    ],
+    "group_window_cells": 6,
+    "availability_cells": 24,
+    "bootstrap_iterations": 1000,
+    "valid_replicates": 1000,
+    "unique_cluster_patterns": 98,
+    "sampling_limits_replayed": 18,
+    "new_synthetic_adversarial_tests": 14,
+    "production_analysis_helpers_called": false,
+    "numpy_rng_shared_for_seeded_replay": true,
+    "raw_rows_exported": false,
+    "causal_or_simultaneous_set_coverage_verified": false,
+    "receipt": "docs/review-cluster-validation.json"
   }
 }

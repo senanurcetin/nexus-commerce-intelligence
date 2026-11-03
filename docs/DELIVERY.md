@@ -4,6 +4,8 @@ Updated 3 November 2026. Non-commercial, English-language NEXUS analytics case s
 
 ## Implemented
 
+- Independently reconstructed the review-selection study directly from four local CSVs: 68,448 mature delivered orders, 66,295 customer clusters, all six group/window cells, 24 availability cells and eighteen pointwise bootstrap limits match published results. The validator calls no production analysis/SQL/bootstrap/quantile helpers, pins the retrospective protocol and writes aggregate-only PASS/FAIL receipts. Fourteen synthetic/adversarial tests cover selection, clustering, forgeries, stale success and raw-output protection. See [raw sampling replay](RESEARCH_REPRODUCIBILITY.md#replay-review-selection-cluster-intervals-from-local-raw-inputs); original results and portable packages are unchanged.
+
 - Upgraded both portable Power BI reports with eighteen native slicers across thirteen pages, explicit filter interactions, scope notes, semantic number formats and protected full-sample uncertainty. Research adds a native Shapley contribution stack, delivery-group rates with denominators, stepwise repeat timing with at-risk context, and a four-method forecast selector with fixed-window metrics. These are editable PBIR objects, with six regression tests; native rendering, refresh and DAX remain unverified. See [visual design contract](POWER_BI_VISUAL_QA.md).
 
 - Added a bounded private observation of six main-source projections and an isolated observed Greenweez finance build. Public evidence contains counts and gate outcomes; raw rows and financial amounts stay ignored locally. Source origin, currency, refund meaning and transaction-time COGS remain unverified.
