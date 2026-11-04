@@ -201,7 +201,8 @@ def fingerprints(root):
     paths=[p for p in (root/'docs/advanced-analysis').iterdir() if p.suffix in {'.csv','.json'}]
     paths+=[root/name for name in ('docs/research_reproduction.json','docs/executive_readout.json','docs/EXECUTIVE_READOUT.md',
         'docs/core-source/status.json','contracts/financial_semantics.json','powerbi/olist-package-manifest.json','powerbi/package-manifest.json',
-        'scripts/executive_readout.py','scripts/release_audit.py','scripts/build_research_portal.py')]
+        'scripts/executive_readout.py','scripts/release_audit.py','scripts/build_research_portal.py',
+        'docs/core-source/operations.json','scripts/core_operations.py')]
     result={}
     for path in sorted(paths):
         raw=path.read_bytes()

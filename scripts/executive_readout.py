@@ -8,12 +8,16 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 INPUTS=('docs/advanced-analysis/evidence.json','docs/advanced-analysis/extension_evidence.json',
     'docs/advanced-analysis/operations_evidence.json','docs/advanced-analysis/review_selection_evidence.json',
-    'docs/advanced-analysis/forecast_evidence.json','docs/core-source/status.json','contracts/financial_semantics.json')
+    'docs/advanced-analysis/forecast_evidence.json','docs/core-source/status.json','contracts/financial_semantics.json',
+    'docs/core-source/operations.json')
 
 
 def render(root=ROOT):
     data=[json.loads((root/name).read_text(encoding='utf-8')) for name in INPUTS]
-    base,repeat,operations,review,forecast,core,semantics=data
+    base,repeat,operations,review,forecast,core,semantics,core_operations=data
+    from scripts.core_operations import validate
+    validate(core_operations, core)
+    observed_operations = core_operations['summary']
     if base.get('source_kind')!='historical_public_olist' or base.get('synthetic') is not False:
         raise ValueError('Historical public Olist evidence required')
     if any(e['quality']['files']!=base['quality']['files'] for e in data[1:5]):raise ValueError('Mixed Olist source snapshots')
@@ -48,7 +52,10 @@ def render(root=ROOT):
             'rating_30_day_difference':p['complete_case_difference'],'rating_bound_low':p['bound_low'],'rating_bound_high':p['bound_high'],
             'selector_mae':selector['mae'],'baseline_mae':baseline['mae'],'paired_improvement_ci':[b['ci_low'],b['ci_high']],
             'selector_superiority_demonstrated':supported},
-        'private_core_observation':{'financial_acceptance':'HOLD','public_financial_amounts_included':False},
+        'private_core_observation':{'financial_acceptance':'HOLD','public_financial_amounts_included':False,
+            'operational_item_rows': observed_operations['item_rows'],
+            'reversed_delivery_rows': observed_operations['reversed_delivery_rows'],
+            'duration_eligible_rows': observed_operations['duration_eligible_rows']},
         'causal_effect_or_operational_utility_certified':False,'native_bi_acceptance':'HOLD'}
     text=f'''# NEXUS: executive analytical readout
 
@@ -59,6 +66,7 @@ The portfolio demonstrates source reconciliation, uncertainty analysis and decis
 | Question | Recorded evidence | Decision now | Evidence required before a stronger decision |
 | --- | --- | --- | --- |
 | Can the main E-Commerce/Greenweez finance fields support a profit claim? | Private observation covers {core['tables']['ecommerce.order_items']['rows']:,} item rows and {core['tables']['greenweez.gwz_finance_orders_orders']['rows']:,} Greenweez orders; key/reconciliation checks pass, but origin, currency, refund meaning and transaction-time COGS remain unverified. | HOLD profit and refund-adjusted revenue claims. Retain source fields and complete-component coverage. | Authoritative field/unit definitions and historical cost/refund evidence; successful accounting reconciliation on the same population. |
+| Can the observed E-Commerce timestamps support delivery-duration analysis? | {observed_operations['item_rows']:,} item rows span {observed_operations['distinct_order_keys']:,} distinct order keys. {observed_operations['reversed_delivery_rows']:,} rows have delivery before creation. {observed_operations['duration_eligible_rows']:,}/{observed_operations['terminal_item_rows']:,} Complete/Returned items satisfy the timestamp eligibility rule. | Investigate reversed chronology. Calculate duration only on eligible item rows and report excluded coverage. Keep current-status composition at its recorded grain. | Source event definitions and corrected timestamp lineage. Acceptance requires zero reversed rows after validated source correction, with original snapshots preserved. |
 | Does Olist support a recurring-customer revenue projection? | Weighted observed month-1 repeat is {s['weighted_m1_retention']:.2%}; 90-day distinct-purchase-day KM repeat is {r['km_repeat_probability']:.2%} among {repeat['summary']['repeat']['origins']:,} origins. These have different calendars and denominators. | Investigate repeat-purchase economics and follow-up feasibility; do not infer churn, CLV or customer intent. | A decision-specific acquisition/retention design, costs, complete follow-up and appropriate new data. No numeric ROI threshold can be inferred here. |
 | Where should delivery investigation start? | Matched January–July delivered-order late rates are {o['full_rate_2017']:.2%} in 2017 and {o['full_rate_2018']:.2%} in 2018: {o['full_rate_change']*100:+.2f} pp, cluster interval {o['full_change_ci_low']*100:+.2f} to {o['full_change_ci_high']*100:+.2f} pp. Common support retains {o['common_coverage_2017']:.2%}/{o['common_coverage_2018']:.2%}. | Start record-level diagnosis in high-burden cells, retaining cancellation/non-delivery and geography guardrails. Burden is not a service-quality ranking. | Shipment/process timestamps and exposure denominators; prospective comparable evaluation before claiming an intervention effect. |
 | Is the poor-rating contrast robust to unavailable ratings? | The 30-day available-case late-minus-on-time difference is {p['complete_case_difference']*100:+.2f} pp. Sharp hypothetical full-rating bounds are {p['bound_low']*100:+.2f} to {p['bound_high']*100:+.2f} pp across {p['eligible_orders']:,} mature orders. | {rating_decision} | Availability and timing evidence, justified missing-outcome assumptions and a causal design for intervention claims. Bounds are not confidence intervals. |

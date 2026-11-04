@@ -1,9 +1,9 @@
 {
-  "date": "2026-11-03",
+  "date": "2026-11-05",
   "scope": "local synthetic commerce, independent historical public Olist and private bounded core-source observations; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 380,
+    "passed": 387,
     "failed": 0
   },
   "streamlit_headless": {
@@ -261,8 +261,8 @@
   },
   "executive_readout": {
     "generated_from_committed_receipts": true,
-    "source_inputs": 7,
-    "decision_questions": 5,
+    "source_inputs": 8,
+    "decision_questions": 6,
     "offline_guard_tests_passed": 3,
     "mixed_populations_rejected": true,
     "changed_primary_protocol_or_financial_gates_rejected": true,
@@ -287,11 +287,11 @@
     "receipt": "docs/core-source/temporal-verification.json"
   },
   "independent_published_calculation_audit": {
-    "verification_date_local": "2026-11-03",
+    "verification_date_local": "2026-11-05",
     "receipt": "docs/analysis-validation.json",
     "acceptance": "PASS",
     "checks_passed": 6,
-    "fingerprinted_inputs": 45,
+    "fingerprinted_inputs": 47,
     "forecast_origins_replayed": 44,
     "forecast_methods_replayed": 4,
     "evaluation_weeks_replayed": 30,
@@ -367,5 +367,19 @@
     "event_restricted_sampling_interval_computed": false,
     "raw_rows_exported": false,
     "receipt": "docs/delivery-association-validation.json"
+  },
+  "core_operations": {
+    "receipt": "docs/core-source/operations.json",
+    "source_item_rows": 180450,
+    "distinct_order_keys": 124244,
+    "reversed_delivery_rows": 6031,
+    "terminal_item_rows": 63262,
+    "duration_eligible_rows": 57231,
+    "offline_tests_passed": 4,
+    "independent_csv_counts_reconciled": true,
+    "cloud_read_performed": false,
+    "financial_amounts_published": false,
+    "raw_identifiers_published": false,
+    "source_correction_verified": false
   }
 }

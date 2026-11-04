@@ -45,6 +45,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_review_cluster_audit.py' -v
           python -m unittest discover -s tests -p 'test_delivery_association_audit.py' -v
           python -m unittest discover -s tests -p 'test_operations_audit.py' -v
+          python -m unittest discover -s tests -p 'test_core_operations.py' -v
 
   dbt-ci:
     runs-on: ubuntu-latest

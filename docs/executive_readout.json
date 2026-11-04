@@ -9,9 +9,10 @@
     "docs/advanced-analysis/review_selection_evidence.json": "56c627deb9cd823c284893b01192ab830516548536c1d95cc817ae39e8b2e20a",
     "docs/advanced-analysis/forecast_evidence.json": "eaf5202cb21a8f6cdb223cf1dd507ecb7159965241721483cb5855149fabcefa",
     "docs/core-source/status.json": "a585750e18593b415a1ec0de1593e9378a64599b35942d02be2f441cee96cf94",
-    "contracts/financial_semantics.json": "8829af75689fa0a7f9a8411f9ac11a0b4d3933f4855d2c44ea12ea78c1d7b681"
+    "contracts/financial_semantics.json": "8829af75689fa0a7f9a8411f9ac11a0b4d3933f4855d2c44ea12ea78c1d7b681",
+    "docs/core-source/operations.json": "794e10cf356bd448e08f7b587278b2f087fc53c736d12d3179a7a740db8c3057"
   },
-  "implementation_sha256": "16af0f493c670ac22d9af27dc77ef0ca75d72e6624db1f264a6f125d25a91bd4",
+  "implementation_sha256": "9495545ae138efa4c179c6ecdff1b8ad65e9b38c21290d1eb997d00679bbb2b2",
   "historical_public_olist": {
     "source_orders": 99441,
     "m1_repeat_rate": 0.004802409846792015,
@@ -30,7 +31,10 @@
   },
   "private_core_observation": {
     "financial_acceptance": "HOLD",
-    "public_financial_amounts_included": false
+    "public_financial_amounts_included": false,
+    "operational_item_rows": 180450,
+    "reversed_delivery_rows": 6031,
+    "duration_eligible_rows": 57231
   },
   "causal_effect_or_operational_utility_certified": false,
   "native_bi_acceptance": "HOLD"

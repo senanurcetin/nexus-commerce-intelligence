@@ -76,7 +76,8 @@ class AnalysisAcceptance(unittest.TestCase):
 
     def test_stale_executive_summary_is_rejected_by_combined_evidence_control(self):
         root,_=self.fixture();reproduction=json.loads((a.ROOT/'docs/research_reproduction.json').read_text())
-        names=set(reproduction['pipeline_inputs_sha256'])|{'docs/research_reproduction.json','docs/EXECUTIVE_READOUT.md','docs/executive_readout.json','docs/core-source/status.json','contracts/financial_semantics.json'}
+        from scripts.executive_readout import INPUTS
+        names=set(reproduction['pipeline_inputs_sha256'])|set(INPUTS)|{'docs/research_reproduction.json','docs/EXECUTIVE_READOUT.md','docs/executive_readout.json'}
         for name in names:
             dest=root/name;dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(a.ROOT/name,dest)
         legacy=root/'scripts/build_powerbi.py';lf=legacy.read_bytes().replace(b'\r\n',b'\n')

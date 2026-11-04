@@ -38,6 +38,8 @@ class DecisionReadout(unittest.TestCase):
             (5,lambda x:x['gates'].update(independent_raw_amount_reconciliation=False),'engineering acceptance'),
             (4,lambda x:x['protocol'].update(primary_bootstrap_block_weeks=8),'protocol changed'),
             (3,lambda x:x['summary'].append(x['summary'][1]),'Exactly one primary')]
+        changes.append((7, lambda x: x['summary'].update(item_rows=1), 'denominator differs'))
+        changes.append((7, lambda x: x.update(snapshot_observed_at_utc='2000-01-01T00:00:00Z'), 'snapshot differs'))
         for index,change,message in changes:
             with self.subTest(index=index,message=message):
                 root=self.fixture();self.edit(root,index,change)
