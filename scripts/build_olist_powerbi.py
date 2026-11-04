@@ -27,22 +27,27 @@ TABLES = {
     "OperationsMonthly": [("year","int64"),("month","int64"),("orders","int64"),("late_orders","int64"),("late_rate","double"),("median_transit_days","double"),("p90_transit_days","double")],
     "OperationsStates": [("state","string"),("orders","int64"),("late_orders","int64"),("late_rate","double"),("delivered_late_gmv","double"),("p90_transit_days","double"),("late_order_share","double")],
     "OperationsSummary": [(field,"double") for field in ("full_rate_2017","full_rate_2018","full_rate_change","full_change_ci_low","full_change_ci_high","common_rate_change","within_contribution","mix_contribution","common_coverage_2017","common_coverage_2018","pooled_standardized_rate_2017","pooled_standardized_rate_2018")],
-    "ForecastDaily": [("day","dateTime"),("actual_orders","int64"),("prediction","double"),("lower","double"),("upper","double")],
-    "ForecastMetrics": [("method","string"),("mae","double"),("rmse","double"),("wape","double"),("mase","double"),("day_coverage","double"),("week_coverage","double"),("mean_width","double"),("interval_score","double")],
+    "ForecastDaily": [("day","dateTime"),("method","string"),("actual_orders","int64"),("prediction","double"),("lower","double"),("upper","double")],
+    "ForecastMetrics": [("method","string"),("method_label","string"),("mae","double"),("rmse","double"),("wape","double"),("mase","double"),("day_coverage","double"),("week_coverage","double"),("mean_width","double"),("interval_score","double")],
 }
 MEASURES = {
     "Monthly": {"Item GMV (source units)":("SUM(Monthly[gmv])","#,0.00"),
                 "Delivered Orders":("SUM(Monthly[orders])","#,0"),
                 "GMV per Order":("DIVIDE(SUM(Monthly[gmv]),SUM(Monthly[orders]))","#,0.00")},
     "Cohorts": {"Weighted Retention":("IF(HASONEVALUE(Cohorts[period]), DIVIDE(SUM(Cohorts[active]), SUM(Cohorts[customers])), BLANK())","0.00%")},
-    "Segments": {"Customers":("SUM(Segments[customers])","#,0")},
-    "Delivery": {"Poor Review Rate":("DIVIDE(SUM(Delivery[poor]), SUM(Delivery[orders]))","0.0%")},
-    "Association": {"Late minus On-Time":("MAX(Association[risk_difference])","0.0%"),
-                    "95% Lower":("MAX(Association[ci_low])","0.0%"),
-                    "95% Upper":("MAX(Association[ci_high])","0.0%")},
+    "Segments": {"Customers":("SUM(Segments[customers])","#,0"),
+        "As-of Delivered Orders":("SUM(Segments[orders])","#,0"),
+        "As-of Item GMV (source units)":("SUM(Segments[gmv])","#,0.00")},
+    "Decomposition": {label:(f'SUM(Decomposition[{field}])','#,0.00') for label,field in (
+        ('Order-volume contribution','order_volume'),('Basket-size contribution','basket_size'),('Unit-value contribution','unit_value'))},
+    "Delivery": {"Poor Review Rate":("DIVIDE(SUM(Delivery[poor]), SUM(Delivery[orders]))","0.0%"),
+        "Reviewed Orders":('SUM(Delivery[orders])','#,0'),"Poor Ratings":('SUM(Delivery[poor])','#,0')},
+    "Association": {label:(f'100 * CALCULATE(MAX(Association[{field}]), REMOVEFILTERS(Association))','0.00') for label,field in (
+        ('Late minus On-Time (pp)','risk_difference'),('95% Lower (pp)','ci_low'),('95% Upper (pp)','ci_high'))},
     "RepeatCurve": {"Repeat Probability":("IF(HASONEVALUE(RepeatCurve[day]), MAX(RepeatCurve[repeat_probability]))","0.00%"),
                     "Pointwise 95% Lower":("IF(HASONEVALUE(RepeatCurve[day]), MAX(RepeatCurve[ci_low]))","0.00%"),
-                    "Pointwise 95% Upper":("IF(HASONEVALUE(RepeatCurve[day]), MAX(RepeatCurve[ci_high]))","0.00%")},
+                    "Pointwise 95% Upper":("IF(HASONEVALUE(RepeatCurve[day]), MAX(RepeatCurve[ci_high]))","0.00%"),
+                    "Customers at risk":('IF(HASONEVALUE(RepeatCurve[day]), MAX(RepeatCurve[at_risk]))','#,0')},
     "RepeatHorizons": {"Mature Repeat Rate":("IF(HASONEVALUE(RepeatHorizons[day]), MAX(RepeatHorizons[mature_repeat_rate]))","0.00%")},
     "CategoryPortfolio": {"Category GMV":("SUM(CategoryPortfolio[gmv])","#,0.00")},
     "ProductConcentration": {"Observed Products":("MAX(ProductConcentration[observed_products])","#,0"),
@@ -55,49 +60,91 @@ MEASURES = {
     "OperationsSummary": {"2017 Jan-Jul Rate":("MAX(OperationsSummary[full_rate_2017])","0.00%"),
                           "2018 Jan-Jul Rate":("MAX(OperationsSummary[full_rate_2018])","0.00%"),
                           "Rate Change (pp)":("100 * MAX(OperationsSummary[full_rate_change])","0.00")},
-    "ForecastDaily": {label:(f'IF(HASONEVALUE(ForecastDaily[day]), MAX(ForecastDaily[{field}]))','#,0.0') for label,field in (
+    "ForecastDaily": {label:(('IF(HASONEVALUE(ForecastDaily[day]), MAX(ForecastDaily[actual_orders]))' if field=='actual_orders' else
+        f'VAR m = SELECTEDVALUE(ForecastMetrics[method], "past_mae_selector") RETURN IF(HASONEVALUE(ForecastDaily[day]), CALCULATE(MAX(ForecastDaily[{field}]), TREATAS({{m}}, ForecastDaily[method])))'),'#,0.0') for label,field in (
         ('Observed Placed Orders','actual_orders'),('Selected Forecast','prediction'),('Reference Lower','lower'),('Reference Upper','upper'))},
     "ForecastMetrics": {"Benchmark MAE":('MAX(ForecastMetrics[mae])','0.00'),
         "Selector MAE":('CALCULATE(MAX(ForecastMetrics[mae]), ForecastMetrics[method] = "past_mae_selector")','0.00'),
         "Selector Week Coverage":('CALCULATE(MAX(ForecastMetrics[week_coverage]), ForecastMetrics[method] = "past_mae_selector")','0.0%'),
         "Selector Mean Width":('CALCULATE(MAX(ForecastMetrics[mean_width]), ForecastMetrics[method] = "past_mae_selector")','0.0')},
 }
+for label,field,fmt in (('Selected Method MAE','mae','0.00'),('Selected Week Coverage','week_coverage','0.0%'),('Selected Mean Width','mean_width','0.0')):
+    MEASURES['ForecastMetrics'][label]=(f'VAR m = SELECTEDVALUE(ForecastMetrics[method], "past_mae_selector") RETURN CALCULATE(MAX(ForecastMetrics[{field}]), REMOVEFILTERS(ForecastMetrics), ForecastMetrics[method] = m)',fmt)
+for table in ('ProductConcentration','OperationsSummary'):
+    for label,(formula,fmt) in MEASURES[table].items():
+        MEASURES[table][label]=(f'CALCULATE({formula}, REMOVEFILTERS({table}))',fmt)
 PAGES = [
     {"id":"olist_value","title":"Olist | Value and order volume", "cards":[("Monthly",m) for m in MEASURES["Monthly"]],
      "charts":[("lineChart","Monthly",["month"],"Item GMV (source units)","Delivered item GMV by purchase month"),
                ("lineChart","Monthly",["month"],"Delivered Orders","Delivered orders by purchase month")]},
     {"id":"olist_cohorts","title":"Olist | Observed repeat-purchase cohorts","cards":[],
      "charts":[("pivotTable","Cohorts",["cohort","period"],"Weighted Retention","Observed cells only; future periods blank; M0 = 100% by construction")]},
-    {"id":"olist_segments","title":"Olist | As-of customer policies","cards":[("Segments","Customers")],
-     "charts":[("tableEx","Segments",["segment","customers","orders","gmv","mean_recency_days"],None,"90-day recency policy; 1 versus 2+ orders; delivered before cutoff")]},
+    {"id":"olist_segments","title":"Olist | As-of customer policies","cards":[("Segments",m) for m in MEASURES['Segments']],
+     "charts":[('clusteredBarChart','Segments',['segment'],'Customers','Observed customers by demonstration policy'),
+               ("tableEx","Segments",["segment","orders","gmv","mean_recency_days"],None,"As-of policy details; delivered before cutoff")]},
     {"id":"olist_decomposition","title":"Olist | Exact GMV change decomposition","cards":[],
-     "charts":[("tableEx","Decomposition",["month","gmv_change","order_volume","basket_size","unit_value"],None,"Six-ordering Shapley contributions in source units; accounting identity, not causal effects")]},
+     "charts":[('stackedColumnChart','Decomposition',['month'],'Order-volume contribution','Adjacent-month GMV change components'),
+               ("tableEx","Decomposition",["month","gmv_change","order_volume","basket_size","unit_value"],None,"Exact contribution lookup; source units")]},
     {"id":"olist_delivery","title":"Olist | Delivery and poor reviews","cards":[("Association",m) for m in MEASURES["Association"]],
-     "charts":[("tableEx","Delivery",["month","late","orders","poor"],None,"Poor = score 1–2; reviews answered after delivery; association, not causation")]},
+     "charts":[('lineChart','Delivery',['month'],'Poor Review Rate','Poor-rating rate by delivery group and purchase month'),
+               ("tableEx","Delivery",["month","late","orders","poor"],None,"Post-delivery answer denominators; poor = 1–2")]},
     {"id":"olist_repeat_timing","title":"Olist | Time to another purchase day","cards":[],
      "charts":[("lineChart","RepeatCurve",["day"],"Repeat Probability","Pooled Kaplan–Meier with pointwise 95% limits; first 180 days"),
-               ("lineChart","RepeatHorizons",["day"],"Mature Repeat Rate","Direct rates at 30/60/90/180 days; different mature origin populations")]},
+               ("tableEx","RepeatHorizons",['day','mature_customers','mature_repeat_rate','km_repeat_probability','ci_low','ci_high','at_risk'],None,"Mature rates and pooled KM limits; different denominators")]},
     {"id":"olist_portfolio","title":"Olist | Product value concentration","cards":[("ProductConcentration",m) for m in MEASURES["ProductConcentration"]],
      "charts":[("clusteredBarChart","CategoryPortfolio",["category"],"Category GMV","Category item GMV; category-order incidences are not additive orders"),
                ("lineChart","QuarterConcentration",["quarter"],"Quarter Top 10 Share","Complete quarters only; within-portfolio measure, not market power")]},
     {"id":"olist_operations","title":"Olist | Comparable delivery experience","cards":[("OperationsSummary",m) for m in MEASURES["OperationsSummary"]],
      "charts":[("lineChart","OperationsMonthly",["month"],"2017 Late Rate","January-July in both years; full eligible delivered-order populations"),
                ("clusteredBarChart","OperationsStates",["state"],"2018 Late Orders","2018 observed late-order burden by state; counts, not quality ranking")]},
-    {"id":"olist_forecasting","title":"Olist | Temporal forecasting validation","cards":[('ForecastMetrics',m) for m in ('Selector MAE','Selector Week Coverage','Selector Mean Width')],
+    {"id":"olist_forecasting","title":"Olist | Temporal forecasting validation","cards":[('ForecastMetrics',m) for m in ('Selected Method MAE','Selected Week Coverage','Selected Mean Width')],
      "charts":[('lineChart','ForecastDaily',['day'],'Selected Forecast','2018 held-out days: actual, forecast and rolling reference limits'),
-               ('clusteredBarChart','ForecastMetrics',['method'],'Benchmark MAE','Same-date MAE comparison; lower is better; no test-set tuning')]},
+               ('clusteredBarChart','ForecastMetrics',['method_label'],'Benchmark MAE','Full-evaluation MAE; four fixed benchmarks')]},
 ]
 CONTEXT = {
     "olist_value":"PUBLIC OLIST / 2017–July 2018 purchase window / Item GMV excludes freight; not net revenue",
     "olist_cohorts":"PUBLIC OLIST / Retrospective delivered status / Original cohort denominator; no lifetime acquisition claim",
     "olist_segments":"PUBLIC OLIST / As of 2018-08-01 / Earlier observed purchase history included / Demonstration policy",
     "olist_decomposition":"PUBLIC OLIST / Orders × items per order × value per item / Adjacent complete purchase months",
-    "olist_delivery":"PUBLIC OLIST / Customer-cluster bootstrap 95% interval / Fixed overall contrast; does not follow month filters",
+    "olist_delivery":"PUBLIC OLIST / Retrospective delivery/answers may follow purchase cutoff / Full-sample customer-cluster 95% limits",
     "olist_repeat_timing":"PUBLIC OLIST / Distinct purchase days / Last observation 2018-07-31 / Independent censoring unverified",
     "olist_portfolio":"PUBLIC OLIST / Fixed full-window cards; quarter selections do not recompute them / Unknown categories retained",
     "olist_operations":"PUBLIC OLIST / Fixed Jan-Jul cards / Details and uncertainty in DELIVERY_OPERATIONS.md / Delivered-only, not causal",
     "olist_forecasting":"PUBLIC OLIST / ALL placed orders / Past-only selection / Fixed benchmark cards / No guaranteed temporal coverage",
 }
+
+
+def design_config(operations):
+    s=operations['summary']
+    configs={
+        'olist_value':([('Monthly','month','Purchase month')],
+            'Month filters both value charts and all three cards.',
+            'Delivered item GMV only; source units, freight excluded. Orders are period-distinct within each displayed month.'),
+        'olist_cohorts':([('Cohorts','cohort','First observed cohort'),('Cohorts','period','Months since first purchase')],
+            'Cohort and period filter retention cells.\nUnobserved future cells remain blank.',
+            'Weighted rates retain original cohort denominators. Grand totals across different periods are blank; no population churn claim.'),
+        'olist_segments':([('Segments','segment','Demonstration policy')],
+            'Policy selection filters the three as-of cards, ranking and detail table.',
+            'Before 2018-08-01, including earlier observed history. Ninety-day recency is a demonstration policy, not predicted CLV.'),
+        'olist_decomposition':([('Decomposition','month','Adjacent purchase-month change')],
+            'Month filters the driver chart and exact lookup.\nComponents describe the same monthly change.',
+            'Positive and negative Shapley components sum to the adjacent-month GMV change. Sums over selected months are not a new causal counterfactual.'),
+        'olist_delivery':([('Delivery','month','Purchase month'),('Delivery','late','Delivery group')],
+            'Filters affect monthly rates and denominators.\nFull-sample association/interval cards stay fixed.',
+            'Poor = 1–2 among post-delivery answers. Delivery/answers may follow purchase cutoff. Full-sample cards: pp and cluster 95% limits; no causal effect.'),
+        'olist_repeat_timing':([('RepeatCurve','day','Observation day (curve only)')],
+            'Day filters the pooled curve, without re-estimating it.\nMature-window reference rows remain fixed.',
+            'Step estimate and dotted pointwise 95% limits; limits are blank at undefined boundaries. Mature rates have different calendar denominators.'),
+        'olist_portfolio':([('CategoryPortfolio','category','Category (GMV only)'),('QuarterConcentration','quarter','Quarter (trend only)')],
+            'Each selector affects its own grain.\nFull-window concentration cards remain fixed.',
+            'Category-order incidences are not additive orders. Complete-quarter concentration describes this portfolio, not market power.'),
+        'olist_operations':([('OperationsMonthly','month','Month: 1=Jan, 7=Jul'),('OperationsStates','state','State (burden only)')],
+            'Month affects year comparison; state affects burden.\nFull-window rate and uncertainty stay fixed.',
+            f"Fixed Jan–Jul change {s['full_rate_change']*100:+.2f} pp; cluster 95% interval {s['full_change_ci_low']*100:+.2f} to {s['full_change_ci_high']*100:+.2f} pp. State burden is a count, not a quality ranking."),
+        'olist_forecasting':([('ForecastDaily','day','Evaluation day (plot only)'),('ForecastMetrics','method_label','Method (one at a time)','Past-MAE selector')],
+            'Method drives plot and full-evaluation cards.\nDefault: past-MAE selector; benchmark bars retain all four.',
+            'Date changes only the plotted window. Metrics use all 210 evaluation days. Method exploration is not model promotion; rolling limits have no guaranteed coverage.')}
+    return {key:{'filters':f,'scope':scope,'note':note} for key,(f,scope,note) in configs.items()}
 
 
 def create(source: Path, out: Path, extension: Path | None=None, operations: Path | None=None, reviews: Path | None=None, forecast: Path | None=None) -> Path:
@@ -176,8 +223,13 @@ def create(source: Path, out: Path, extension: Path | None=None, operations: Pat
         if hashlib.sha256(path.read_bytes()).hexdigest()!=prediction['aggregate_sha256'][path.name]:
             raise ValueError('Forecast aggregate file hash mismatch: '+path.name)
         with path.open(encoding='utf-8',newline='') as stream:records=list(csv.DictReader(stream))
-        if name=='ForecastDaily':records=[r for r in records if r['phase']=='evaluation' and r['method']=='past_mae_selector']
+        if name=='ForecastDaily':records=[r for r in records if r['phase']=='evaluation']
+        if name=='ForecastMetrics':
+            from scripts.powerbi_design import METHOD_LABELS
+            for record in records:record['method_label']=METHOD_LABELS[record['method']]
         rows[name]=[{field:(None if r[field]=='' else int(float(r[field])) if kind=='int64' else float(r[field]) if kind=='double' else r[field]) for field,kind in TABLES[name]} for r in records]
+    for record in rows['Delivery']:
+        record['late']={'True':'Late','False':'On time'}[record['late']]
     project=build_project(out,out/"unused",portable_rows=rows,tables=TABLES,measures=MEASURES,pages=PAGES,model_name=NAME)
     model=project.parent/(NAME+".SemanticModel/definition/model.tmdl")
     model.write_text("model Model\n\tculture: en-US\n\tsourceQueryCulture: en-US\n\tdefaultPowerBIDataSourceVersion: powerBI_V3\n",encoding="utf-8")
@@ -194,7 +246,8 @@ def create(source: Path, out: Path, extension: Path | None=None, operations: Pat
     visual=project.parent/(NAME+'.Report/definition/pages/olist_repeat_timing/visuals/00000000000000000001/visual.json')
     spec=json.loads(visual.read_text())
     from scripts.build_powerbi import _field
-    spec['visual']['query']['queryState']['Y']['projections']=[_field('RepeatCurve',m,True) for m in MEASURES['RepeatCurve']]
+    spec['visual']['query']['queryState']['Y']['projections']=[_field('RepeatCurve',m,True) for m in ('Repeat Probability','Pointwise 95% Lower','Pointwise 95% Upper')]
+    spec['visual']['query']['queryState']['Tooltips']={'projections':[_field('RepeatCurve','Customers at risk',True)]}
     visual.write_text(json.dumps(spec,indent=2)+'\n',encoding='utf-8')
     visual=project.parent/(NAME+'.Report/definition/pages/olist_forecasting/visuals/00000000000000000004/visual.json')
     spec=json.loads(visual.read_text())
@@ -204,13 +257,22 @@ def create(source: Path, out: Path, extension: Path | None=None, operations: Pat
     spec=json.loads(visual.read_text())
     spec['visual']['query']['queryState']['Y']['projections']=[_field('OperationsMonthly',m,True) for m in MEASURES['OperationsMonthly']]
     visual.write_text(json.dumps(spec,indent=2)+'\n',encoding='utf-8')
+    visual=project.parent/(NAME+'.Report/definition/pages/olist_decomposition/visuals/00000000000000000001/visual.json')
+    spec=json.loads(visual.read_text());spec['visual']['query']['queryState']['Y']['projections']=[_field('Decomposition',m,True) for m in MEASURES['Decomposition']]
+    visual.write_text(json.dumps(spec,indent=2)+'\n',encoding='utf-8')
+    visual=project.parent/(NAME+'.Report/definition/pages/olist_delivery/visuals/00000000000000000004/visual.json')
+    spec=json.loads(visual.read_text());spec['visual']['query']['queryState']['Series']={'projections':[_field('Delivery','late',False)]}
+    spec['visual']['query']['queryState']['Tooltips']={'projections':[_field('Delivery',m,True) for m in ('Reviewed Orders','Poor Ratings')]}
+    visual.write_text(json.dumps(spec,indent=2)+'\n',encoding='utf-8')
+    from scripts.powerbi_design import apply
+    design=apply(project,NAME,PAGES,TABLES,design_config(ops))
     receipt={"source_evidence_sha256":hashlib.sha256((source/"evidence.json").read_bytes()).hexdigest(),
              "pages":len(PAGES),"aggregate_rows":{k:len(v) for k,v in rows.items()},
              "extension_evidence_sha256":hashlib.sha256((extension/'extension_evidence.json').read_bytes()).hexdigest(),
              "operations_evidence_sha256":hashlib.sha256((operations/'operations_evidence.json').read_bytes()).hexdigest(),
              "review_selection_evidence_sha256":hashlib.sha256((reviews/'review_selection_evidence.json').read_bytes()).hexdigest(),
              "forecast_evidence_sha256":hashlib.sha256((forecast/'forecast_evidence.json').read_bytes()).hexdigest(),
-             "synthetic":False,"desktop_render_verified":False,"dax_engine_executed":False,
+             "visual_design":design,"synthetic":False,"desktop_render_verified":False,"dax_engine_executed":False,
              "note":"Association cards are full-sample estimates, independent of monthly table selections."}
     (out/"build_evidence.json").write_text(json.dumps(receipt,indent=2)+"\n",encoding="utf-8")
     (project.parent/"SOURCE_AND_LICENSE.md").write_text(
@@ -224,6 +286,7 @@ def create(source: Path, out: Path, extension: Path | None=None, operations: Pat
         "Purchase window: January 2017 through July 2018. As-of customer policies include earlier observed history. "
         "Item GMV is in source price units, excludes freight and is not net revenue or profit. "
         "Late-delivery contrasts use post-delivery review answers and are selected-sample associations, not causal effects. "
+        "Delivery and selected answers may follow the purchase cutoff; final statuses do not establish original point-in-time availability. "
         "Repeat timing uses distinct purchase days with administrative censoring; pointwise intervals do not validate independent censoring. "
         "Product concentration is within this portfolio, not a market-wide competition measure. "
         "Operations compares January-July in both years, without a review-response filter. "

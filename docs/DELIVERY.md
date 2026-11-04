@@ -1,8 +1,17 @@
 # Delivery evidence
 
-Updated 2 November 2026. Non-commercial, English-language NEXUS analytics case study. No Playwright, browser control or PC-screen use in this development pass.
+Updated 3 November 2026. Non-commercial, English-language NEXUS analytics case study. No Playwright, browser control or PC-screen use in this development pass.
 
 ## Implemented
+
+- Independently replayed the original delivery association over 84,763 reviewed orders / 82,228 customer clusters, its percentile interval, 38 monthly cells, thirteen common-support months and timing sensitivity. Quantified 2,761 post-cutoff selected answers; a separate event-restricted selection recovers three earlier answers and remains explicitly outside genuine as-of validation. Twelve synthetic/adversarial tests cover sampling, sparse support, timestamps/ties, rehashed forgeries, stability and safe failure. The native Power BI page now repeats the retrospective timing boundary; original numerical study outputs are preserved. See [original-cohort replay](RESEARCH_REPRODUCIBILITY.md#replay-the-original-retrospective-delivery-association).
+
+- Independently reconstructed the review-selection study directly from four local CSVs: 68,448 mature delivered orders, 66,295 customer clusters, all six group/window cells, 24 availability cells and eighteen pointwise bootstrap limits match published results. The validator calls no production analysis/SQL/bootstrap/quantile helpers, pins the retrospective protocol and writes aggregate-only PASS/FAIL receipts. Fourteen synthetic/adversarial tests cover selection, clustering, forgeries, stale success and raw-output protection. See [raw sampling replay](RESEARCH_REPRODUCIBILITY.md#replay-review-selection-cluster-intervals-from-local-raw-inputs); original results and portable packages are unchanged.
+
+- Upgraded both portable Power BI reports with eighteen native slicers across thirteen pages, explicit filter interactions, scope notes, semantic number formats and protected full-sample uncertainty. Research adds a native Shapley contribution stack, delivery-group rates with denominators, stepwise repeat timing with at-risk context, and a four-method forecast selector with fixed-window metrics. These are editable PBIR objects, with six regression tests; native rendering, refresh and DAX remain unverified. See [visual design contract](POWER_BI_VISUAL_QA.md).
+
+- Added a bounded private observation of six main-source projections and an isolated observed Greenweez finance build. Public evidence contains counts and gate outcomes; raw rows and financial amounts stay ignored locally. Source origin, currency, refund meaning and transaction-time COGS remain unverified.
+- Added a hash-locked research runtime, actual-version/build-input receipts and a complete synthetic success-path test for all five studies and native BI. Sparse common-month support and boundary survival intervals now remain explicitly unavailable in reports instead of crashing. See [reproduction](RESEARCH_REPRODUCIBILITY.md) and [remaining programme](DEVELOPMENT_PROGRAM.md).
 
 - Added a validated 22-metric registry, generated KPI catalog and source coverage table for the core commerce and independent Olist domains. Source definitions include eligibility, grain, denominator, units, null policies and implementation links.
 - Added known-cost completed product contribution with a matched revenue denominator and Greenweez product/shipping coverage. The synthetic fixture has 23 unpriced sales lines and 55 incomplete-component order records; source order/line/value controls reconcile without changing the finance models.
@@ -25,7 +34,7 @@ Updated 2 November 2026. Non-commercial, English-language NEXUS analytics case s
 - Added a 86,950-origin customer duration ledger, distinct-purchase-day Kaplan–Meier estimates, pointwise Greenwood intervals and mature-horizon checks. Curves and intervals independently agree with SciPy's right-censored ECDF implementation.
 - Added product/category mix and within-portfolio concentration over 30,015 observed product IDs, with 1,504 missing-category lines retained and 17 untranslated-category lines flagged. Product keys and IDs remain local; published results contain only aggregates.
 - Added a delivery decision readout over 64,230 eligible orders in matched January–July windows, with independent raw denominator reconciliation, cluster uncertainty, common-support coverage and exact rate/mix decomposition. State burden priorities are paired with guardrails and a record-level investigation plan; no causal effect or revenue-loss claim is made.
-- Added a single local `scripts.build_research` command for all five real-data studies, report assets and native BI. It was executed end to end with 72 official schema checks; failure fixtures reject raw/output overlap and stale success receipts. The archive contains the five reports and their aggregate evidence.
+- Added a single local `scripts.build_research` command for all five real-data studies, report assets and native BI. It was executed end to end with 109 official schema checks; failure fixtures reject raw/output overlap and stale success receipts. The archive contains the five reports and their aggregate evidence.
 
 - Added the review-selection study over 68,448 mature delivered orders with a fixed retrospective protocol, first eligible raw-review policy, independent raw/pandas reconciliation, availability-reason ledger, 441 missing-rating scenarios and pointwise customer-cluster intervals. Thirty-day available-case difference is +11.26 pp; the sharp hypothetical full-rating range is −5.44 to +69.44 pp. The range includes zero and is not a causal effect or confidence interval. The fourth report and its protocol/query accompany the unchanged nine-page native BI project.
 
@@ -46,18 +55,18 @@ The four-page commerce report and web demo use only synthetic fixtures. Their re
 
 ## Verification scope
 
-- Python unit/contract tests, 11 headless Streamlit AppTests and 16 Node tests passed. Exact current counts and commands: [machine-readable verification](verification.json).
+- Python unit/contract tests, 11 headless Streamlit AppTests and 21 Node tests passed. Exact current counts and commands: [machine-readable verification](verification.json).
 - Full local rebuild: 10 E-Commerce models plus 59 model-level tests passed; Greenweez completed with 113 passed build nodes, four documented warnings and no errors.
 - Five E-Commerce analytical SQL templates and the independent Greenweez raw-branch coverage query execute locally. Raw-to-mart value/order, funnel and known-cost population controls reconcile. Both dbt projects compile the new analysis within their own source scope.
 - Greenweez raw-sales revenue reconciles to daily finance; daily contribution identities reconcile.
 - Four-page public Power BI JSON validates against Microsoft's published schemas. Microsoft TOM successfully deserializes the public four-table and private eight-table TMDL models. Seven-page source/binding integrity is independently checked.
 - Generated analytical figures are file artifacts, not screenshots of a live UI or Power BI.
 - Olist: all-extract raw item value reconciles to the order fact, and the analytical purchase window reconciles independently to raw lines/orders. Cohort observation/denominator, policy ties, future delivery exclusion, many-side fanout, Shapley symmetry/additivity, fixed-seed bootstrap, BH adjustment, aggregate reconciliation and public export tamper tests pass without Kaggle access in CI.
-- The nine-page Olist report validates 72 Microsoft schema-bearing artifacts; Microsoft TOM parses its sixteen-table semantic model. All twelve generated figures were inspected as local image files across the development passes. This does not establish BI rendering.
+- The nine-page Olist report validates 109 Microsoft schema-bearing artifacts; the four-page synthetic report validates 50. Microsoft TOM parses both semantic models. All twelve generated figures were inspected as local image files across the development passes. This does not establish BI rendering.
 
 ## Limits
 
-Power BI Desktop rendering, DAX execution/refresh, mobile/browser interaction and live BI publication are not verified. Current instructions prohibit screen/browser testing, so these remain explicitly unclaimed. No commercial launch, payment integration, hosted job or paid resource was created. No manually dispatched CI or cloud refresh was run.
+Power BI Desktop rendering, DAX execution/refresh, mobile/browser interaction and live BI publication are not verified. Current instructions prohibit screen/browser testing, so these remain explicitly unclaimed. No commercial launch, payment integration, hosted job or paid resource was created. No CI, dbt Cloud or hosted job was manually dispatched. The separate private REST source observation created no SQL query jobs and is documented in [source acceptance](core-source/README.md).
 
 Greenweez fixtures contain unmatched product/shipping records and ambiguous refund worksheet units. Reconciliation of arithmetic does not make their financial interpretation audited. The public E-Commerce fixture is too small for a channel winner or a chi-square conclusion.
 

@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "acceptance": "PASS",
+  "implementation_sha256": "4e82b721ff10799d4dd5f1c84086cf24dc438e624033cea64bc2b78cf5b836ea",
+  "runtime": {
+    "python": "3.11.9",
+    "numpy": "2.3.5"
+  },
+  "raw_rows_exported": false,
+  "derived_license": "CC-BY-NC-SA-4.0",
+  "source": "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce",
+  "scope": "Original retrospective delivery-association raw cohort, latest review, customer-cluster percentile limits, monthly/common-support and all-timing arithmetic; event-boundary counts and separate descriptive event-restricted sensitivity. Not state Fisher/FDR, source authenticity, causality, real as-of availability or native BI.",
+  "causal_acceptance": "HOLD",
+  "native_bi_acceptance": "HOLD",
+  "input_sha256": {
+    "raw/olist_orders_dataset.csv": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
+    "raw/olist_customers_dataset.csv": "983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2",
+    "raw/olist_order_items_dataset.csv": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+    "raw/olist_order_reviews_dataset.csv": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7",
+    "published/evidence.json": "5462e283d30b487e6a6243a140807f952c2a0fa2f8580b9e5d767986cf4e38ad",
+    "published/delivery_months.csv": "8694a6768b5455bd3084a708da6ad630f45b57ccd14eebf039a8f5ceb98e1836",
+    "published/delivery_common_support.csv": "a6e93cc2ecd383d12e63bb050073254f6ffbcde2c9fcb6af8a0c74c2bd5e1dd0",
+    "independent_csv_helper": "6582ea516ef0de4fa46ea8748802d1b0dcba8204016ef742f1e48da9cd6f4582"
+  },
+  "details": {
+    "association": {
+      "risk_difference": 0.10731008772155064,
+      "ci_low": 0.08901241601576029,
+      "ci_high": 0.1254099049278386,
+      "customers": 82228,
+      "iterations": 1000,
+      "valid_replicates": 1000,
+      "seed": 20261027,
+      "late_poor": 342,
+      "late_orders": 1702,
+      "on_time_poor": 7777,
+      "on_time_orders": 83061
+    },
+    "monthly_cells_reconciled": 38,
+    "common_support_months": 13,
+    "month_standardized_risk_difference": 0.11042938052218233,
+    "all_review_timing_counts_reconciled": true,
+    "retrospective_event_boundary": {
+      "sample_orders": 84763,
+      "delivery_on_or_after_cutoff": 1862,
+      "selected_answer_on_or_after_cutoff": 2761,
+      "delivery_or_selected_answer_on_or_after_cutoff": 2761,
+      "post_cutoff_latest_replaced_with_earlier_eligible_answer_orders": 3
+    },
+    "event_time_restricted_sensitivity": {
+      "late_poor": 327,
+      "late_orders": 1626,
+      "on_time_poor": 7533,
+      "on_time_orders": 80379,
+      "risk_difference": 0.10738850250444056,
+      "sampling_interval_computed": false,
+      "policy": "Delivery before 2018-08-01; select latest dated answer before cutoff, then require answer at/after delivery; same purchase window and final delivered status.",
+      "original_ingestion_or_status_availability_verified": false,
+      "genuine_point_in_time_backtest": false,
+      "interpretation": "Different event-restricted selected sample; descriptive sensitivity only, not a causal effect or live-data reconstruction."
+    }
+  },
+  "inputs_stable_during_validation": true,
+  "hash_basis": "raw inputs byte-exact; public text/helper LF-normalized",
+  "numpy_rng_shared_for_declared_seed": true
+}

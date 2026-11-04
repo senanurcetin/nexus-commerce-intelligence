@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "provenance": "authenticated_warehouse_observation_original_business_truth_unverified",
+  "snapshot_observed_at_utc": "2026-11-02T14:16:16.211995+00:00",
+  "source_item_rows": 180450,
+  "source_contract_sha256": "380699f438500d83ea6fdfa16cd6241628e23bec38c2f8524243f1ba74f1a6ce",
+  "source_csv_sha256": "d1da56f99cc6848745a718d7d9acf03cd62c0afca7ce4ce11298866b0e31589a",
+  "implementation_sha256": "22055fe6ee48f58f5eb5f7161ae3ed7d8d39a133ee064dbbe02ac0862949570e",
+  "summary": {
+    "item_rows": 180450,
+    "distinct_order_keys": 124244,
+    "mixed_status_orders": 0,
+    "ambiguous_customer_orders": 0,
+    "missing_order_key_item_rows": 0,
+    "status_counts": [
+      {
+        "status": "Cancelled",
+        "item_rows": 27004,
+        "reversed_delivery_rows": 0,
+        "terminal_item_rows": 0,
+        "duration_eligible_rows": 0
+      },
+      {
+        "status": "Complete",
+        "item_rows": 45161,
+        "reversed_delivery_rows": 4317,
+        "terminal_item_rows": 45161,
+        "duration_eligible_rows": 40844
+      },
+      {
+        "status": "Processing",
+        "item_rows": 36008,
+        "reversed_delivery_rows": 0,
+        "terminal_item_rows": 0,
+        "duration_eligible_rows": 0
+      },
+      {
+        "status": "Returned",
+        "item_rows": 18101,
+        "reversed_delivery_rows": 1714,
+        "terminal_item_rows": 18101,
+        "duration_eligible_rows": 16387
+      },
+      {
+        "status": "Shipped",
+        "item_rows": 54176,
+        "reversed_delivery_rows": 0,
+        "terminal_item_rows": 0,
+        "duration_eligible_rows": 0
+      }
+    ],
+    "terminal_item_rows": 63262,
+    "duration_eligible_rows": 57231,
+    "reversed_delivery_rows": 6031
+  },
+  "summary_sha256": "69ebbbf54a08854ed1f59b8f084e0426d2e2c6c59cdd220925f9b6b69faea98b",
+  "independent_raw_counts_reconciled": true,
+  "decision": {
+    "repair_chronology": true,
+    "action": "Investigate delivery-before-creation rows using source event definitions and lineage.",
+    "duration_eligibility": "Complete or Returned item with finite creation/delivery epochs, creation <= delivery <= snapshot observation.",
+    "grain_acceptance": "One source item per key. Distinct orders reported separately. Mixed status/customer orders require investigation.",
+    "success_criterion": "Zero reversed delivery rows in a subsequent validated source correction. Preserve each original snapshot.",
+    "business_effect_evaluation": "Measure any operational intervention on new observations with an approved loss budget."
+  },
+  "financial_amounts_published": false,
+  "raw_identifiers_published": false,
+  "original_business_origin_verified": false,
+  "historical_status_availability_verified": false
+}

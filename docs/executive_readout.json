@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "purpose": "noncommercial_portfolio_decision_readout",
+  "input_hash_basis": "canonical_json_utf8_sorted_keys",
+  "inputs_sha256": {
+    "docs/advanced-analysis/evidence.json": "6cc7e4fbec9d89918afe6d2a68b175e955ae866f7173fcf8a3621163bfd1cfe5",
+    "docs/advanced-analysis/extension_evidence.json": "87d6e3c93efd7bd03dd4fcd62b34cc05b3571eb0831e0b4311c0859792c7c077",
+    "docs/advanced-analysis/operations_evidence.json": "68fb078ae59b1f971e039cfb388a42eeae7db974c24c4b6d676d83f67e4f5f49",
+    "docs/advanced-analysis/review_selection_evidence.json": "56c627deb9cd823c284893b01192ab830516548536c1d95cc817ae39e8b2e20a",
+    "docs/advanced-analysis/forecast_evidence.json": "eaf5202cb21a8f6cdb223cf1dd507ecb7159965241721483cb5855149fabcefa",
+    "docs/core-source/status.json": "a585750e18593b415a1ec0de1593e9378a64599b35942d02be2f441cee96cf94",
+    "contracts/financial_semantics.json": "8829af75689fa0a7f9a8411f9ac11a0b4d3933f4855d2c44ea12ea78c1d7b681",
+    "docs/core-source/operations.json": "794e10cf356bd448e08f7b587278b2f087fc53c736d12d3179a7a740db8c3057"
+  },
+  "implementation_sha256": "9495545ae138efa4c179c6ecdff1b8ad65e9b38c21290d1eb997d00679bbb2b2",
+  "historical_public_olist": {
+    "source_orders": 99441,
+    "m1_repeat_rate": 0.004802409846792015,
+    "km_90_day_repeat_probability": 0.01287012514860375,
+    "delivery_rate_change": 0.04303347856574027,
+    "rating_30_day_difference": 0.1125744004439718,
+    "rating_bound_low": -0.05443727756882025,
+    "rating_bound_high": 0.6944195205067156,
+    "selector_mae": 41.18855038036778,
+    "baseline_mae": 40.5,
+    "paired_improvement_ci": [
+      -4.669527582721512,
+      3.058108527661232
+    ],
+    "selector_superiority_demonstrated": false
+  },
+  "private_core_observation": {
+    "financial_acceptance": "HOLD",
+    "public_financial_amounts_included": false,
+    "operational_item_rows": 180450,
+    "reversed_delivery_rows": 6031,
+    "duration_eligible_rows": 57231
+  },
+  "causal_effect_or_operational_utility_certified": false,
+  "native_bi_acceptance": "HOLD"
+}

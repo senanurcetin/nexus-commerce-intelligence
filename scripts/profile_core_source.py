@@ -146,10 +146,19 @@ def greenweez(con):
     return result,daily
 
 
-def profile(snapshot:Path):
+def profile(snapshot:Path,*,as_of=None):
     snapshot=snapshot.resolve()
     if PRIVATE_ROOT.resolve() not in snapshot.parents:raise ValueError('Only local ignored core-source snapshots are accepted')
-    out=snapshot/'analysis';out.mkdir(exist_ok=True)
+    temporal=None
+    if as_of is not None:
+        from scripts.core_source_history import require_as_of,utc
+        chosen,entry=require_as_of(as_of)
+        if chosen!=snapshot:raise ValueError('Requested profile snapshot differs from the eligible as-of version')
+        temporal={'cutoff_utc':utc(as_of),'snapshot_available_at_utc':entry['available_at_utc'],
+                  'history_entry_sha256':entry['entry_sha256'],'availability_basis':'local_registration_not_original_source_ingestion'}
+    out=snapshot/'analysis'
+    if temporal:out=out/'as-of'/temporal['cutoff_utc'].replace(':','').replace('+','_')
+    out.mkdir(parents=True,exist_ok=True)
     (out/'profile.json').unlink(missing_ok=True)
     con=duckdb.connect()
     try:
@@ -166,6 +175,7 @@ def profile(snapshot:Path):
         'financial_contract_sha256':hashlib.sha256(SEMANTICS.read_bytes()).hexdigest(),
         'raw_rows_publication_allowed':False,'financial_amounts_publication_allowed':False,'profit_certified':False,
         'interpretation':'Source-observed fields and catalogue-cost/component arithmetic. Currency, tax/shipping inclusion, refund meaning, transaction-time COGS and original real-business provenance remain unverified.'}
+    if temporal:result['temporal_availability']=temporal
     (out/'profile.json').write_text(json.dumps(result,indent=2,default=str,allow_nan=False)+'\n',encoding='utf-8')
     (out/'REPORT.md').write_text('''# Private core-source profile
 
@@ -183,9 +193,13 @@ The static public commerce demo is unchanged. These outputs are ignored local fi
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--snapshot',type=Path);a=p.parse_args()
-    source=a.snapshot or PRIVATE_ROOT/json.loads((PRIVATE_ROOT/'latest.json').read_text())['snapshot']
-    result=profile(source)
+    p=argparse.ArgumentParser(description=__doc__);g=p.add_mutually_exclusive_group()
+    g.add_argument('--snapshot',type=Path);g.add_argument('--as-of');a=p.parse_args()
+    if a.as_of is not None:
+        from scripts.core_source_history import require_as_of
+        source=require_as_of(a.as_of)[0]
+    else:source=a.snapshot or PRIVATE_ROOT/json.loads((PRIVATE_ROOT/'latest.json').read_text())['snapshot']
+    result=profile(source,as_of=a.as_of)
     print(json.dumps({'ecommerce_item_rows':result['ecommerce']['keys']['order_items']['rows'],
         'ecommerce_product_keys_safe':result['ecommerce']['keys']['products']['unique_nonnull_keys'],
         'greenweez_order_rows':result['greenweez']['keys']['orders']['rows'],

@@ -8,6 +8,12 @@ The 2 November 2026 read captured 180,450 E-Commerce item rows, 29,120 product r
 
 ## Decision readout
 
+The count-only operational analysis now covers 180,450 observed E-Commerce item rows and 124,244 distinct order keys. The snapshot has zero mixed-status orders and zero ambiguous customer orders under the recorded keys. Independent CSV counts reconcile the SQL status populations.
+
+Delivery precedes item creation in 6,031 rows, including 4,317 Complete and 1,714 Returned items. The duration eligibility rule retains 57,231 of 63,262 Complete/Returned item rows. Source chronology investigation has priority. A validated subsequent source correction must eliminate reversed delivery timestamps before broader duration analysis is accepted. The original snapshot remains available for comparison. [Operational receipt](operations.json)
+
+Run `python -m scripts.core_operations` against the existing private snapshot to reproduce the receipt. The command publishes counts and decision criteria. Financial amounts and source keys remain in the private source boundary. Current status describes the observed snapshot. Historical status availability remains an open evidence requirement.
+
 - **Proceed with source-scoped engineering:** observed item/product keys and Greenweez order/component keys are unique and non-null. Complete projections reconcile to source metadata, and independent Python decimal sums reconcile with DuckDB decimal sums. These controls support reproducible analysis of the observed fields.
 - **Investigate zero-cost interpretation:** the observed Greenweez source includes 561 zero purchase-cost records and 13 zero-turnover records. These are retained and flagged, rather than automatically corrected or asserted to be errors. All three order-component populations align on key and date in this snapshot.
 - **Hold financial claims:** currency, refund units, tax/shipping inclusion and transaction-time COGS remain unverified. Zero missing joins does not resolve their meaning. E-Commerce product catalogue costs are snapshots, not historical COGS. Greenweez's refund field is never subtracted from turnover while its units remain unknown.
@@ -31,5 +37,7 @@ The selected Greenweez finance dbt build uses an isolated local database, no syn
 [Read contract](../../contracts/core_source_read.json) and [financial semantics contract](../../contracts/financial_semantics.json) define the executable boundaries. A completed-item catalogue contribution uses the same valid-price/known-cost rows for its numerator and denominator. A complete-component Greenweez subtotal is selected arithmetic, not audited net profit or a bound on business profit. Daily advertising is not allocated to individual orders.
 
 ## Remaining acceptance
+
+[Temporal availability](TEMPORAL_AVAILABILITY.md) now provides a private whole-snapshot registration history and strict as-of selection. It prevents latest-snapshot fallback before local availability and retains separate observation/registration times. This creates a forward-looking control; it does not reconstruct source ingestion history or make the historical finance fields point-in-time valid.
 
 Obtain an authoritative currency/unit/refund/cost-timing definition and source-origin statement before presenting business finance conclusions. Establish ingestion-time/as-of history before retrospective operational prediction. Native Power BI refresh, DAX execution and rendering remain unverified. Public demo fixtures and distributed archives retain their existing synthetic/historical labels. This remains a noncommercial portfolio; no payment flow, recurring paid resource or monetization feature is introduced.

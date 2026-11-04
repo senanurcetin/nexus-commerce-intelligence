@@ -1,0 +1,4 @@
+scenario,control_risk_assumed,treatment_risk_assumed,fixed_total_customers,replicates,seed,rejections,rejection_probability,monte_carlo_ci_low,monte_carlo_ci_high,benefit_rejections,harm_rejections,srm_flags,empty_arm_trials,decision_eligible_rejections
+null,0.08,0.08,21780,2000,20261103,86,0.043,0.03495107254461269,0.05280110867045247,40,46,1,0,86
+benefit,0.08,0.07,21780,2000,20261104,1602,0.801,0.7829327319309886,0.8179132056056971,1602,0,1,0,1602
+harm,0.08,0.09,21780,2000,20261105,1529,0.7645,0.7454079518337562,0.7825779301544609,0,1529,1,0,1528

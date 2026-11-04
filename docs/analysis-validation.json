@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "published_calculation_acceptance": "PASS",
+  "implementation_sha256": "dbcccc436f9056ac7f1338beea481475e926cab1a5c1277b8f6311d26614627b",
+  "runtime_versions": {
+    "python": "3.11.9",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3"
+  },
+  "derived_public_olist_license": "CC-BY-NC-SA-4.0",
+  "noncommercial": true,
+  "absolute_numeric_tolerance": 1e-07,
+  "relative_numeric_tolerance": 1e-10,
+  "checks": [
+    {
+      "name": "input_snapshot",
+      "passed": true,
+      "details": {
+        "contracts/financial_semantics.json": "8829af75689fa0a7f9a8411f9ac11a0b4d3933f4855d2c44ea12ea78c1d7b681",
+        "docs/advanced-analysis/category_portfolio.csv": "e8892f20e28733a59c7ca8d22a37507fb330cd41be8f2590ba05bb734edcffdb",
+        "docs/advanced-analysis/cohorts.csv": "a9e08608321b7da9128272834d7d8b99cd68eefda9b77686bb2e520d6283a24e",
+        "docs/advanced-analysis/decomposition.csv": "a504849a796d65d67895d575ded6012c39f2a81fc57ebf56114431cb086b0ea2",
+        "docs/advanced-analysis/delivery_common_support.csv": "a6e93cc2ecd383d12e63bb050073254f6ffbcde2c9fcb6af8a0c74c2bd5e1dd0",
+        "docs/advanced-analysis/delivery_months.csv": "8694a6768b5455bd3084a708da6ad630f45b57ccd14eebf039a8f5ceb98e1836",
+        "docs/advanced-analysis/delivery_states.csv": "58f2c09dbe2237453a311c701601399c2a065e973ab7cc127e9c331adf278e63",
+        "docs/advanced-analysis/evidence.json": "6cc7e4fbec9d89918afe6d2a68b175e955ae866f7173fcf8a3621163bfd1cfe5",
+        "docs/advanced-analysis/extension_evidence.json": "87d6e3c93efd7bd03dd4fcd62b34cc05b3571eb0831e0b4311c0859792c7c077",
+        "docs/advanced-analysis/forecast_daily.csv": "ee6c4be91045826e8b830193330b415f6a83a2cc998139373fbcecd57c42f811",
+        "docs/advanced-analysis/forecast_evidence.json": "eaf5202cb21a8f6cdb223cf1dd507ecb7159965241721483cb5855149fabcefa",
+        "docs/advanced-analysis/forecast_folds.csv": "976dec7be046fd9e22162501e7372b13c9ebe464d369a14292ed7e5be60d47c5",
+        "docs/advanced-analysis/forecast_metrics.csv": "4c7e6097708f17a559fd9559c269331a8289c2b48a01608a3b9f4e24dfb44f0e",
+        "docs/advanced-analysis/forecast_uncertainty.csv": "7aed136d4b15e36a636a5e357c01ec4db09d0f6a92b24fdf821f0696c076fdc4",
+        "docs/advanced-analysis/forecast_volume.csv": "39a95e051975b16f77aef9000d498b6c93eaa96ac30c13f7602516972fdea992",
+        "docs/advanced-analysis/monthly.csv": "a2e36cf8b04352c65382da9616066751f663ace93ca8d361ac7b36a736bd8c54",
+        "docs/advanced-analysis/olist_forecast_protocol.json": "948bc789e52a41c8297e5815696c477c8d89271249348a79ad768637c56da445",
+        "docs/advanced-analysis/olist_review_protocol.json": "472e184121fa8a1606008da0ddef437b4334291be71a88c5c76b78e105e2faed",
+        "docs/advanced-analysis/operations_evidence.json": "68fb078ae59b1f971e039cfb388a42eeae7db974c24c4b6d676d83f67e4f5f49",
+        "docs/advanced-analysis/operations_month_contributions.csv": "c2a121b26d4d713ae9e961df095e94703fbe287f9b6261b4a5b78a5bead7ff7c",
+        "docs/advanced-analysis/operations_monthly.csv": "9ca88f7baf5007a164a387afadf50893db18306e3e3654205b04468204c149c1",
+        "docs/advanced-analysis/operations_states.csv": "489f0242148efeff789851a1e536638dc787663dcfdce22c9be2f965c7e758e0",
+        "docs/advanced-analysis/operations_strata.csv": "d3b03253ce82b632d5fcab4ffd912660f7efb60320f2730d278b9904f2da9301",
+        "docs/advanced-analysis/operations_summary.csv": "521681ad6c36dbf7bd54f24c14c3842baf2eaca09856b6388174f416f7b17c34",
+        "docs/advanced-analysis/product_concentration.csv": "a4eaf0ca0db2931f37d58573b8890d94369cbdc1eff0f70e4f9263fae45e4573",
+        "docs/advanced-analysis/quarter_concentration.csv": "6d47310a17898758efa51cd9618800f2adb38bdadb904d572022e8c2e457dafa",
+        "docs/advanced-analysis/repeat_curve.csv": "acad54beb85a8da7c974ac1159c83f478a53b69198f95d2abfdefc507a8130e1",
+        "docs/advanced-analysis/repeat_horizons.csv": "09d3760156edd4baa88fea3ca79a0f92b3513e32eabf994bc27d27ff3ae7b92e",
+        "docs/advanced-analysis/repeat_ledger.csv": "1241d6c91fca9e7f21227678006663d3a85f1e74b75ef9c52bbcfd8a43936ea2",
+        "docs/advanced-analysis/review_availability.csv": "e83df67d3cc87b8a3569ba6fb6c4609b860fce376dc5b1d61479102455dc9d51",
+        "docs/advanced-analysis/review_groups.csv": "b8c2507a3725468550ec6a8ec95c1c7935e8ea39339cfe0c3b95d8dcf6729043",
+        "docs/advanced-analysis/review_selection_evidence.json": "56c627deb9cd823c284893b01192ab830516548536c1d95cc817ae39e8b2e20a",
+        "docs/advanced-analysis/review_sensitivity.csv": "594fcfd45a420acdf2f696aa3cc46c899769c789e7a53511990d3d23455f5d3b",
+        "docs/advanced-analysis/review_summary.csv": "786da1fc1f9d2d109bc1cf62a62f5545e56eb1078e99e5458d0e17da30874e48",
+        "docs/advanced-analysis/review_tipping.csv": "8b7060caad653cc4098859492d09216b2c99c15e84dfae590d6ea9f9bbc504cb",
+        "docs/advanced-analysis/segments.csv": "08dd98db0f68bb4a4f52a1d9af06217bdebcf2bd4e94585fe942780c27248272",
+        "docs/core-source/operations.json": "794e10cf356bd448e08f7b587278b2f087fc53c736d12d3179a7a740db8c3057",
+        "docs/core-source/status.json": "a585750e18593b415a1ec0de1593e9378a64599b35942d02be2f441cee96cf94",
+        "docs/executive_readout.json": "cb5f74345a3b50d1292123863f45a69adc1bb5544b7ea4e0ebe9bfdb9f0e1eb4",
+        "docs/EXECUTIVE_READOUT.md": "f3581a63bf721a61f48e052d193cc6a99f35369c2f2052dfb0df52ec8072622f",
+        "docs/research_reproduction.json": "4d483a4c6a3132f82882dd73a19d9671443be00db8a3190c7e7796825df8ebac",
+        "powerbi/olist-package-manifest.json": "7f8cfb3cb80d5a675c62c17bc8fb72163045fd23ea9672999471a29f2423c6b7",
+        "powerbi/package-manifest.json": "5b70e24fb576f081cd799ebb2693c04304f2472b246050ec8bd7172bcbb0abbf",
+        "scripts/build_research_portal.py": "3b0654ca3cdf4ea22b4aaf593bd31eedc88079d57a18d7bd847980775656ef50",
+        "scripts/core_operations.py": "22055fe6ee48f58f5eb5f7161ae3ed7d8d39a133ee064dbbe02ac0862949570e",
+        "scripts/executive_readout.py": "9495545ae138efa4c179c6ecdff1b8ad65e9b38c21290d1eb997d00679bbb2b2",
+        "scripts/release_audit.py": "66cc759b7a7549503c964d51d72acadeccc581c89fbf4608d3f5fb83a8cd9f94"
+      }
+    },
+    {
+      "name": "published_evidence_integrity",
+      "passed": true,
+      "details": {
+        "source_consistent_studies": 5,
+        "aggregate_hashes_checked": 28,
+        "executive_readout_current": true,
+        "reproduction_fingerprints_current": true,
+        "historical_pipeline_hash_policy": "Captured-byte match or CRLF/LF-equivalent text; binary inputs must match exactly"
+      }
+    },
+    {
+      "name": "independent_forecast_replay",
+      "passed": true,
+      "details": {
+        "origins_replayed": 44,
+        "evaluation_weeks": 30,
+        "methods_replayed": 4,
+        "prediction_fits_selection_calibration_metrics_and_paired_bootstrap_replayed": true,
+        "primary_interval": {
+          "improvement": -0.6885503803677705,
+          "ci_low": -4.669527582721507,
+          "ci_high": 3.058108527661247
+        },
+        "primary_superiority_demonstrated": false,
+        "original_ingestion_times_verified": false
+      }
+    },
+    {
+      "name": "independent_missing_rating_replay",
+      "passed": true,
+      "details": {
+        "windows_replayed": 3,
+        "sharp_bounds_and_sensitivity_grid_replayed": true,
+        "primary_bounds_include_zero": true,
+        "customer_cluster_sampling_intervals_replayed": false,
+        "causal_effect_identified": false
+      }
+    },
+    {
+      "name": "portable_deliverables",
+      "passed": true,
+      "details": {
+        "archives_verified": 3,
+        "native_bi_acceptance": "HOLD"
+      }
+    },
+    {
+      "name": "input_stability",
+      "passed": true,
+      "details": {
+        "fingerprinted_files": 47,
+        "hash_basis": "canonical JSON; LF-normalized other text"
+      }
+    }
+  ],
+  "financial_semantics_acceptance": "HOLD",
+  "native_bi_acceptance": "HOLD",
+  "operational_forecast_acceptance": "HOLD",
+  "scope": "Independent aggregate-based forecast and missing-rating calculation replay plus evidence/delivery integrity. No raw-data authenticity, original ingestion history, review cluster-bootstrap replay, current business validity, causal effect or native engine verification."
+}

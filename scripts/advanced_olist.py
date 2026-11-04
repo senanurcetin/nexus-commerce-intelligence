@@ -286,6 +286,8 @@ def figures(tables: dict, summary: dict, out: Path) -> None:
 
 def write_report(tables: dict, evidence: dict, out: Path) -> None:
     s=evidence["summary"]; d=s["delivery_association"]
+    standardized=(f"{s['month_standardized_risk_difference']*100:.2f} pp"
+                  if s['month_standardized_risk_difference'] is not None else 'not estimable')
     text=f"""# Olist: repeat purchase, value drivers and delivery experience
 
 This independent historical study uses the [official Olist public dataset]({SOURCE}), licensed CC BY-NC-SA 4.0. It is a non-commercial NEXUS portfolio analysis. It is never combined with E-Commerce, Greenweez or GA4 populations.
@@ -298,7 +300,7 @@ Olist-derived aggregate CSVs, figures and the data-containing Olist BI package r
 - Across {s['m1_cohorts']} fully observable cohorts, {s['m1_active']:,} of {s['m1_customers']:,} original customers purchased again in month 1: **{s['weighted_m1_retention']:.2%}** (cohort-size weighted). This replaces the unverified 3–5% month-1 narrative in the historical SQL notebook. Investigate repeat-purchase economics before projecting recurring customer value; do not infer churn from this marketplace extract.
 - Within the **post-delivery review-answer sample**, late orders had **{d['risk_difference']*100:.2f} percentage points** more poor reviews than on-time orders (customer-cluster bootstrap percentile 95% interval **{d['ci_low']*100:.2f}–{d['ci_high']*100:.2f} pp**, {d['iterations']} fixed-seed replicates). Late: {d['late_poor']:,}/{d['late_orders']:,} poor; on-time: {d['on_time_poor']:,}/{d['on_time_orders']:,}. Investigate delivery reliability; this observational contrast does not estimate the effect of a delivery intervention.
 - **Review-timing sensitivity:** including reviewed orders regardless of whether the answer preceded actual delivery gives a crude difference of **{s['all_review_timing_sensitivity']['risk_difference']*100:.2f} pp**. The contrast depends strongly on the response-time restriction: pre-delivery complaints and later answers represent different selected populations. Neither is an unbiased intervention effect.
-- The common-month standardized difference is **{s['month_standardized_risk_difference']*100:.2f} pp** across {s['common_support_months']} months with at least 30 orders in each exposure group. This is a descriptive sensitivity check without an adjusted confidence interval, not confounding control sufficient for causal inference.
+- The common-month standardized difference is **{standardized}** across {s['common_support_months']} months with at least 30 orders in each exposure group. This is a descriptive sensitivity check without an adjusted confidence interval, not confounding control sufficient for causal inference.
 
 ![Retention by observed cohort](cohort_retention.png)
 
@@ -328,19 +330,13 @@ CSV tables beside this report are aggregates only. `evidence.json` records full 
 
 ```powershell
 # Requires an authenticated free Kaggle CLI (`pip install kaggle`).
-# Downloads only these four official tables, keeping existing CSVs:
-# olist_orders_dataset.csv, olist_customers_dataset.csv,
-# olist_order_items_dataset.csv, olist_order_reviews_dataset.csv
-python -m scripts.fetch_olist
-python -m scripts.advanced_olist --raw target/olist/raw --out target/olist/analysis
-python -m unittest discover -s tests -p 'test_advanced_olist.py' -v
-# For the eight-page native report, also build the independent studies:
+# Fetch all six official inputs; existing CSVs are kept.
 python -m scripts.fetch_olist --products
-python -m scripts.olist_customer_portfolio --out target/olist/extension
-python -m scripts.olist_delivery_operations --out target/olist/operations
-python -m scripts.build_olist_powerbi --source target/olist/analysis --extension target/olist/extension --operations target/olist/operations
-# Or rebuild all three analyses and native BI together:
-python -m scripts.build_research --raw target/olist/raw
+# Rebuild all five studies and the nine-page/sixteen-table native report:
+python -m scripts.build_research --raw target/olist/raw --out target/research --schemas
+# --schemas retrieves only official Microsoft schemas when not already cached.
+# The local analysis itself requires no cloud account or network access.
+python -m unittest discover -s tests -p 'test_research_reproduction.py' -v
 ```
 
 Native Power BI consumes these aggregate outputs in an independent portable project. JSON schema and TMDL parsing do not establish Desktop rendering, refresh or DAX execution. Generated figures are analytical plots, not BI screenshots. No browser, Playwright, screen automation, paid service or cloud query is needed.

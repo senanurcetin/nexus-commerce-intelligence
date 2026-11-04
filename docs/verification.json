@@ -1,9 +1,9 @@
 {
-  "date": "2026-11-02",
+  "date": "2026-11-05",
   "scope": "local synthetic commerce, independent historical public Olist and private bounded core-source observations; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 302,
+    "passed": 387,
     "failed": 0
   },
   "streamlit_headless": {
@@ -17,7 +17,7 @@
     "command": "node --test showcase/tests/*.test.mjs storefront/tests/*.test.mjs",
     "passed": 21,
     "failed": 0,
-    "last_local_run_date": "2026-11-02"
+    "last_local_run_date": "2026-11-03"
   },
   "dbt_root": {
     "models_passed": 10,
@@ -41,7 +41,7 @@
     "last_local_run_date": "2026-10-27"
   },
   "powerbi": {
-    "microsoft_schema_artifacts_validated": 38,
+    "microsoft_schema_artifacts_validated": 50,
     "private_pages_structurally_validated": 7,
     "public_pages": 4,
     "desktop_render_verified": false,
@@ -51,8 +51,17 @@
     "private_semantic_tables": 8,
     "olist_pages": 9,
     "olist_semantic_tables": 16,
-    "olist_microsoft_schema_artifacts_validated": 72,
-    "olist_microsoft_tom_tmdl_parsed": true
+    "olist_microsoft_schema_artifacts_validated": 109,
+    "olist_microsoft_tom_tmdl_parsed": true,
+    "native_visual_design": {
+      "research_slicers": 14,
+      "synthetic_slicers": 4,
+      "authoring_contract_tests_passed": 6,
+      "four_method_evaluation_rows": 840,
+      "explicit_filter_interactions": true,
+      "runtime_filter_behavior_verified": false,
+      "visual_design_contract": "docs/POWER_BI_VISUAL_QA.md"
+    }
   },
   "analysis": {
     "queries_executed": 5,
@@ -135,7 +144,7 @@
   "research_pipeline": {
     "command": "python -m scripts.build_research --schemas",
     "executed_end_to_end": true,
-    "schema_artifacts_validated": 72,
+    "schema_artifacts_validated": 109,
     "failure_prevents_export": true,
     "stale_success_receipt_removed": true,
     "raw_data_downloaded": false,
@@ -230,5 +239,147 @@
     "research_population_separate_from_synthetic_commerce": true,
     "browser_render_verified": false,
     "assistive_technology_verified": false
+  },
+  "research_reproduction": {
+    "verification_date": "2026-11-03",
+    "python": "3.11.9",
+    "clean_virtual_environment": true,
+    "hash_locked_installation": true,
+    "active_locked_packages": 21,
+    "dependency_graph_check_passed": true,
+    "research_environment_matches_lock": true,
+    "unmocked_five_study_fixture_tests_passed": 2,
+    "pipeline_change_failure_test_passed": true,
+    "historical_source_orders": 99441,
+    "historical_aggregate_tables_compared": 28,
+    "historical_aggregate_tables_identical_bytes": 28,
+    "historical_figures_changed": 0,
+    "microsoft_schema_checks": 109,
+    "microsoft_tom_tmdl_parsed": true,
+    "native_dax_refresh_render_verified": false,
+    "receipt": "docs/research_reproduction.json"
+  },
+  "executive_readout": {
+    "generated_from_committed_receipts": true,
+    "source_inputs": 8,
+    "decision_questions": 6,
+    "offline_guard_tests_passed": 3,
+    "mixed_populations_rejected": true,
+    "changed_primary_protocol_or_financial_gates_rejected": true,
+    "private_financial_amounts_excluded": true,
+    "operational_utility_or_causal_effect_certified": false
+  },
+  "core_source_temporal_availability": {
+    "verification_date_local": "2026-11-03",
+    "private_registered_snapshots": 1,
+    "offline_temporal_control_tests": 15,
+    "no_cloud_read_performed": true,
+    "business_time_backfill_allowed": false,
+    "unavailable_cutoff_never_falls_back_to_latest": true,
+    "inclusive_registration_boundary_verified": true,
+    "timezone_aware_cutoffs_required": true,
+    "concurrent_registration_atomic_and_idempotent": true,
+    "source_file_and_receipt_tampering_rejected": true,
+    "published_anchor_comparison_passed": true,
+    "original_profile_and_dbt_receipt_preserved": true,
+    "source_ingestion_history_verified": false,
+    "status": "docs/core-source/temporal-status.json",
+    "receipt": "docs/core-source/temporal-verification.json"
+  },
+  "independent_published_calculation_audit": {
+    "verification_date_local": "2026-11-05",
+    "receipt": "docs/analysis-validation.json",
+    "acceptance": "PASS",
+    "checks_passed": 6,
+    "fingerprinted_inputs": 47,
+    "forecast_origins_replayed": 44,
+    "forecast_methods_replayed": 4,
+    "evaluation_weeks_replayed": 30,
+    "paired_block_intervals_replayed": 3,
+    "review_windows_replayed": 3,
+    "missing_rating_scenarios_replayed": 441,
+    "new_adversarial_tests_passed": 10,
+    "production_estimator_helpers_reused": false,
+    "customer_cluster_review_intervals_replayed": false,
+    "financial_native_and_operational_gates": "HOLD"
+  },
+  "synthetic_experiment_design_lab": {
+    "verification_date_local": "2026-11-03",
+    "receipt": "docs/experiment-design/evidence.json",
+    "source_kind": "synthetic_experiment_design",
+    "real_customers_enrolled": 0,
+    "planning_scenarios": 9,
+    "simulation_scenarios": 3,
+    "replicates_per_scenario": 2000,
+    "planned_total_customers_assumed_scenario": 21780,
+    "new_tests_passed": 15,
+    "fixed_horizon_missing_outcome_assignment_and_srm_gates_tested": true,
+    "sample_size_and_newcombe_references_cross_checked": true,
+    "wilson_cross_checked_against_scipy": true,
+    "fisher_cross_checked_by_independent_enumeration": true,
+    "full_temporary_build_reproduces_numeric_outputs": true,
+    "official_nexus_logo_used": true,
+    "generated_figure_inspected_locally": true,
+    "current_business_baseline_verified": false,
+    "causal_effect_execution_verified": false,
+    "financial_roi_estimated": false,
+    "adoption_recommended": false
+  },
+  "review_cluster_raw_replay": {
+    "command": "target/research-repro-venv/Scripts/python.exe -m scripts.review_cluster_audit",
+    "acceptance": "PASS",
+    "eligible_orders": 68448,
+    "customers": 66295,
+    "windows_days": [
+      7,
+      30,
+      90
+    ],
+    "group_window_cells": 6,
+    "availability_cells": 24,
+    "bootstrap_iterations": 1000,
+    "valid_replicates": 1000,
+    "unique_cluster_patterns": 98,
+    "sampling_limits_replayed": 18,
+    "new_synthetic_adversarial_tests": 14,
+    "production_analysis_helpers_called": false,
+    "numpy_rng_shared_for_seeded_replay": true,
+    "raw_rows_exported": false,
+    "causal_or_simultaneous_set_coverage_verified": false,
+    "receipt": "docs/review-cluster-validation.json"
+  },
+  "delivery_association_raw_replay": {
+    "command": "target/research-repro-venv/Scripts/python.exe -m scripts.delivery_association_audit",
+    "acceptance": "PASS",
+    "reviewed_orders": 84763,
+    "customer_clusters": 82228,
+    "bootstrap_iterations": 1000,
+    "valid_replicates": 1000,
+    "monthly_cells_reconciled": 38,
+    "common_support_months": 13,
+    "new_synthetic_adversarial_tests": 12,
+    "production_analysis_helpers_called": false,
+    "post_cutoff_selected_answers": 2761,
+    "post_cutoff_deliveries": 1862,
+    "earlier_eligible_answers_reselected": 3,
+    "event_restricted_orders": 82005,
+    "event_restriction_is_genuine_asof_backtest": false,
+    "event_restricted_sampling_interval_computed": false,
+    "raw_rows_exported": false,
+    "receipt": "docs/delivery-association-validation.json"
+  },
+  "core_operations": {
+    "receipt": "docs/core-source/operations.json",
+    "source_item_rows": 180450,
+    "distinct_order_keys": 124244,
+    "reversed_delivery_rows": 6031,
+    "terminal_item_rows": 63262,
+    "duration_eligible_rows": 57231,
+    "offline_tests_passed": 4,
+    "independent_csv_counts_reconciled": true,
+    "cloud_read_performed": false,
+    "financial_amounts_published": false,
+    "raw_identifiers_published": false,
+    "source_correction_verified": false
   }
 }

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "verification_date_local": "2026-11-03",
+  "history_anchor_sha256": "41b246a7a05c1e51ec663d9af2323a2043a20ad9f9c37bf3db62d555fb876f3b",
+  "registered_snapshots": 1,
+  "inclusive_availability_boundary_verified": true,
+  "unavailable_historical_probe_cutoff_utc": "2021-10-15T23:59:59.000000+00:00",
+  "historical_probe_returns_unavailable": true,
+  "latest_fallback_used": false,
+  "as_of_profile_item_rows": 180450,
+  "as_of_profile_greenweez_order_rows": 13362,
+  "independent_raw_amount_reconciliation": true,
+  "source_ingestion_times_verified": false,
+  "public_raw_or_financial_amounts_included": false,
+  "original_retrospective_profile_overwritten": false
+}

@@ -1,0 +1,323 @@
+{
+  "status": "complete",
+  "source_kind": "historical_public_olist",
+  "analytical_reports": [
+    "REPORT.md",
+    "CUSTOMER_PORTFOLIO.md",
+    "DELIVERY_OPERATIONS.md",
+    "REVIEW_SELECTION.md",
+    "FORECAST_VALIDATION.md"
+  ],
+  "project": "powerbi/project/NEXUS_Olist_Research.pbip",
+  "archive": "NEXUS_Olist_Research.zip",
+  "archive_sha256": "770e13c5d7178f6874ae5b551fc536733f961e811822d0de36fa74cafc1980f2",
+  "schema_artifacts_validated": 109,
+  "environment": {
+    "python": "3.11.9",
+    "implementation": "CPython",
+    "platform": "Windows",
+    "python_311": true,
+    "lock_sha256": "e594f5df1fdf402e179bbdeefb61c5b07b18fee5425ee9ac0948e873742fe4c3",
+    "requirements_input_sha256": "225345fc611a6feb91c2322e36e27d4579e5289153e8876b08915f0ca3d461e6",
+    "packages": {
+      "attrs": {
+        "expected": "26.1.0",
+        "installed": "26.1.0"
+      },
+      "contourpy": {
+        "expected": "1.3.3",
+        "installed": "1.3.3"
+      },
+      "cycler": {
+        "expected": "0.12.1",
+        "installed": "0.12.1"
+      },
+      "duckdb": {
+        "expected": "1.5.2",
+        "installed": "1.5.2"
+      },
+      "fonttools": {
+        "expected": "4.68.0",
+        "installed": "4.68.0"
+      },
+      "jsonschema": {
+        "expected": "4.26.0",
+        "installed": "4.26.0"
+      },
+      "jsonschema-specifications": {
+        "expected": "2025.9.1",
+        "installed": "2025.9.1"
+      },
+      "kiwisolver": {
+        "expected": "1.5.1",
+        "installed": "1.5.1"
+      },
+      "matplotlib": {
+        "expected": "3.10.9",
+        "installed": "3.10.9"
+      },
+      "numpy": {
+        "expected": "2.3.5",
+        "installed": "2.3.5"
+      },
+      "packaging": {
+        "expected": "26.3",
+        "installed": "26.3"
+      },
+      "pandas": {
+        "expected": "2.2.3",
+        "installed": "2.2.3"
+      },
+      "pillow": {
+        "expected": "13.0.0",
+        "installed": "13.0.0"
+      },
+      "pyparsing": {
+        "expected": "3.3.3",
+        "installed": "3.3.3"
+      },
+      "python-dateutil": {
+        "expected": "4.0.0",
+        "installed": "4.0.0"
+      },
+      "pytz": {
+        "expected": "2026.6",
+        "installed": "2026.6"
+      },
+      "referencing": {
+        "expected": "0.37.0",
+        "installed": "0.37.0"
+      },
+      "rpds-py": {
+        "expected": "2026.9.1",
+        "installed": "2026.9.1"
+      },
+      "scipy": {
+        "expected": "1.17.0",
+        "installed": "1.17.0"
+      },
+      "typing-extensions": {
+        "expected": "4.16.0",
+        "installed": "4.16.0"
+      },
+      "tzdata": {
+        "expected": "2026.6",
+        "installed": "2026.6"
+      }
+    },
+    "mismatched_or_missing_packages": [],
+    "matches_research_lock": true,
+    "scope": "Research only; does not lock dbt, dashboard, Node, .NET, OS fonts or native Power BI."
+  },
+  "pipeline_inputs_sha256": {
+    "scripts/build_research.py": "74d9bcac6857be2e19619076d94c2e0fa6144817bbd0c64d0db46b05ff736db9",
+    "scripts/advanced_olist.py": "563613897c9371893c27180f04df04580ea62c808f3b4c9c1e3797465bbe60db",
+    "scripts/olist_customer_portfolio.py": "72774c32d0626f0a85bf2801147d39c8e42b41992f301695359e01f16ab2bc46",
+    "scripts/olist_delivery_operations.py": "8460898185d06c88f9155006f51f989bbb3f02bb01c6ecb619fa05cedb0f5256",
+    "scripts/olist_review_selection.py": "7eba83c6ed65827ea29841ea23612f9fa795b7c02b88202fff8494d6724d2c10",
+    "scripts/olist_forecast.py": "39a7eff9837850719dacec0a7128fb264015082ee9ed3c2c932dcd2ca027fd55",
+    "scripts/build_olist_powerbi.py": "c2f41214beed9dbf0474d53b0017aac25293c23f25eb7013e6a903f57c040b59",
+    "scripts/build_powerbi.py": "f1a1f23e62fceed4e216415d810bc78f479d38b43a26ab8e4c6e8aad5a0cc93c",
+    "scripts/powerbi_design.py": "6e12ecb18b22bf6de87e10567175f96bb3ea521c41ea6330e108b0a28dfccfd6",
+    "scripts/research_environment.py": "614248ffa5c0d9957efdde1ef99ce8589c86cac769c660f9144e05282b416b1d",
+    "analytics/olist/cohorts.sql": "1a4d4a5e266454b23009424408de02a2989b934fbd5dbb4e6ba37283fe7eafa9",
+    "analytics/olist/customer_lifetimes.sql": "292e58fdfd8ce720749b6c7b5cdd4394fa0a9036d06a25b7014088b32854e784",
+    "analytics/olist/daily_order_volume.sql": "c28b0364f3b0d2182af65aaca9d00570dc6305ff20b1342b1c6443e39e9b6bbf",
+    "analytics/olist/delivery_operations.sql": "1f3a65bd514b05e5b59bb51a287b608d53704b9f3969c631d6b2b2c058ede136",
+    "analytics/olist/order_fact.sql": "e589e02701489e4cd0b0f8d65067cf7c24f60e0a786997d0723050b61f215de6",
+    "analytics/olist/review_selection.sql": "ddf51ae236d59691f62fb8e13ede4143d50504c39eec26ee72d918fa68415700",
+    "analytics/olist/rfm.sql": "0abe3a9de4457f6206db8c1b3398e92a0f4f5979351a086b7a5743b66771ace8",
+    "contracts/olist_review_protocol.json": "9c6459137fc62d252d12a18e74381fce4136ad82af4873dddc624ebc0082aada",
+    "contracts/olist_forecast_protocol.json": "deac03bb1241684cf7ea947d4b9ee2965e9984555bb8588da43a511b87bb68e9",
+    "requirements-research.in": "225345fc611a6feb91c2322e36e27d4579e5289153e8876b08915f0ca3d461e6",
+    "requirements-research.lock": "e594f5df1fdf402e179bbdeefb61c5b07b18fee5425ee9ac0948e873742fe4c3",
+    "branding/nexus_official_transparent.png": "ebbdb363c523dcd88bcfa405be025e5b745419caaf57adb992b8ec1e85ed251e"
+  },
+  "pipeline_inputs_stable_during_build": true,
+  "desktop_render_verified": false,
+  "dax_engine_executed": false,
+  "microsoft_tom_tmdl_parsed": true,
+  "note": "Rebuild succeeded; native engine/parser acceptance remains separate from this command.",
+  "verification_date": "2026-11-03",
+  "source_order_rows": 99441,
+  "principal_delivered_orders": 89860,
+  "aggregate_comparisons": [
+    {
+      "file": "category_portfolio.csv",
+      "identical_bytes": true,
+      "prior_sha256": "e8892f20e28733a59c7ca8d22a37507fb330cd41be8f2590ba05bb734edcffdb",
+      "reproduced_sha256": "e8892f20e28733a59c7ca8d22a37507fb330cd41be8f2590ba05bb734edcffdb"
+    },
+    {
+      "file": "cohorts.csv",
+      "identical_bytes": true,
+      "prior_sha256": "a9e08608321b7da9128272834d7d8b99cd68eefda9b77686bb2e520d6283a24e",
+      "reproduced_sha256": "a9e08608321b7da9128272834d7d8b99cd68eefda9b77686bb2e520d6283a24e"
+    },
+    {
+      "file": "decomposition.csv",
+      "identical_bytes": true,
+      "prior_sha256": "a504849a796d65d67895d575ded6012c39f2a81fc57ebf56114431cb086b0ea2",
+      "reproduced_sha256": "a504849a796d65d67895d575ded6012c39f2a81fc57ebf56114431cb086b0ea2"
+    },
+    {
+      "file": "delivery_common_support.csv",
+      "identical_bytes": true,
+      "prior_sha256": "a6e93cc2ecd383d12e63bb050073254f6ffbcde2c9fcb6af8a0c74c2bd5e1dd0",
+      "reproduced_sha256": "a6e93cc2ecd383d12e63bb050073254f6ffbcde2c9fcb6af8a0c74c2bd5e1dd0"
+    },
+    {
+      "file": "delivery_months.csv",
+      "identical_bytes": true,
+      "prior_sha256": "8694a6768b5455bd3084a708da6ad630f45b57ccd14eebf039a8f5ceb98e1836",
+      "reproduced_sha256": "8694a6768b5455bd3084a708da6ad630f45b57ccd14eebf039a8f5ceb98e1836"
+    },
+    {
+      "file": "delivery_states.csv",
+      "identical_bytes": true,
+      "prior_sha256": "58f2c09dbe2237453a311c701601399c2a065e973ab7cc127e9c331adf278e63",
+      "reproduced_sha256": "58f2c09dbe2237453a311c701601399c2a065e973ab7cc127e9c331adf278e63"
+    },
+    {
+      "file": "forecast_daily.csv",
+      "identical_bytes": true,
+      "prior_sha256": "ee6c4be91045826e8b830193330b415f6a83a2cc998139373fbcecd57c42f811",
+      "reproduced_sha256": "ee6c4be91045826e8b830193330b415f6a83a2cc998139373fbcecd57c42f811"
+    },
+    {
+      "file": "forecast_folds.csv",
+      "identical_bytes": true,
+      "prior_sha256": "976dec7be046fd9e22162501e7372b13c9ebe464d369a14292ed7e5be60d47c5",
+      "reproduced_sha256": "976dec7be046fd9e22162501e7372b13c9ebe464d369a14292ed7e5be60d47c5"
+    },
+    {
+      "file": "forecast_metrics.csv",
+      "identical_bytes": true,
+      "prior_sha256": "4c7e6097708f17a559fd9559c269331a8289c2b48a01608a3b9f4e24dfb44f0e",
+      "reproduced_sha256": "4c7e6097708f17a559fd9559c269331a8289c2b48a01608a3b9f4e24dfb44f0e"
+    },
+    {
+      "file": "forecast_uncertainty.csv",
+      "identical_bytes": true,
+      "prior_sha256": "7aed136d4b15e36a636a5e357c01ec4db09d0f6a92b24fdf821f0696c076fdc4",
+      "reproduced_sha256": "7aed136d4b15e36a636a5e357c01ec4db09d0f6a92b24fdf821f0696c076fdc4"
+    },
+    {
+      "file": "forecast_volume.csv",
+      "identical_bytes": true,
+      "prior_sha256": "39a95e051975b16f77aef9000d498b6c93eaa96ac30c13f7602516972fdea992",
+      "reproduced_sha256": "39a95e051975b16f77aef9000d498b6c93eaa96ac30c13f7602516972fdea992"
+    },
+    {
+      "file": "monthly.csv",
+      "identical_bytes": true,
+      "prior_sha256": "a2e36cf8b04352c65382da9616066751f663ace93ca8d361ac7b36a736bd8c54",
+      "reproduced_sha256": "a2e36cf8b04352c65382da9616066751f663ace93ca8d361ac7b36a736bd8c54"
+    },
+    {
+      "file": "operations_month_contributions.csv",
+      "identical_bytes": true,
+      "prior_sha256": "c2a121b26d4d713ae9e961df095e94703fbe287f9b6261b4a5b78a5bead7ff7c",
+      "reproduced_sha256": "c2a121b26d4d713ae9e961df095e94703fbe287f9b6261b4a5b78a5bead7ff7c"
+    },
+    {
+      "file": "operations_monthly.csv",
+      "identical_bytes": true,
+      "prior_sha256": "9ca88f7baf5007a164a387afadf50893db18306e3e3654205b04468204c149c1",
+      "reproduced_sha256": "9ca88f7baf5007a164a387afadf50893db18306e3e3654205b04468204c149c1"
+    },
+    {
+      "file": "operations_states.csv",
+      "identical_bytes": true,
+      "prior_sha256": "489f0242148efeff789851a1e536638dc787663dcfdce22c9be2f965c7e758e0",
+      "reproduced_sha256": "489f0242148efeff789851a1e536638dc787663dcfdce22c9be2f965c7e758e0"
+    },
+    {
+      "file": "operations_strata.csv",
+      "identical_bytes": true,
+      "prior_sha256": "d3b03253ce82b632d5fcab4ffd912660f7efb60320f2730d278b9904f2da9301",
+      "reproduced_sha256": "d3b03253ce82b632d5fcab4ffd912660f7efb60320f2730d278b9904f2da9301"
+    },
+    {
+      "file": "operations_summary.csv",
+      "identical_bytes": true,
+      "prior_sha256": "521681ad6c36dbf7bd54f24c14c3842baf2eaca09856b6388174f416f7b17c34",
+      "reproduced_sha256": "521681ad6c36dbf7bd54f24c14c3842baf2eaca09856b6388174f416f7b17c34"
+    },
+    {
+      "file": "product_concentration.csv",
+      "identical_bytes": true,
+      "prior_sha256": "a4eaf0ca0db2931f37d58573b8890d94369cbdc1eff0f70e4f9263fae45e4573",
+      "reproduced_sha256": "a4eaf0ca0db2931f37d58573b8890d94369cbdc1eff0f70e4f9263fae45e4573"
+    },
+    {
+      "file": "quarter_concentration.csv",
+      "identical_bytes": true,
+      "prior_sha256": "6d47310a17898758efa51cd9618800f2adb38bdadb904d572022e8c2e457dafa",
+      "reproduced_sha256": "6d47310a17898758efa51cd9618800f2adb38bdadb904d572022e8c2e457dafa"
+    },
+    {
+      "file": "repeat_curve.csv",
+      "identical_bytes": true,
+      "prior_sha256": "acad54beb85a8da7c974ac1159c83f478a53b69198f95d2abfdefc507a8130e1",
+      "reproduced_sha256": "acad54beb85a8da7c974ac1159c83f478a53b69198f95d2abfdefc507a8130e1"
+    },
+    {
+      "file": "repeat_horizons.csv",
+      "identical_bytes": true,
+      "prior_sha256": "09d3760156edd4baa88fea3ca79a0f92b3513e32eabf994bc27d27ff3ae7b92e",
+      "reproduced_sha256": "09d3760156edd4baa88fea3ca79a0f92b3513e32eabf994bc27d27ff3ae7b92e"
+    },
+    {
+      "file": "repeat_ledger.csv",
+      "identical_bytes": true,
+      "prior_sha256": "1241d6c91fca9e7f21227678006663d3a85f1e74b75ef9c52bbcfd8a43936ea2",
+      "reproduced_sha256": "1241d6c91fca9e7f21227678006663d3a85f1e74b75ef9c52bbcfd8a43936ea2"
+    },
+    {
+      "file": "review_availability.csv",
+      "identical_bytes": true,
+      "prior_sha256": "e83df67d3cc87b8a3569ba6fb6c4609b860fce376dc5b1d61479102455dc9d51",
+      "reproduced_sha256": "e83df67d3cc87b8a3569ba6fb6c4609b860fce376dc5b1d61479102455dc9d51"
+    },
+    {
+      "file": "review_groups.csv",
+      "identical_bytes": true,
+      "prior_sha256": "b8c2507a3725468550ec6a8ec95c1c7935e8ea39339cfe0c3b95d8dcf6729043",
+      "reproduced_sha256": "b8c2507a3725468550ec6a8ec95c1c7935e8ea39339cfe0c3b95d8dcf6729043"
+    },
+    {
+      "file": "review_sensitivity.csv",
+      "identical_bytes": true,
+      "prior_sha256": "594fcfd45a420acdf2f696aa3cc46c899769c789e7a53511990d3d23455f5d3b",
+      "reproduced_sha256": "594fcfd45a420acdf2f696aa3cc46c899769c789e7a53511990d3d23455f5d3b"
+    },
+    {
+      "file": "review_summary.csv",
+      "identical_bytes": true,
+      "prior_sha256": "786da1fc1f9d2d109bc1cf62a62f5545e56eb1078e99e5458d0e17da30874e48",
+      "reproduced_sha256": "786da1fc1f9d2d109bc1cf62a62f5545e56eb1078e99e5458d0e17da30874e48"
+    },
+    {
+      "file": "review_tipping.csv",
+      "identical_bytes": true,
+      "prior_sha256": "8b7060caad653cc4098859492d09216b2c99c15e84dfae590d6ea9f9bbc504cb",
+      "reproduced_sha256": "8b7060caad653cc4098859492d09216b2c99c15e84dfae590d6ea9f9bbc504cb"
+    },
+    {
+      "file": "segments.csv",
+      "identical_bytes": true,
+      "prior_sha256": "08dd98db0f68bb4a4f52a1d9af06217bdebcf2bd4e94585fe942780c27248272",
+      "reproduced_sha256": "08dd98db0f68bb4a4f52a1d9af06217bdebcf2bd4e94585fe942780c27248272"
+    }
+  ],
+  "all_published_aggregate_tables_reproduced": true,
+  "comparison_tolerances": {
+    "absolute": 1e-09,
+    "relative": 1e-12
+  },
+  "changed_figures": [],
+  "synthetic_success_path_test_passed": true,
+  "synthetic_success_path_is_historical_evidence": false,
+  "native_dax_refresh_render_verified": false
+}

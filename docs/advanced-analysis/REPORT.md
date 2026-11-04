@@ -40,19 +40,13 @@ CSV tables beside this report are aggregates only. `evidence.json` records full 
 
 ```powershell
 # Requires an authenticated free Kaggle CLI (`pip install kaggle`).
-# Downloads only these four official tables, keeping existing CSVs:
-# olist_orders_dataset.csv, olist_customers_dataset.csv,
-# olist_order_items_dataset.csv, olist_order_reviews_dataset.csv
-python -m scripts.fetch_olist
-python -m scripts.advanced_olist --raw target/olist/raw --out target/olist/analysis
-python -m unittest discover -s tests -p 'test_advanced_olist.py' -v
-# For the eight-page native report, also build the independent studies:
+# Fetch all six official inputs; existing CSVs are kept.
 python -m scripts.fetch_olist --products
-python -m scripts.olist_customer_portfolio --out target/olist/extension
-python -m scripts.olist_delivery_operations --out target/olist/operations
-python -m scripts.build_olist_powerbi --source target/olist/analysis --extension target/olist/extension --operations target/olist/operations
-# Or rebuild all three analyses and native BI together:
-python -m scripts.build_research --raw target/olist/raw
+# Rebuild all five studies and the nine-page/sixteen-table native report:
+python -m scripts.build_research --raw target/olist/raw --out target/research --schemas
+# --schemas retrieves only official Microsoft schemas when not already cached.
+# The local analysis itself requires no cloud account or network access.
+python -m unittest discover -s tests -p 'test_research_reproduction.py' -v
 ```
 
 Native Power BI consumes these aggregate outputs in an independent portable project. JSON schema and TMDL parsing do not establish Desktop rendering, refresh or DAX execution. Generated figures are analytical plots, not BI screenshots. No browser, Playwright, screen automation, paid service or cloud query is needed.
