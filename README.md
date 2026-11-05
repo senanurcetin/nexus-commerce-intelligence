@@ -1,43 +1,19 @@
 # NEXUS Commerce Intelligence
 
-> **Reviewer quick path · 2 November 2026:** [Architecture](docs/ARCHITECTURE.md) → [KPI definitions](docs/KPI_CATALOG.md) → [data/source coverage](docs/SOURCE_COVERAGE.md) → [public Olist analysis](docs/advanced-analysis/REPORT.md) → [synthetic commerce findings](docs/analysis/REPORT.md) → [local reproduction](#reproduce-locally). Read the population, unit, denominator and observation window **before** comparing any figures.
->
-> **Scope:** public Olist historical analysis, portable synthetic E-Commerce/Greenweez illustrations, and separately governed private observations are **different sources**. The public UI is not a live commercial analytics service. Private finance values and source records are not included in the GitHub evidence, and neither conversion uplift nor audited profit is implied.
-
-
 <img src="branding/nexus_official_transparent.png" alt="NEXUS" width="260">
 
-**A reproducible commerce analytics case study: raw events and order lines → tested dbt marts → analytical findings → Power BI and an English-language demo.**
+A noncommercial analytics portfolio combining source-scoped dbt models, reproducible statistical studies and editable Power BI reports.
 
-E-Commerce and Greenweez share engineering standards while retaining independent facts, populations and financial definitions. This is a non-commercial portfolio project.
+| Explore | Evidence |
+| --- | --- |
+| Historical Olist research | [Five studies](docs/advanced-analysis/REPORT.md), [reproduction](docs/RESEARCH_REPRODUCIBILITY.md) and [decision readout](docs/EXECUTIVE_READOUT.md) |
+| Synthetic E-Commerce and Greenweez | [Mart findings](docs/analysis/REPORT.md), [Power BI gallery](powerbi/README.md#commerce-layout-gallery) and [web demo](showcase/README.md) |
+| Governed source observations | [Private-source acceptance](docs/core-source/README.md), [as-of selection](docs/core-source/TEMPORAL_AVAILABILITY.md) and [coverage](docs/SOURCE_COVERAGE.md) |
+| Engineering and verification | [Architecture](docs/ARCHITECTURE.md), [KPI catalog](docs/KPI_CATALOG.md), [documentation map](docs/README.md) and [artifact audit](docs/RELEASE_READINESS.md) |
 
-The [22-metric KPI catalog](docs/KPI_CATALOG.md) defines each metric's unit, grain, eligible denominator, null behavior, implementation and limits. The [source coverage table](docs/SOURCE_COVERAGE.md) distinguishes public synthetic pipeline evidence, separate Olist history and private source observations.
+![Greenweez Finance layout preview using synthetic aggregates](powerbi/previews/greenweez-finance.png)
 
-A [bounded core-source observation](docs/core-source/README.md) now reconciles six approved source projections, including 180,450 E-Commerce items and 13,362 Greenweez orders. Selected existing Greenweez finance marts run locally against those observations without synthetic seeds. Raw records and financial amounts remain private; currency, refund meaning, transaction-time COGS and original business provenance remain unverified. The public website retains its synthetic/historical labels.
-
-The observed E-Commerce operational case separates 180,450 item rows from 124,244 order keys. Independent CSV and SQL counts identify 6,031 delivery-before-creation rows. Duration eligibility retains 57,231 of 63,262 Complete/Returned items. Source chronology investigation now has a defined acceptance criterion in the generated decision readout. [Count-only operational evidence](docs/core-source/operations.json)
-
-The [research reproduction guide](docs/RESEARCH_REPRODUCIBILITY.md) provides a hash-locked Python 3.11 environment and a complete raw-CSV-to-native-package test for all five studies. Builds record actual dependency versions and lock agreement; temporary synthetic test results remain separate from historical findings.
-
-The [executive readout](docs/EXECUTIVE_READOUT.md) connects the evidence to proposed decisions, financial and operational acceptance gates, and the additional data required for stronger claims. It is generated from versioned receipts, with checks against mixed populations and stale conclusions.
-
-[Core-source availability history](docs/core-source/TEMPORAL_AVAILABILITY.md) prevents a requested historical cutoff from silently using the latest snapshot. Registration times are recorded separately from business/source-observation dates; as-of profiles retain that boundary without reconstructing unavailable original ingestion history.
-
-`python -m scripts.analysis_audit` independently replays the published forecast fits, past-only selection/calibration, error metrics, paired uncertainty and missing-rating bounds/scenarios. It also checks evidence fingerprints, the executive readout and shipped archives. [The recorded calculation acceptance](docs/analysis-validation.json) preserves separate HOLD gates for financial semantics, operational forecasting and native BI. See [scope and reproduction](docs/RESEARCH_REPRODUCIBILITY.md#validate-published-calculations-without-raw-inputs).
-
-With the four local Olist source CSVs, `python -m scripts.review_cluster_audit` independently reconstructs the mature review cohort, first-answer policy, availability reasons and customer-cluster sampling intervals. The [historical raw-replay receipt](docs/review-cluster-validation.json) reconciles 68,448 orders, 66,295 customers and all eighteen reported confidence limits across three windows. Raw records stay local; this is numerical reproduction, without a new causal or coverage guarantee.
-
-`python -m scripts.delivery_association_audit` separately replays the original latest-review association over 84,763 orders / 82,228 customer clusters. The [recorded result](docs/delivery-association-validation.json) reproduces its bootstrap interval and monthly standardization, and quantifies the retrospective timing boundary: 2,761 selected answers occur on/after the purchase cutoff. A separate event-restricted sensitivity reselects answers within the boundary; original source/status availability remains unverified. The native BI page now states that delivery and answers may follow the purchase cutoff.
-
-The separate [Experiment Design Lab](docs/experiment-design/REPORT.md) demonstrates prospective measurement, sample-size sensitivity, exact testing, fixed-horizon/SRM controls and 6,000 synthetic trials. It uses hypothetical risks and enrolls no real customers; it is distinct from the five historical Olist studies and makes no measured uplift or ROI claim.
-
-Core commerce analysis now reports **known-cost contribution with matched revenue denominators** and **Greenweez product/shipping coverage**. In the synthetic Greenweez fixture, 23 unpriced sales lines carry 1,546.84 source units of sales value and 55 order records have incomplete components. The coverage report preserves the existing finance model while making its exclusions and zero policies visible; it does not infer audited profit or missing costs. See [commerce findings](docs/analysis/REPORT.md).
-
-[Olist advanced analysis](docs/advanced-analysis/REPORT.md) · [Synthetic mart findings](docs/analysis/REPORT.md) · [Architecture](docs/ARCHITECTURE.md) · [Power BI](powerbi/README.md) · [Delivery evidence](docs/DELIVERY.md)
-
-![Observed customer retention — independent historical Olist research](docs/advanced-analysis/cohort_retention.png)
-
-*Generated analytical figure from the official public Olist extract; not a dashboard screenshot. Olist research is independent of the synthetic E-Commerce/Greenweez web demonstration.*
+*Static layout preview reconstructed from the delivered PBIR and synthetic aggregates. Desktop rendering and filter behavior await verification.*
 
 ## Advanced public-data study
 
@@ -188,11 +164,12 @@ integrations/greenweez/   Independent finance/campaign dbt project
 scripts/                 Collectors, validation, analysis and portable builders
 tests/                   Counting, privacy, source and pipeline regressions
 showcase/                English-language static NEXUS presentation
-powerbi/                 Native report package, theme and delivery guide
+powerbi/                 Editable report packages, theme, preview gallery and delivery guide
 dashboard/               Private-source Streamlit workspace
 storefront/              Separate consent-based test checkout lab
 notebooks/               Independent Olist analysis
-docs/analysis/           Reproducible analytical findings, figures and CSVs
+docs/                    Documentation index, studies, evidence and operational guides
+branding/                Canonical NEXUS logo and brand assets
 ```
 
 **Cost:** local open-source processing and static assets; no subscriptions, payment integration or custom domain. Private cloud extraction remains explicit and bounded. No new hosted service or scheduled refresh is enabled.

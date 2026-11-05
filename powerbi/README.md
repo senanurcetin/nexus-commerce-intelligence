@@ -43,6 +43,14 @@ The TMDL semantic model embeds source-scoped synthetic aggregates as Power Query
 
 Official NEXUS imagery is bundled under `StaticResources/RegisteredResources`. The theme uses midnight surfaces and cyan/lavender accents. The report uses a right-aligned date filter, a single label per KPI, and separate space for the main trend and secondary chart. Source Assurance pairs a compact registry with a reading guide. The release check covers visual bounds and spacing in the delivered package.
 
+## Commerce layout gallery
+
+The images use the delivered PBIR layout, synthetic demo aggregates and the canonical NEXUS logo. They are static reconstructions. Desktop rendering, DAX, refresh and interactions are tracked separately in [visual QA](../docs/POWER_BI_VISUAL_QA.md).
+
+| E-Commerce orders | E-Commerce sessions | Greenweez finance |
+| --- | --- | --- |
+| [![Orders layout preview](previews/ecommerce-orders.png)](previews/ecommerce-orders.png) | [![Sessions layout preview](previews/ecommerce-sessions.png)](previews/ecommerce-sessions.png) | [![Finance layout preview](previews/greenweez-finance.png)](previews/greenweez-finance.png) |
+
 ## Rebuild
 
 ```powershell
@@ -69,6 +77,6 @@ This uses Microsoft's pinned Analysis Services NuGet package and does not open D
 
 Microsoft's published JSON schemas validate the public report files. Microsoft TOM also deserializes both TMDL semantic models successfully. Local tests check field bindings, source separation, portability, visible provenance, page bounds and absence of overlapping visual rectangles.
 
-**Not verified:** Power BI Desktop rendering, DAX engine execution, refresh, mobile layout or service publication. Neither screenshots nor a published Power BI URL are fabricated. No Playwright, browser session or PC screen is used in this pass. [Visual QA](../docs/POWER_BI_VISUAL_QA.md) remains a separate future acceptance step.
+**Not verified:** Power BI Desktop rendering, DAX engine execution, refresh, mobile layout or service publication. The gallery contains static layout previews. [Visual QA](../docs/POWER_BI_VISUAL_QA.md) remains a separate future acceptance step.
 
 The [analytical figures](../docs/analysis/REPORT.md) in the README are generated directly from the SQL results and are not Power BI screenshots.

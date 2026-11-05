@@ -1,6 +1,13 @@
 # Documentation map
 
-Start with [Olist advanced research](advanced-analysis/REPORT.md), [project assessment](PROJECT_ASSESSMENT.md), [synthetic mart findings](analysis/REPORT.md), [architecture](ARCHITECTURE.md) and [delivery evidence](DELIVERY.md).
+<img src="../branding/nexus_official_transparent.png" alt="NEXUS" width="180">
+
+| Reader task | Start here |
+| --- | --- |
+| Review the portfolio | [Architecture](ARCHITECTURE.md), [decision readout](EXECUTIVE_READOUT.md), [project assessment](PROJECT_ASSESSMENT.md) |
+| Review analytical results | [Olist studies](advanced-analysis/REPORT.md), [synthetic mart findings](analysis/REPORT.md), [experiment design lab](experiment-design/REPORT.md) |
+| Reproduce the evidence | [Research reproduction](RESEARCH_REPRODUCIBILITY.md), [source observations](core-source/README.md), [delivery evidence](DELIVERY.md) |
+| Inspect Power BI | [Commerce layout gallery](../powerbi/README.md#commerce-layout-gallery), [native report verification](POWER_BI_VISUAL_QA.md) |
 
 The packaged static website also includes a separate historical Research Studio; see [presentation and local serving](../showcase/README.md).
 

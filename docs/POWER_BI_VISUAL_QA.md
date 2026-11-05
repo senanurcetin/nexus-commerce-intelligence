@@ -2,7 +2,7 @@
 
 The portable four-page synthetic and nine-page Olist reports are delivered as native PBIP/PBIR/TMDL. The separate private-source generator retains seven pages. Refer to [Power BI delivery](../powerbi/README.md), [artifact readiness](RELEASE_READINESS.md) and [current evidence](DELIVERY.md).
 
-## Native design delivered on 2026-11-03
+## Delivered report design
 
 Both distributed reports retain the official transparent NEXUS logo, midnight surfaces and cyan/lavender accents. Their 1280×720 canvases reserve separate rows for the title/source context, native slicers and scope note, KPI cards, charts, and analytical qualifications. Fourteen research slicers and four synthetic-report slicers are editable native objects. Generated `visual_design.json` receipts document every page and keep native runtime verification false.
 
@@ -40,7 +40,7 @@ The synthetic report's Source Assurance page filters its source registry; each o
 
 ## Outstanding rendered acceptance
 
-No browser, Playwright or PC-screen automation is permitted in this pass. Therefore Desktop rendering, DAX engine results, refresh, responsive layout, slicer behavior and service publication remain unverified. Old screenshots were removed; the analytical figures in `docs/analysis/` are not substituted as BI screenshots.
+No browser, Playwright or PC-screen automation is permitted in this pass. Therefore Desktop rendering, DAX engine results, refresh, responsive layout, slicer behavior and service publication remain unverified. The [Commerce layout gallery](../powerbi/README.md#commerce-layout-gallery) contains static previews derived from PBIR positions and synthetic aggregates.
 
 When Desktop verification is separately performed, confirm all pages open, refresh the embedded data, compare measures to `docs/analysis/` under the same filters, inspect clipping/contrast and capture only genuine current report images.
 
