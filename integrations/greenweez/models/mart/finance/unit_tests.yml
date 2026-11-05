@@ -22,25 +22,3 @@ unit_tests:
     expect:
       rows:
         - {datemonth: "2021-10-01", orders: 2, revenue: 300, refund_amount_raw: 550, refund_amount: 550, orders_with_refund: 2, orders_refund_above_revenue: 1, refund_to_revenue: 1.8333, refund_unit_verified: false, net_revenue_after_refunds: null}
-
-  - name: refunds_net_revenue_when_unit_is_verified
-    description: "With scale 0.01 and refund_unit_verified the scaled refund is subtracted to get net revenue."
-    model: finance_refunds_month
-    config:
-      enabled: "{{ var('source_system', 'gwz_raw') == 'fvt_gsheet' }}"
-    overrides:
-      vars:
-        refund_amount_scale: 0.01
-        refund_unit_verified: true
-    given:
-      - input: ref('stg_gsheet__orders')
-        rows:
-          - {orders_id: 1, date_date: "2021-10-01", revenue: 100, purchase_cost: 60, shipping_fee: 0}
-          - {orders_id: 2, date_date: "2021-10-02", revenue: 200, purchase_cost: 120, shipping_fee: 0}
-      - input: ref('stg_gsheet__refund')
-        rows:
-          - {orders_id: 1, date_date: "2021-10-01", refund_amount: 50}
-          - {orders_id: 2, date_date: "2021-10-02", refund_amount: 500}
-    expect:
-      rows:
-        - {datemonth: "2021-10-01", orders: 2, revenue: 300, refund_amount_raw: 550, refund_amount: 5.5, orders_with_refund: 2, orders_refund_above_revenue: 0, refund_to_revenue: 0.0183, refund_unit_verified: true, net_revenue_after_refunds: 294.5}

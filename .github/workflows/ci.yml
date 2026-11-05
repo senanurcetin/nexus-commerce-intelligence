@@ -270,6 +270,15 @@ jobs:
           dbt seed --profiles-dir .github/dbt-profiles --target gsheet
           dbt build --profiles-dir .github/dbt-profiles --target gsheet --vars '{source_system: fvt_gsheet}' --selector fvt_gsheet --indirect-selection cautious --exclude resource_type:seed
 
+      - name: Reject unsupported Greenweez refund verification
+        working-directory: integrations/greenweez
+        run: |
+          if dbt compile --profiles-dir .github/dbt-profiles --target gsheet --select finance_refunds_month --vars '{source_system: fvt_gsheet, refund_unit_verified: true, refund_amount_scale: 0.01}' > target/refund-override.log 2>&1; then
+            echo "Unsupported refund override compiled successfully"
+            exit 1
+          fi
+          grep -F 'Greenweez refund meaning and unit require source evidence' target/refund-override.log
+
       - name: Verify fvt_gsheet finance marts also satisfy E-Commerce bridge
         run: python -m scripts.greenweez_bridge --db integrations/greenweez/target/gsheet.duckdb --provenance synthetic_demo --output target/greenweez_bridge/gsheet_synthetic.json
 

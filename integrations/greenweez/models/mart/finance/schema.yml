@@ -120,8 +120,7 @@ models:
       fvt_gsheet mode only (disabled otherwise). Monthly view of the Google Sheets `refund` column,
       reported separately from revenue and margins. The column is on every order, uniformly between 50 and
       500 and independent of order size, and as stored it is 3.8 times the revenue, so it is not treated as
-      refunded money until its unit is confirmed. Set `refund_amount_scale` (e.g. 0.01 for cents) and
-      `refund_unit_verified: true` to get net_revenue_after_refunds.
+      refunded money. The model rejects verification and scaling overrides while source definitions are unavailable.
     columns:
       - name: datemonth
         description: "First day of the month."
@@ -135,7 +134,7 @@ models:
       - name: refund_amount_raw
         description: "Sum of the sheet's refund column exactly as stored."
       - name: refund_amount
-        description: "refund_amount_raw multiplied by the refund_amount_scale variable (1.0 by default)."
+        description: "Compatibility alias of refund_amount_raw."
         tests:
           - dbt_utils.expression_is_true:
               arguments:
@@ -143,10 +142,10 @@ models:
       - name: orders_with_refund
         description: "Orders whose refund value is greater than 0."
       - name: orders_refund_above_revenue
-        description: "Orders whose (scaled) refund is higher than the order revenue, which a real refund cannot be."
+        description: "Orders whose stored refund value exceeds stored revenue. This comparison uses unverified units."
       - name: refund_to_revenue
-        description: "Scaled refund divided by revenue, as a ratio."
+        description: "Stored refund divided by stored revenue. This diagnostic is not a refund rate."
       - name: refund_unit_verified
-        description: "Value of the refund_unit_verified variable (false until the unit is confirmed)."
+        description: "False while the refund meaning and unit are unverified."
       - name: net_revenue_after_refunds
-        description: "revenue - refund_amount when refund_unit_verified is true, otherwise NULL."
+        description: "NULL while the refund meaning and unit are unverified."

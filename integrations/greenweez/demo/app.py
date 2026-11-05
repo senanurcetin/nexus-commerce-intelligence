@@ -306,21 +306,13 @@ if has_refunds:
     orders_total = int(refunds["orders"].sum())
     with_refund = int(refunds["orders_with_refund"].sum())
     above_revenue = int(refunds["orders_refund_above_revenue"].sum())
-    refund_total = refunds["refund_amount"].sum()
-    verified = bool(refunds["refund_unit_verified"].all())
-    refund_cols = st.columns(4 if verified else 3)
-    refund_cols[0].metric("Refund total" + (" (scaled)" if verified else " (as stored)"), f"{refund_total:,.0f}")
-    refund_cols[1].metric("Orders with a refund", f"{with_refund / orders_total:.0%}")
-    refund_cols[2].metric("Orders where refund > revenue", f"{above_revenue / orders_total:.0%}")
-    if verified:
-        refund_cols[3].metric("Net revenue after refunds", f"{refunds['net_revenue_after_refunds'].sum():,.0f}")
-    else:
-        st.warning(
-            "The sheet's refund column is reported on its own and is not subtracted from revenue or margins: "
-            "it is on every order, between 50 and 500 whatever the order size, and as stored it is "
-            f"{refund_total / refunds['revenue'].sum():.1f} times the revenue. Once its unit is confirmed, set "
-            "`refund_amount_scale` and `refund_unit_verified` (see README, Refunds) to get net revenue."
-        )
+    refund_total = refunds["refund_amount_raw"].sum()
+    refund_cols = st.columns(3)
+    refund_cols[0].metric("Refund field total (as stored)", f"{refund_total:,.0f}")
+    refund_cols[1].metric("Orders with positive refund field", f"{with_refund / orders_total:.0%}")
+    refund_cols[2].metric("Orders where stored refund exceeds revenue", f"{above_revenue / orders_total:.0%}")
+    st.warning("The refund field's meaning and unit are unverified. Net revenue after refunds is unavailable.")
+    refunds = refunds.drop(columns=["refund_amount", "refund_to_revenue", "refund_unit_verified", "net_revenue_after_refunds"])
     with st.expander("Table view: finance_refunds_month"):
         st.dataframe(refunds, width="stretch", hide_index=True)
 

@@ -189,6 +189,9 @@ class GreenweezBridgeTests(unittest.TestCase):
             bridge.validate_snapshot(base)
         base["tables"]["refunds"][0]["net_revenue_after_refunds"] = None
         bridge.validate_snapshot(base)
+        base["tables"]["refunds"][0]["refund_unit_verified"] = True
+        with self.assertRaisesRegex(ValueError, "Unverified refund"):
+            bridge.validate_snapshot(base)
 
 
 if __name__ == "__main__":
