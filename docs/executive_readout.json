@@ -12,7 +12,7 @@
     "contracts/financial_semantics.json": "8829af75689fa0a7f9a8411f9ac11a0b4d3933f4855d2c44ea12ea78c1d7b681",
     "docs/core-source/operations.json": "08a1a4ef8bad0d9e2481c64781621783324e8036ed0e27350d69de2b7d2c3bfb"
   },
-  "implementation_sha256": "53a569d96969c968c4a5cab1242f6edfd1830b9f9cbb7bd676ea1d4d6d7fc739",
+  "implementation_sha256": "07c1fd42a953d950b237f60ebb084c1971a67f5bb411de9f5f0330e11b5dcd47",
   "historical_public_olist": {
     "source_orders": 99441,
     "m1_repeat_rate": 0.004802409846792015,
