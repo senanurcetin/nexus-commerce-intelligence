@@ -7,8 +7,8 @@
       "passed": true,
       "details": {
         "file": "powerbi/NEXUS_Commerce_Demo.zip",
-        "sha256": "fa5f693cf4b94efd2200e321b22de646870dde77f24656df90ac1265526da640",
-        "bytes": 68476,
+        "sha256": "ff57f928035ce076aa8a57cd0ce48a76d05cfdd6bf1577a68a7ffbf55dddfcd6",
+        "bytes": 69742,
         "entries": 59,
         "pages": 4,
         "semantic_tables": 4,

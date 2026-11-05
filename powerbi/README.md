@@ -41,7 +41,7 @@ Download [NEXUS_Commerce_Demo.zip](NEXUS_Commerce_Demo.zip), extract the complet
 
 The TMDL semantic model embeds source-scoped synthetic aggregates as Power Query `#table` expressions. No cloud sign-in, absolute CSV path, service credential or paid workspace is needed to supply its data. Every page identifies the data as synthetic demonstration data. Daily distinct order counts are labelled order-days.
 
-Official NEXUS imagery is bundled under `StaticResources/RegisteredResources`. The theme uses midnight surfaces and cyan/lavender accents. Charts and KPI cards occupy separate non-overlapping rectangles.
+Official NEXUS imagery is bundled under `StaticResources/RegisteredResources`. The theme uses midnight surfaces and cyan/lavender accents. The report uses a right-aligned date filter, a single label per KPI, and separate space for the main trend and secondary chart. Source Assurance pairs a compact registry with a reading guide. The release check covers visual bounds and spacing in the delivered package.
 
 ## Rebuild
 

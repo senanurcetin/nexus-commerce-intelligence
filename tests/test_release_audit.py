@@ -1,5 +1,6 @@
 """Release checks target the shipped archive, including corruption and stale data."""
 import io
+from itertools import combinations
 import json
 from pathlib import Path
 import shutil
@@ -23,6 +24,37 @@ class ReleaseAudit(unittest.TestCase):
         self.assertEqual(r['native_bi_release_decision'],'HOLD')
         self.assertFalse(r['dax_engine_executed']);self.assertFalse(r['desktop_render_verified'])
         self.assertFalse(r['live_refresh_required_for_historical_portfolio'])
+
+    def test_commerce_visuals_fit_the_canvas_and_kpis_have_reading_space(self):
+        files = read_archive((ROOT/'powerbi/NEXUS_Commerce_Demo.zip').read_bytes())
+        pages = [name for name in files if name.endswith('/page.json')]
+        self.assertEqual(len(pages), 4)
+        for name in pages:
+            with self.subTest(page=name):
+                page = json.loads(files[name])
+                prefix = name.removesuffix('page.json') + 'visuals/'
+                visuals = [
+                    json.loads(data) for path, data in files.items()
+                    if path.startswith(prefix) and path.endswith('/visual.json')
+                ]
+                boxes = []
+                for visual in visuals:
+                    pos = visual['position']
+                    x, y, width, height = (pos[key] for key in ('x', 'y', 'width', 'height'))
+                    self.assertGreater(width, 0)
+                    self.assertGreater(height, 0)
+                    self.assertTrue(0 <= x < x + width <= page['width'], visual['name'])
+                    self.assertTrue(0 <= y < y + height <= page['height'], visual['name'])
+                    boxes.append((x, y, x + width, y + height, visual['name']))
+                    spec = visual['visual']
+                    if spec['visualType'] == 'cardVisual':
+                        self.assertGreaterEqual(height, 128)
+                        title = spec['visualContainerObjects']['title'][0]['properties']['show']
+                        self.assertEqual(title['expr']['Literal']['Value'], 'false')
+                    if spec['visualType'] == 'slicer':
+                        self.assertGreaterEqual(height, 90)
+                for (x1, y1, r1, b1, n1), (x2, y2, r2, b2, n2) in combinations(boxes, 2):
+                    self.assertFalse(max(x1, x2) < min(r1, r2) and max(y1, y2) < min(b1, b2), (n1, n2))
 
     def test_corrupt_actual_archive_fails_even_if_other_checks_can_continue(self):
         with tempfile.TemporaryDirectory() as directory:
