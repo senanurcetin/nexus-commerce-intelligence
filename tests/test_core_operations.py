@@ -1,8 +1,12 @@
 """Operational decisions preserve grain and reject invalid duration records."""
 import copy
+import csv
 import hashlib
 import json
 import unittest
+from pathlib import Path
+import tempfile
+from unittest.mock import patch
 
 import duckdb
 
@@ -10,14 +14,59 @@ from scripts import core_operations as operations
 
 
 class CoreOperations(unittest.TestCase):
-    def sample(self, records):
+    def connection(self, records):
         con = duckdb.connect()
         self.addCleanup(con.close)
         con.execute('''create table "ecommerce.order_items" (
             id varchar, order_id varchar, user_id varchar, status varchar,
             created_at varchar, delivered_at varchar)''')
         con.executemany('insert into "ecommerce.order_items" values (?,?,?,?,?,?)', records)
-        return operations.analyze(con, 1000)
+        return con
+
+    def sample(self, records):
+        return operations.analyze(self.connection(records), 1000)
+
+    def test_materialized_partition_is_private_complete_and_idempotent(self):
+        con = self.connection([
+            ('good', 'a', 'u', 'Complete', '100', '200'),
+            ('reverse', 'b', 'v', 'Returned', '200', '100'),
+            ('future', 'c', 'w', 'Complete', '100', '2000'),
+            ('missing', 'd', 'x', 'Complete', None, '200'),
+            ('pending', 'e', 'y', 'Processing', '100', None),
+        ])
+        operations.analyze(con, 1000)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            first = operations.export_delivery_inputs(con, root, 1000, 'source', 'code')
+            self.assertEqual(first['eligible_item_rows'], 1)
+            self.assertEqual(first['quarantined_item_rows'], 3)
+            self.assertEqual(first['invalid_eligible_rows'], 0)
+            self.assertEqual(first, operations.export_delivery_inputs(con, root, 1000, 'source', 'code'))
+            folder, = root.iterdir()
+            with (folder / 'eligible_delivery_items.csv').open(newline='') as stream:
+                rows = list(csv.DictReader(stream))
+                self.assertEqual([r['id'] for r in rows], ['good'])
+                self.assertEqual(rows[0]['source_created_at'], '100')
+                self.assertEqual(rows[0]['source_delivered_at'], '200')
+            with (folder / 'quarantined_delivery_items.csv').open(newline='') as stream:
+                self.assertEqual({r['id'] for r in csv.DictReader(stream)}, {'reverse', 'future', 'missing'})
+            later = operations.export_delivery_inputs(con, root, 3000, 'source', 'code')
+            self.assertEqual(later['eligible_item_rows'], 2)
+            self.assertEqual(len(list(root.iterdir())), 2)
+            path = folder / 'eligible_delivery_items.csv'
+            path.write_bytes(path.read_bytes() + b'\n')
+            with self.assertRaisesRegex(ValueError, 'hash differs'):
+                operations.export_delivery_inputs(con, root, 1000, 'source', 'code')
+
+    def test_failed_export_leaves_no_partial_artifact(self):
+        con = self.connection([('good', 'a', 'u', 'Complete', '100', '200')])
+        operations.analyze(con, 1000)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with patch.object(operations, 'file_hash', side_effect=OSError('Injected export failure')):
+                with self.assertRaises(OSError):
+                    operations.export_delivery_inputs(con, root, 1000, 'source', 'code')
+            self.assertEqual(list(root.iterdir()), [])
 
     def test_item_and_order_grains_and_timestamp_exclusions(self):
         result = self.sample([
