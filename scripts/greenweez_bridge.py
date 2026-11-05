@@ -135,7 +135,9 @@ def _validate_rows(key: str, rows: list) -> list[dict]:
         if key in ("daily", "monthly"):
             if abs(normalized["ads_margin"] - (normalized["operational_margin"] - normalized["ads_cost"])) > DECIMAL_TOLERANCE:
                 raise ValueError(f"{key} ads_margin does not reconcile")
-        if key == "refunds" and not normalized["refund_unit_verified"] and normalized["net_revenue_after_refunds"] is not None:
+        if key == "refunds" and (
+            normalized["refund_unit_verified"] or normalized["net_revenue_after_refunds"] is not None
+        ):
             raise ValueError("Unverified refund amount must not yield net revenue")
         result.append(normalized)
     return sorted(result, key=lambda row: (row.get("date") or row["datemonth"], row.get("paid_source", "")))
