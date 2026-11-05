@@ -58,7 +58,7 @@
         "docs/EXECUTIVE_READOUT.md": "a201479cfeacf3303cbcb60ed8e1a73f84203b84ffb09fd0a707bac94b871c40",
         "docs/research_reproduction.json": "4d483a4c6a3132f82882dd73a19d9671443be00db8a3190c7e7796825df8ebac",
         "powerbi/olist-package-manifest.json": "7f8cfb3cb80d5a675c62c17bc8fb72163045fd23ea9672999471a29f2423c6b7",
-        "powerbi/package-manifest.json": "5b70e24fb576f081cd799ebb2693c04304f2472b246050ec8bd7172bcbb0abbf",
+        "powerbi/package-manifest.json": "f0f3ea0634764b3450536fcb4619e1ce4bd8e86aca673b362e840aee907773d7",
         "scripts/build_research_portal.py": "3b0654ca3cdf4ea22b4aaf593bd31eedc88079d57a18d7bd847980775656ef50",
         "scripts/core_operations.py": "328c11ba6e392ec8db7a838b1f32ffd8eedecd4797d10881e8f2892acc8294d4",
         "scripts/executive_readout.py": "07c1fd42a953d950b237f60ebb084c1971a67f5bb411de9f5f0330e11b5dcd47",

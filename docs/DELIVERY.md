@@ -47,7 +47,7 @@ Updated 3 November 2026. Non-commercial, English-language NEXUS analytics case s
 
 ## Source and brand evidence
 
-The official transparent PNG was compared byte-for-byte with the owner's mounted Google Drive `Logo/NEXUS_Identity_2_0/` asset on 27 October. SHA-256: `ebbdb363c523dcd88bcfa405be025e5b745419caaf57adb992b8ec1e85ed251e`.
+The official transparent PNG was compared byte-for-byte with the owner's mounted Google Drive `Logo/NEXUS_Identity_2_0/` asset, most recently for the [Commerce preview gallery](../powerbi/README.md#commerce-layout-gallery). SHA-256: `ebbdb363c523dcd88bcfa405be025e5b745419caaf57adb992b8ec1e85ed251e`.
 
 [Historical BigQuery OIDC run](https://github.com/senanurcetin/nexus-commerce-intelligence/actions/runs/39071051381): successful authentication, eight pinned schemas and 62 required fields; E-Commerce US, Greenweez EU. This is metadata evidence, not a new data refresh. The previous source preflight preserved its byte cap: Greenweez passed the dry-run; E-Commerce raw events exceeded the 100 MB cap and no rows were downloaded. The cap was not raised.
 
@@ -60,7 +60,7 @@ The four-page commerce report and web demo use only synthetic fixtures. Their re
 - Five E-Commerce analytical SQL templates and the independent Greenweez raw-branch coverage query execute locally. Raw-to-mart value/order, funnel and known-cost population controls reconcile. Both dbt projects compile the new analysis within their own source scope.
 - Greenweez raw-sales revenue reconciles to daily finance; daily contribution identities reconcile.
 - Four-page public Power BI JSON validates against Microsoft's published schemas. Microsoft TOM successfully deserializes the public four-table and private eight-table TMDL models. Seven-page source/binding integrity is independently checked.
-- Generated analytical figures are file artifacts, not screenshots of a live UI or Power BI.
+- Analytical figures are generated from study aggregates. The three Commerce previews are reconstructed from PBIR and synthetic aggregates.
 - Olist: all-extract raw item value reconciles to the order fact, and the analytical purchase window reconciles independently to raw lines/orders. Cohort observation/denominator, policy ties, future delivery exclusion, many-side fanout, Shapley symmetry/additivity, fixed-seed bootstrap, BH adjustment, aggregate reconciliation and public export tamper tests pass without Kaggle access in CI.
 - The nine-page Olist report validates 109 Microsoft schema-bearing artifacts; the four-page synthetic report validates 50. Microsoft TOM parses both semantic models. All twelve generated figures were inspected as local image files across the development passes. This does not establish BI rendering.
 
