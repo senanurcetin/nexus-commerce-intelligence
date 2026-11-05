@@ -3,7 +3,7 @@
   "scope": "local synthetic commerce, independent historical public Olist and private bounded core-source observations; no browser, Playwright or PC screen",
   "python_unittest": {
     "command": "python -m unittest discover -s tests -p test_*.py",
-    "passed": 387,
+    "passed": 389,
     "failed": 0
   },
   "streamlit_headless": {
@@ -375,11 +375,15 @@
     "reversed_delivery_rows": 6031,
     "terminal_item_rows": 63262,
     "duration_eligible_rows": 57231,
-    "offline_tests_passed": 4,
+    "offline_tests_passed": 6,
     "independent_csv_counts_reconciled": true,
     "cloud_read_performed": false,
     "financial_amounts_published": false,
     "raw_identifiers_published": false,
-    "source_correction_verified": false
+    "source_correction_verified": false,
+    "materialized_private_inputs": true,
+    "quarantined_rows": 6031,
+    "invalid_eligible_rows": 0,
+    "source_timestamps_imputed": false
   }
 }

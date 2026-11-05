@@ -5,7 +5,7 @@
   "source_item_rows": 180450,
   "source_contract_sha256": "380699f438500d83ea6fdfa16cd6241628e23bec38c2f8524243f1ba74f1a6ce",
   "source_csv_sha256": "d1da56f99cc6848745a718d7d9acf03cd62c0afca7ce4ce11298866b0e31589a",
-  "implementation_sha256": "22055fe6ee48f58f5eb5f7161ae3ed7d8d39a133ee064dbbe02ac0862949570e",
+  "implementation_sha256": "328c11ba6e392ec8db7a838b1f32ffd8eedecd4797d10881e8f2892acc8294d4",
   "summary": {
     "item_rows": 180450,
     "distinct_order_keys": 124244,
@@ -54,13 +54,27 @@
     "reversed_delivery_rows": 6031
   },
   "summary_sha256": "69ebbbf54a08854ed1f59b8f084e0426d2e2c6c59cdd220925f9b6b69faea98b",
+  "delivery_inputs": {
+    "source_csv_sha256": "d1da56f99cc6848745a718d7d9acf03cd62c0afca7ce4ce11298866b0e31589a",
+    "implementation_sha256": "328c11ba6e392ec8db7a838b1f32ffd8eedecd4797d10881e8f2892acc8294d4",
+    "observation_epoch_utc": 1793628976.211995,
+    "terminal_item_rows": 63262,
+    "eligible_item_rows": 57231,
+    "quarantined_item_rows": 6031,
+    "reason_counts": {
+      "delivery_before_creation": 6031,
+      "eligible": 57231
+    },
+    "invalid_eligible_rows": 0,
+    "timestamp_imputation_applied": false
+  },
   "independent_raw_counts_reconciled": true,
   "decision": {
     "repair_chronology": true,
     "action": "Investigate delivery-before-creation rows using source event definitions and lineage.",
     "duration_eligibility": "Complete or Returned item with finite creation/delivery epochs, creation <= delivery <= snapshot observation.",
     "grain_acceptance": "One source item per key. Distinct orders reported separately. Mixed status/customer orders require investigation.",
-    "success_criterion": "Zero reversed delivery rows in a subsequent validated source correction. Preserve each original snapshot.",
+    "success_criterion": "Every terminal item belongs to eligible inputs or quarantine. Eligible inputs contain zero invalid duration records. Review quarantined records against authoritative source event definitions.",
     "business_effect_evaluation": "Measure any operational intervention on new observations with an approved loss budget."
   },
   "financial_amounts_published": false,
