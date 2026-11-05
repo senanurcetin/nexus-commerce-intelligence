@@ -277,7 +277,7 @@ jobs:
             echo "Unsupported refund override compiled successfully"
             exit 1
           fi
-          rg -F 'Greenweez refund meaning and unit require source evidence' target/refund-override.log
+          grep -F 'Greenweez refund meaning and unit require source evidence' target/refund-override.log
 
       - name: Verify fvt_gsheet finance marts also satisfy E-Commerce bridge
         run: python -m scripts.greenweez_bridge --db integrations/greenweez/target/gsheet.duckdb --provenance synthetic_demo --output target/greenweez_bridge/gsheet_synthetic.json
